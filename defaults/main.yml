@@ -68,13 +68,14 @@ wildfly_key_password: 'secret'
 wildfly_application_ssl_identity: '
     <server-identities>
         <ssl>
-            <keystore path='{{ wildfly_keystore_name }}'
-             relative-to='jboss.server.config.dir'
-             alias='{{ wildfly_keystore_alias }}'
-             keystore-password='{{ wildfly_keystore_password }}'
-             key-password='{{ wildfly_key_password }}'/>
+            <keystore path="{{ wildfly_keystore_name }}"
+             relative-to="jboss.server.config.dir"
+             alias="{{ wildfly_keystore_alias }}"
+             keystore-password="{{ wildfly_keystore_password }}"
+             key-password="{{ wildfly_key_password }}"/>
         </ssl>
     </server-identities>'
 wildfly_https_listener: '
     <https-listener name="https-server" socket-binding="https"
      security-realm="ManagementRealm"/>'
+
