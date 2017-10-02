@@ -10,7 +10,7 @@ wildfly_remove_download_file: true
 wildfly_instance_name: wildfly_app-system
 
 wildfly_version: 10.1.0.Final
-wildfly_major_v: '{{ wildfly_version.partition('.')[0] }}'
+wildfly_major_v: '{{ wildfly_version.partition(".")[0] }}'
 
 wildfly_manage_user: true
 wildfly_user: wildfly
