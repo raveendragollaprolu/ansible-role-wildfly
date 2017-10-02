@@ -7,6 +7,15 @@
     state: present
   when: wildfly_manage_java_pkg
 
+- name: Create download directory
+  file:
+    path: '{{ wildfly_download_dir }}'
+    owner: '{{ wildfly_user }}'
+    group: '{{ wildfly_group }}'
+    mode: '0770'
+    recurse: no
+    state: directory
+
 - name: Download wildfly tar file
   get_url:
     url: '{{ wildfly_download_url }}'
