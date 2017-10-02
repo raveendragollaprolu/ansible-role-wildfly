@@ -10,8 +10,6 @@
 - name: Create download directory
   file:
     path: '{{ wildfly_download_dir }}'
-    owner: '{{ wildfly_user }}'
-    group: '{{ wildfly_group }}'
     mode: '0770'
     recurse: no
     state: directory
