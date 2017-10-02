@@ -7,6 +7,8 @@ wildfly_manage_standalone_data: true
 wildfly_manage_service: true
 wildfly_remove_download_file: true
 
+wildfly_instance_name: wildfly_app-system
+
 wildfly_version: 10.1.0.Final
 wildfly_major_v: "{{ wildfly_version.partition('.')[0] }}"
 
@@ -18,26 +20,26 @@ wildfly_base_download_url: http://download.jboss.org/wildfly
 wildfly_name: wildfly-{{ wildfly_version }}
 wildfly_download_validate_certs: "yes"
 wildfly_download_file: "{{ wildfly_name }}.tar.gz"
-wildfly_download_url: "{{ wildfly_base_download_url }}/{{ wildfly_version }}/\
-                       {{ wildfly_download_file }}"
-wildfly_download_dir: /tmp
+wildfly_download_url: "{{ wildfly_base_download_url }}/{{ wildfly_version }}/{{ wildfly_download_file }}"
 
 wildfly_install_dir: /opt
-wildfly_dir: "{{ wildfly_install_dir }}/{{ wildfly_name }}"
+wildfly_dir: "{{ wildfly_install_dir }}/{{ wildfly_instance_name }}/{{ wildfly_name }}"
 wildfly_dir_mode: '0750'
 wildfly_create_symlink: true
 
+wildfly_download_dir: /{{ wildfly_install_dir }}/tmp
+
 wildfly_init_src_path: "{{ 'docs/contrib/scripts' if wildfly_major_v | version_compare('10', '>=') else 'bin' }}"
 
-wildfly_console_log_dir: "/var/log/wildfly"
+wildfly_console_log_dir: ""{{ wildfly_install_dir }}/{{ wildfly_instance_name }}/log"
 wildfly_console_log_file: "console.log"
-wildfly_console_log: "{{ wildfly_console_log_dir }}/\
-                      {{ wildfly_console_log_file }}"
+wildfly_console_log: "{{ wildfly_console_log_dir }}/{{ wildfly_console_log_file }}"
 
-wildfly_conf_dir: /etc/wildfly
+wildfly_conf_dir: /etc/default
+
 wildfly_standalone_config_file: standalone.xml
-wildfly_standalone_config_path: "{{ wildfly_dir }}/standalone/configuration/\
-                                 {{ wildfly_standalone_config_file }}"
+
+wildfly_standalone_config_path: "{{ wildfly_dir }}/standalone/configuration/{{ wildfly_standalone_config_file }}"
 wildfly_startup_wait: ''
 wildfly_shutdown_wait: ''
 
@@ -59,8 +61,7 @@ wildfly_app_users: []
 
 wildfly_enable_ssl: no
 wildfly_keystore_name: my.jks
-wildfly_keystore_path: "{{ wildfly_dir }}/standalone/configuration/\
-                        {{ wildfly_keystore_name }}"
+wildfly_keystore_path: "{{ wildfly_dir }}/standalone/configuration/{{ wildfly_keystore_name }}"
 wildfly_keystore_alias: my
 wildfly_keystore_password: "secret"
 wildfly_key_password: "secret"
