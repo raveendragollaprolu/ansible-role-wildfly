@@ -17,6 +17,8 @@ install:
 - pip install molecule==1.23.0
 
 script:
+- ls -la ../
+- ls -la ./
 - cd ../ && mv wildfly inkatze.wildfly && cd inkatze.wildfly
 - molecule test
 
