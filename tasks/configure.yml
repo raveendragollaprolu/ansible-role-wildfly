@@ -33,6 +33,7 @@
     state: link
     src: '{{ wildfly_install_dir }}/wildfly/{{ wildfly_instance_name }}/{{ wildfly_init_src_path }}/init.d/wildfly-init-{{ ansible_os_family | lower }}.sh'
     dest: '{{ wildfly_init_dir }}/wildfly'
+    force: yes
   when: ansible_service_mgr in ['init', 'upstart']
   notify:
     - restart wildfly
