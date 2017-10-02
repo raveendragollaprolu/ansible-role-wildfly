@@ -25,4 +25,4 @@
 - hosts: all
   any_errors_fatal: true
   roles:
-    - role: inkatze.wildfly
+    - role: ansible-role-wildfly
