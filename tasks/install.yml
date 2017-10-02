@@ -14,6 +14,13 @@
     recurse: no
     state: directory
 
+- name: Create application directory
+  file:
+    path: '{{ wildfly_install_dir }}/{{ wildfly_instance_name }}/{{ wildfly_name }}'
+    mode: '0770'
+    recurse: yes
+    state: directory
+
 - name: Create wildfly link directory
   file:
     path: '{{ wildfly_install_dir }}/wildfly'
