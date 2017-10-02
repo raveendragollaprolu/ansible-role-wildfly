@@ -52,10 +52,14 @@
     copy: no
     creates: "{{ wildfly_dir }}/bin/standalone.sh"
 
+- name: check
+  shell: ls -la /opt && ls -la {{ wildfly_dir}}/../
+
 - name: Create symlink to installed version
   file:
     state: link
     src: '{{ wildfly_dir }}'
     dest: '{{ wildfly_install_dir }}/wildfly/{{ wildfly_instance_name }}'
+    force: yes
   when: wildfly_create_symlink
 
