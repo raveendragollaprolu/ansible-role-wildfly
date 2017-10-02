@@ -31,7 +31,7 @@ wildfly_download_dir: /{{ wildfly_install_dir }}/tmp
 
 wildfly_init_src_path: "{{ 'docs/contrib/scripts' if wildfly_major_v | version_compare('10', '>=') else 'bin' }}"
 
-wildfly_console_log_dir: ""{{ wildfly_install_dir }}/{{ wildfly_instance_name }}/log"
+wildfly_console_log_dir: "{{ wildfly_install_dir }}/{{ wildfly_instance_name }}/log"
 wildfly_console_log_file: "console.log"
 wildfly_console_log: "{{ wildfly_console_log_dir }}/{{ wildfly_console_log_file }}"
 
