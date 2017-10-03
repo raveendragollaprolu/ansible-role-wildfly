@@ -7,40 +7,13 @@
     state: present
   when: wildfly_manage_java_pkg
 
-- name: Create download directory
-  file:
-    path: '{{ wildfly_download_dir }}'
-    mode: '0770'
-    recurse: no
-    state: directory
-
-- name: Create application directory
-  file:
-    path: '{{ wildfly_install_dir }}/{{ wildfly_instance_name }}/{{ wildfly_name }}'
-    mode: '0770'
-    recurse: yes
-    state: directory
-
-- name: Create wildfly link directory
-  file:
-    path: '{{ wildfly_install_dir }}/wildfly'
-    mode: '0770'
-    recurse: no
-    state: directory
-
-- name: Download wildfly tar file
-  get_url:
-    url: '{{ wildfly_download_url }}'
-    dest: '{{ wildfly_download_dir }}/{{ wildfly_download_file }}'
-    validate_certs: '{{ wildfly_download_validate_certs }}'
-
 - block:
-    - name: Create wildfly group
+    - name: create wildfly group
       group:
         name: '{{ wildfly_group }}'
         state: present
 
-    - name: Create wildfly user
+    - name: create wildfly user
       user:
         name: '{{ wildfly_user }}'
         group: '{{ wildfly_group }}'
@@ -49,24 +22,63 @@
         state: present
   when: wildfly_manage_user
 
-- name: Unarchive downloaded file
-  unarchive:
-    src: '{{ wildfly_download_dir }}/{{ wildfly_download_file }}'
-    dest: '{{ wildfly_install_dir }}'
+- name: 'create application directory: {{ wildfly_dir }}'
+  file:
+    path: '{{ wildfly_dir }}'
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     mode: '{{ wildfly_dir_mode }}'
+    recurse: yes
+    state: directory
+
+- name: create wildfly link directory
+  file:
+    path: '{{ wildfly_install_dir }}/wildfly'
+    owner: '{{ wildfly_user }}'
+    group: '{{ wildfly_group }}'
+    mode: '{{ wildfly_dir_mode }}'
+    recurse: no
+    state: directory
+
+- name: create wildfly log directory
+  file:
+    path: '{{ wildfly_console_log_dir }}'
+    owner: '{{ wildfly_user }}'
+    group: '{{ wildfly_group }}'
+    mode: '{{ wildfly_dir_mode }}'
+    recurse: yes
+    state: directory
+
+- name: create download directory
+  file:
+    path: '{{ wildfly_download_dir }}'
+    owner: '{{ wildfly_user }}'
+    group: '{{ wildfly_group }}'
+    mode: '{{ wildfly_dir_mode }}'
+    recurse: yes
+    state: directory
+
+- name: download wildfly tar file
+  get_url:
+    url: '{{ wildfly_download_url }}'
+    dest: '{{ wildfly_download_dir }}/{{ wildfly_download_file }}'
+    validate_certs: '{{ wildfly_download_validate_certs }}'
+
+- name: unarchive downloaded file
+  unarchive:
+    src: '{{ wildfly_download_dir }}/{{ wildfly_download_file }}'
+    dest: '{{ wildfly_install_dir }}/{{ wildfly_instance_name }}'
+    owner: '{{ wildfly_user }}'
+    group: '{{ wildfly_group }}'
+    # mode: '{{ wildfly_dir_mode }}'
     copy: no
     creates: "{{ wildfly_dir }}/bin/standalone.sh"
 
-- name: check
-  shell: ls -la /opt && ls -la {{ wildfly_dir}}/../
-
-- name: Create symlink to installed version
+- name: create symlink to installed version
   file:
     state: link
     src: '{{ wildfly_dir }}'
-    dest: '{{ wildfly_install_dir }}/wildfly/{{ wildfly_instance_name }}'
+    dest: '{{ wildfly_link_dir }}'
     force: yes
   when: wildfly_create_symlink
 

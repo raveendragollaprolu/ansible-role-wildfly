@@ -1,7 +1,7 @@
 ---
 # task file for wildfly
 
-- name: Create wildfly etc directory
+- name: create wildfly etc directory
   file:
     path: '{{ wildfly_conf_dir }}'
     state: directory
@@ -9,10 +9,10 @@
     group: '{{ wildfly_group }}'
     mode: '0750'
 
-- name: Copy wildfly configuration
+- name: copy wildfly configuration
   template:
     src: wildfly.conf.j2
-    dest: '{{ wildfly_conf_dir }}/wildfly.conf'
+    dest: '{{ wildfly_conf_dir }}/{{ wildfly_instance_name }}.conf'
     owner: root
     group: root
     mode: '0640'
@@ -20,27 +20,27 @@
     - restart wildfly
     - change standalone data mode
 
-- name: Create symlink to /etc/default/wildfly.conf
+- name: create symlink to /etc/default/wildfly.conf
   file:
     state: link
-    src: '{{ wildfly_conf_dir }}/wildfly.conf'
-    dest: /etc/default/wildfly.conf
+    src: '{{ wildfly_conf_dir }}/{{ wildfly_instance_name }}.conf'
+    dest: /etc/default/{{ wildfly_instance_name }}.conf
 
 - include: configure-properties.yml
 
-- name: Create symlink to upstream init script
+- name: create symlink to upstream init script
   file:
     state: link
-    src: '{{ wildfly_install_dir }}/wildfly/{{ wildfly_instance_name }}/{{ wildfly_init_src_path }}/init.d/wildfly-init-{{ ansible_os_family | lower }}.sh'
-    dest: '{{ wildfly_init_dir }}/wildfly'
+    src: '{{ wildfly_link_dir}}/{{ wildfly_init_src_path }}/init.d/wildfly-init-{{ ansible_os_family | lower }}.sh'
+    dest: '{{ wildfly_init_dir }}/{{ wildfly_instance_name }}'
     force: yes
-  when: ansible_service_mgr in ['init', 'upstart']
+#  when: ansible_service_mgr in ['init', 'upstart']
   notify:
     - restart wildfly
     - change standalone data mode
 
-- name: Copy wildfly systemd unit file
-  template: src=wildfly.service.j2 dest={{ wildfly_systemd_dir }}/wildfly.service owner=root
+- name: copy wildfly systemd unit file
+  template: src=wildfly.service.j2 dest={{ wildfly_systemd_dir }}/{{ wildfly_instance_name }}.service owner=root
             group=root mode=0640
   when: ansible_service_mgr == 'systemd'
   notify:
@@ -48,28 +48,28 @@
     - change standalone data mode
 
 - block:
-  - name: Open wildfly management http tcp port
+  - name: open wildfly management http tcp port
     firewalld:
       port: '{{ wildfly_manage_http_port }}/tcp'
       permanent: yes
       immediate: yes
       state: enabled
 
-  - name: Open wildfly management https tcp port
+  - name: open wildfly management https tcp port
     firewalld:
       port: '{{ wildfly_manage_https_port }}/tcp'
       permanent: yes
       immediate: yes
       state: enabled
 
-  - name: Open wildfly http tcp port
+  - name: open wildfly http tcp port
     firewalld:
       port: '{{ wildfly_http_port }}/tcp'
       permanent: yes
       immediate: yes
       state: enabled
 
-  - name: Open wildfly https tcp port
+  - name: open wildfly https tcp port
     firewalld:
       port: '{{ wildfly_https_port }}/tcp'
       permanent: yes
@@ -80,18 +80,18 @@
 - meta: flush_handlers
 
 - block:
-    - name: Enable and start the service
+    - name: enable and start the service
       service:
-        name: wildfly
+        name: '{{ wildfly_instance_name }}'
         state: started
         enabled: yes
-    - name: Wait for wildfly to start
+    - name: wait for wildfly to start
       wait_for:
         path: "{{ wildfly_dir }}/standalone/log/server.log"
         search_regex: 'started in'
   when: wildfly_manage_service
 
-- name: Delete wildfly tar file
+- name: delete wildfly tar file
   file:
     path: '{{ wildfly_download_dir }}/{{ wildfly_download_file }}'
     state: absent

@@ -25,6 +25,7 @@ wildfly_download_url: '{{ wildfly_base_download_url }}/{{ wildfly_version }}/{{ 
 wildfly_install_dir: /opt
 wildfly_dir: '{{ wildfly_install_dir }}/{{ wildfly_instance_name }}/{{ wildfly_name }}'
 wildfly_dir_mode: '0750'
+wildfly_link_dir: '{{ wildfly_install_dir }}/wildfly/{{ wildfly_instance_name }}'
 wildfly_create_symlink: true
 
 wildfly_download_dir: '{{ wildfly_install_dir }}/tmp'
@@ -56,8 +57,12 @@ wildfly_https_port: 8443
 wildfly_bind_address_unsecure: ''
 wildfly_messaging_group_address: ''
 
-wildfly_management_users: []
-wildfly_app_users: []
+wildfly_management_users:
+ - name: admin
+   password: nimda
+wildfly_app_users:
+ - name: user
+   password: rock
 
 wildfly_enable_ssl: no
 wildfly_keystore_name: my.jks

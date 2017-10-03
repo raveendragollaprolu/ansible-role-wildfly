@@ -6,8 +6,8 @@ After=network.target
 Type=simple
 User={{ wildfly_user }}
 Group={{ wildfly_group }}
-EnvironmentFile={{ wildfly_conf_dir }}/wildfly.conf
-ExecStart={{ wildfly_dir }}/bin/standalone.sh $JBOSS_OPTS
+EnvironmentFile={{ wildfly_conf_dir }}/{{ wildfly_instance_name }}.conf
+ExecStart={{ wildfly_link_dir if wildfly_create_symlink else wildfly_dir }}/bin/standalone.sh $JBOSS_OPTS
 
 [Install]
 WantedBy=multi-user.target

@@ -1,4 +1,4 @@
-- name: Copy wildfly properties file
+- name: copy wildfly properties file
   template:
     src: wildfly.properties.j2
     dest: '{{ wildfly_conf_dir }}/wildfly.properties'

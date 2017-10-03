@@ -1,9 +1,8 @@
-# General configuration for the init.d scripts,
-# not necessarily for JBoss AS itself.
-# default location: /etc/default/wildfly
+# Wildfly init script configuration file
+# default location: /etc/default/wildfly-{{ wildfly_instance_name }}
 
 ## Location of WildFly
-JBOSS_HOME="{{ wildfly_install_dir + '/wildfly' if wildfly_create_symlink else wildfly_dir }}"
+JBOSS_HOME="{{ wildfly_link_dir if wildfly_create_symlink else wildfly_dir }}"
 
 ## The username who should own the process.
 JBOSS_USER="{{ wildfly_user }}"

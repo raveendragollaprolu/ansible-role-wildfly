@@ -3,7 +3,7 @@
 
 - name: restart wildfly
   service:
-    name: wildfly
+    name: '{{ wildfly_instance_name }}'
     state: restarted
 
 - name: change standalone data mode
