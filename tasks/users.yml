@@ -27,7 +27,7 @@
 
 - name: Enforce secure permissions on password files
   file:
-    path: "{{ wildfly_dir }}/standalone/configuration/{{ item }}"
+    path: "{{ wildfly_dir }}/{{ wildfly_mode }}/configuration/{{ item }}"
     owner: "{{ wildfly_user }}"
     group: "{{ wildfly_group }}"
     mode: "0600"

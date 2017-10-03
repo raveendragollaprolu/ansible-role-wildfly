@@ -19,7 +19,7 @@ Defaults:
 
     wildfly_user: wildfly
     wildfly_group: wildfly
-
+    wildfly_mode: standalone
     wildfly_base_download_url: http://download.jboss.org/wildfly
     wildfly_name: wildfly-{{ wildfly_version }}
     wildfly_download_file: "{{ wildfly_name }}.tar.gz"
@@ -37,8 +37,8 @@ Defaults:
                         {{ wildfly_console_log_file }}"
 
     wildfly_conf_dir: /etc/wildfly
-    wildfly_standalone_config_file: standalone.xml
-    wildfly_standalone_config_path: "{{ wildfly_dir }}/standalone/configuration/\
+    wildfly_config_file: standalone.xml
+    wildfly_config_path: "{{ wildfly_dir }}/standalone/configuration/\
                                     {{ wildfly_standalone_config_file }}"
     wildfly_init_dir: /etc/init.d
 

@@ -11,6 +11,7 @@
     - name: create wildfly group
       group:
         name: '{{ wildfly_group }}'
+        system: yes
         state: present
 
     - name: create wildfly user
@@ -20,6 +21,7 @@
         createhome: no
         shell: "{{ wildfly_user_shell |default(omit) }}"
         state: present
+        system: yes
   when: wildfly_manage_user
 
 - name: 'create application directory: {{ wildfly_dir }}'
@@ -72,7 +74,7 @@
     group: '{{ wildfly_group }}'
     # mode: '{{ wildfly_dir_mode }}'
     copy: no
-    creates: "{{ wildfly_dir }}/bin/standalone.sh"
+    creates: "{{ wildfly_dir }}/bin/{{ wildfly_mode }}.sh"
 
 - name: create symlink to installed version
   file:

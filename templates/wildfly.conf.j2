@@ -8,10 +8,15 @@ JBOSS_HOME="{{ wildfly_link_dir if wildfly_create_symlink else wildfly_dir }}"
 JBOSS_USER="{{ wildfly_user }}"
 
 ## The mode WildFly should start, standalone or domain
-JBOSS_MODE=standalone
+JBOSS_MODE={{ wildfly_mode }}
 
+{% if wildfly_mode == 'standalone'  %}
 ## Configuration for standalone mode
-JBOSS_CONFIG={{ wildfly_standalone_config_file }}
+JBOSS_CONFIG={{ wildfly_config_file }}
+{% elseif %}
+JBOSS_DOMAIN_CONFIG={{ wildfly_config_file }}
+JBOSS_HOST_CONFIG=host-master.xml
+{% endif %}
 
 {% if wildfly_startup_wait %}
 ## The amount of time to wait for startup

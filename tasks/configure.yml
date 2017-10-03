@@ -18,7 +18,7 @@
     mode: '0640'
   notify:
     - restart wildfly
-    - change standalone data mode
+    - change data mode
 
 - name: create symlink to /etc/default/wildfly.conf
   file:
@@ -37,7 +37,7 @@
 #  when: ansible_service_mgr in ['init', 'upstart']
   notify:
     - restart wildfly
-    - change standalone data mode
+    - change data mode
 
 - name: copy wildfly systemd unit file
   template: src=wildfly.service.j2 dest={{ wildfly_systemd_dir }}/{{ wildfly_instance_name }}.service owner=root
@@ -45,7 +45,7 @@
   when: ansible_service_mgr == 'systemd'
   notify:
     - restart wildfly
-    - change standalone data mode
+    - change data mode
 
 - block:
   - name: open wildfly management http tcp port
@@ -87,7 +87,7 @@
         enabled: yes
     - name: wait for wildfly to start
       wait_for:
-        path: "{{ wildfly_dir }}/standalone/log/server.log"
+        path: "{{ wildfly_dir }}/{{ wildfly_mode }}/log/server.log"
         search_regex: 'started in'
   when: wildfly_manage_service
 

@@ -6,12 +6,12 @@
     name: '{{ wildfly_instance_name }}'
     state: restarted
 
-- name: change standalone data mode
+- name: change data mode
   file:
-    path: '{{ wildfly_dir }}/standalone/data'
+    path: '{{ wildfly_dir }}/{{ wildfly_mode }}/data'
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     mode: '0750'
     recurse: yes
     state: directory
-  when: wildfly_manage_standalone_data
+  when: wildfly_manage_data

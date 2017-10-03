@@ -7,4 +7,4 @@
     mode: '0640'
   notify:
     - restart wildfly
-    - change standalone data mode
+    - change data mode
