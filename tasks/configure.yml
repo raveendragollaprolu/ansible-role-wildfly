@@ -92,6 +92,7 @@
       ignore_errors: yes
     - name: cat file
       command: 'cat {{ wildfly_dir }}/{{ wildfly_mode }}/log/server.log'
+      ignore_errors: yes
   when: wildfly_manage_service and wildfly_mode == 'standalone'
 
 - block:
@@ -107,6 +108,7 @@
       ignore_errors: yes
     - name: cat file
       command: 'cat {{ wildfly_dir }}/{{ wildfly_mode }}/log/host-controller.log'
+      ignore_errors: yes
   when: wildfly_manage_service and wildfly_mode == 'domain'
 
 - name: delete wildfly tar file
