@@ -89,7 +89,7 @@
       wait_for:
         path: '{{ wildfly_dir }}/{{ wildfly_mode }}/log/server.log'
         search_regex: 'started in'
-        ignore_errors: yes
+      ignore_errors: yes
     - name: cat file
       command: 'cat {{ wildfly_dir }}/{{ wildfly_mode }}/log/server.log'
   when: wildfly_manage_service
