@@ -13,7 +13,7 @@ JBOSS_MODE={{ wildfly_mode }}
 {% if wildfly_mode == 'standalone'  %}
 ## Configuration for standalone mode
 JBOSS_CONFIG={{ wildfly_config_file }}
-{% elseif %}
+{% else %}
 JBOSS_DOMAIN_CONFIG={{ wildfly_config_file }}
 JBOSS_HOST_CONFIG=host-master.xml
 {% endif %}
