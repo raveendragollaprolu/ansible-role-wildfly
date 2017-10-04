@@ -30,6 +30,33 @@ docker:
       image_version: latest
       privileged: True
 
+    - name: wildfly-centos6-8.2.1-domain
+      image: centos
+      image_version: 6.8
+
+    - name: wildfly-centos6-9.0.1-domain
+      image: centos
+      image_version: 6.8
+
+    - name: wildfly-centos6-10.1.0-domain
+      image: centos
+      image_version: 6.8
+
+    - name: wildfly-centos7-8.2.1-domain
+      image: milcom/centos7-systemd
+      image_version: latest
+      privileged: True
+
+    - name: wildfly-centos7-9.0.1-domain
+      image: milcom/centos7-systemd
+      image_version: latest
+      privileged: True
+
+    - name: wildfly-centos7-10.1.0-domain
+      image: milcom/centos7-systemd
+      image_version: latest
+      privileged: True
+
 ansible:
   playbook: playbook.yml
 
@@ -46,6 +73,25 @@ ansible:
       wildfly_version: 9.0.1.Final
     wildfly-centos7-10.1.0:
       wildfly_version: 10.1.0.Final
+
+    wildfly-centos6-8.2.1-domain:
+      wildfly_version: 8.2.1.Final
+      wildfly_mode: domain
+    wildfly-centos6-9.0.1-domain:
+      wildfly_version: 9.0.1.Final
+      wildfly_mode: domain
+    wildfly-centos6-10.1.0-domain:
+      wildfly_version: 10.1.0.Final
+      wildfly_mode: domain
+    wildfly-centos7-8.2.1-domain:
+      wildfly_version: 8.2.1.Final
+      wildfly_mode: domain
+    wildfly-centos7-9.0.1-domain:
+      wildfly_version: 9.0.1.Final
+      wildfly_mode: domain
+    wildfly-centos7-10.1.0-domain:
+      wildfly_version: 10.1.0.Final
+      wildfly_mode: domain
 
   group_vars:
     all:
