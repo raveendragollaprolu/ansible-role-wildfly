@@ -1,6 +1,6 @@
 # Wildfly
 
-[![Build Status](https://travis-ci.org/inkatze/wildfly.svg?branch=master)](https://travis-ci.org/inkatze/wildfly)
+[![Build Status](https://travis-ci.org/KAMI911/ansible-role-wildfly.svg?branch=master)](https://travis-ci.org/KAMI911/ansible-role-wildfly)
 
 This role installs Wildfly's application runtime.
 
