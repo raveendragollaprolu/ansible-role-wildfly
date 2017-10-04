@@ -5,7 +5,8 @@ wildfly_manage_java_pkg: true
 wildfly_manage_firewall: true
 wildfly_manage_data: true
 wildfly_manage_service: true
-wildfly_remove_download_file: true
+wildfly_download_file: false
+wildfly_remove_download_file: false
 wildfly_mode: standalone # or domain
 
 wildfly_instance_name: wildfly_app-system
