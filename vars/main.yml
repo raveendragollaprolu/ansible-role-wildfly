@@ -1,0 +1,14 @@
+---
+# vars file for wildfly
+
+wildfly_major_v: '{{ wildfly_version.partition(".")[0] }}'
+
+wildfly_name: wildfly-{{ wildfly_version }}
+wildfly_download_file: '{{ wildfly_name }}.tar.gz'
+wildfly_download_url: '{{ wildfly_base_download_url }}/{{ wildfly_version }}/{{ wildfly_download_file }}'
+
+wildfly_init_src_path: '{{ "docs/contrib/scripts" if wildfly_major_v | version_compare("10", ">=") else "bin" }}'
+
+wildfly_init_dir: /etc/init.d
+wildfly_systemd_dir: /usr/lib/systemd/system
+
