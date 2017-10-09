@@ -58,7 +58,7 @@ docker:
       privileged: True
 
 ansible:
-  playbook: playbook.yml
+  playbook: tests/test.yml
 
   host_vars:
     wildfly-centos6-8.2.1:
