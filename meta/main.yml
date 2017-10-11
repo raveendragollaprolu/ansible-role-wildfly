@@ -1,7 +1,7 @@
 ---
 
 galaxy_info:
-  author: Juan Diego Romero González
+  author: Kálmán Szalai - KAMI
   description: Installs Wildfly's application runtime
   license: BSD
   min_ansible_version: 2.2

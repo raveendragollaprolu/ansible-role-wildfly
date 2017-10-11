@@ -115,4 +115,5 @@
   file:
     path: '{{ wildfly_download_dir }}/{{ wildfly_download_file }}'
     state: absent
-  when: wildfly_remove_download_file
+  when: wildfly_installer_keep == False
+

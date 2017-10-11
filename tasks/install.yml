@@ -70,7 +70,7 @@
     src: '{{ wildfly_download_file }}'
     dest: '{{ wildfly_download_dir }}/{{ wildfly_download_file }}'
     mode: 644
-  when: ( wildfly_is_download_file.stat.exists == False or wildfly_force_overwrite_file == True ) and wildfly_force_download_file == False
+  when: ( wildfly_is_download_file.stat.exists == False or wildfly_installer_force_overwrite == True ) and wildfly_installer_force_download == False
 
 - name: download wildfly tar file
   get_url:
@@ -78,7 +78,7 @@
     dest: '{{ wildfly_download_dir }}/{{ wildfly_download_file }}'
     validate_certs: '{{ wildfly_download_validate_certs }}'
     mode: 644
-  when: ( wildfly_is_download_file.stat.exists == False or wildfly_force_overwrite_file == True) and wildfly_force_download_file == True
+  when: ( wildfly_is_download_file.stat.exists == False or wildfly_installer_force_overwrite == True) and wildfly_installer_force_download == True
 
 - name: unarchive downloaded file
   unarchive:
