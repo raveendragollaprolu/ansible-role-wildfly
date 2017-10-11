@@ -63,7 +63,7 @@
 - name: is already downloaded locally
   local_action:
     module: stat
-    path: '{{ wikdfly_download_file }}'
+    path: '{{ wildfly_download_file }}'
   register: wildfly_is_local_download_file
 
 - name: is already downloaded
