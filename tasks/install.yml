@@ -63,7 +63,7 @@
 - name: is already downloaded locally
   local_action:
     module: stat
-    path: '{{ wikdfly_download_filename }}'
+    path: '{{ wikdfly_download_file }}'
   register: wildfly_is_local_download_file
 
 - name: is already downloaded
@@ -79,7 +79,7 @@
   when: ( wildfly_is_download_file.stat.exists == False or wildfly_installer_force_overwrite == True ) and wildfly_installer_force_download == False
 
 - block:
-  - name: 'downloading Wildfly {{ wildfly_download_filename }} to local machine'
+  - name: 'downloading Wildfly {{ wildfly_download_file }} to local machine'
     local_action:
       module: get_url
       url: '{{ wildfly_download_url }}'
@@ -91,7 +91,7 @@
 
   - name: copy wildfly tar file
     copy:
-      src: '{{ wildfly_download_filename }}'
+      src: '{{ wildfly_download_file }}'
       dest: '{{ wildfly_archive }}'
       mode: 0644
     when: (wildfly_is_download_file.stat.exists == False or wildfly_installer_force_overwrite == True) and wildfly_installer_local == True
