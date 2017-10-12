@@ -27,9 +27,7 @@ wildfly_base_download_url: http://download.jboss.org/wildfly
 wildfly_download_validate_certs: 'yes'
 
 wildfly_install_dir: /opt
-wildfly_dir: '{{ wildfly_install_dir }}/{{ wildfly_instance_name }}/{{ wildfly_name }}'
 wildfly_dir_mode: '0750'
-wildfly_link_dir: '{{ wildfly_install_dir }}/wildfly/{{ wildfly_instance_name }}'
 wildfly_create_symlink: True
 
 wildfly_download_dir: '{{ wildfly_install_dir }}/tmp'
@@ -42,7 +40,6 @@ wildfly_conf_dir: /etc/wildfly
 
 wildfly_config_file: '{{ wildfly_mode }}.xml'
 
-wildfly_config_path: '{{ wildfly_dir }}/{{ wildfly_mode }}/configuration/{{ wildfly_config_file }}'
 wildfly_startup_wait: ''
 wildfly_shutdown_wait: ''
 
@@ -83,4 +80,3 @@ wildfly_application_ssl_identity: '
 wildfly_https_listener: '
     <https-listener name="https-server" socket-binding="https"
      security-realm="ManagementRealm"/>'
-

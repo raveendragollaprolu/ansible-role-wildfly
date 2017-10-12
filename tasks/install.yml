@@ -1,6 +1,9 @@
 ---
 # task file for wildfly
 
+- stat: path='{{ wildfly_dir }}/README.txt'
+  register: wildfly_installed
+
 - name: Install OpenJDK
   yum:
     name: java-1.8.0-openjdk-headless
