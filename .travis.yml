@@ -17,7 +17,7 @@ install:
 - pip install molecule==1.23.0
 
 script:
-- travis_wait 30 molecule test
+- molecule test
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/

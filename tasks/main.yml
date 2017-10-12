@@ -1,9 +1,9 @@
 ---
 # task file for wildfly
 
-- include: install.yml
-- include: configure.yml
-- include: users.yml
+- include_tasks: install.yml
+- include_tasks: configure.yml
+- include_tasks: users.yml
 
-- include: ssl.yml
+- include_tasks: ssl.yml
   when: wildfly_enable_ssl
