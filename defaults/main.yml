@@ -14,9 +14,10 @@ wildfly_installer_keep: True
 wildfly_installer_local: False # The True means try to copy from Ansible's local files folder
 
 wildfly_mode: domain # supported modes: standalone domain
-wildfly_role: domain-master-slave # supported roles: domain-master domain-master-slave domain-slave
+wildfly_role: domain-master-slave # supported roles: domain-master domain-master-slave domain-slave domain
 
 wildfly_instance_name: wildfly_app-system
+wildfly_dc_instance_name: wildfly-dc_app-system
 
 wildfly_version: 10.1.0.Final # supported versions: 9.0.2.Final; 10.0.0.Final; 10.1.0.Final; 11.0.0.Final
 
@@ -28,7 +29,8 @@ wildfly_base_download_url: http://download.jboss.org/wildfly
 wildfly_download_validate_certs: 'yes'
 
 wildfly_install_dir: /opt
-wildfly_dir_mode: '0750'
+wildfly_dir_mode: '0770'
+wildfly_file_mode: '0660'
 wildfly_create_symlink: True
 
 wildfly_download_dir: '{{ wildfly_install_dir }}/tmp'
@@ -37,7 +39,7 @@ wildfly_console_log_dir: '{{ wildfly_install_dir }}/{{ wildfly_instance_name }}/
 wildfly_console_log_file: 'console.log'
 wildfly_console_log: '{{ wildfly_console_log_dir }}/{{ wildfly_console_log_file }}'
 
-wildfly_conf_dir: /etc/default
+wildfly_conf_dir: /etc/wildfly
 
 wildfly_config_file: '{{ wildfly_mode }}.xml'
 

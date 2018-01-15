@@ -10,19 +10,8 @@ JBOSS_USER="{{ wildfly_user }}"
 ## The mode WildFly should start, standalone or domain
 JBOSS_MODE={{ wildfly_mode }}
 
-{% if wildfly_mode == 'standalone'  %}
-## Configuration for standalone mode
-JBOSS_CONFIG={{ wildfly_config_file }}
-{% else %}
 JBOSS_DOMAIN_CONFIG={{ wildfly_config_file }}
-{% if wildfly_role == 'domain-master'  %}
 JBOSS_HOST_CONFIG=host-master.xml
-{% elif wildfly_role == 'domain-slave' or wildfly_role == 'domain-master-slave' %}
-JBOSS_HOST_CONFIG=host-slave.xml
-{% else %}
-JBOSS_HOST_CONFIG=host.xml
-{% endif %}
-{% endif %}
 
 {% if wildfly_startup_wait %}
 ## The amount of time to wait for startup
