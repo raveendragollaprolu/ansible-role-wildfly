@@ -113,6 +113,8 @@ docker:
 
 ansible:
   playbook: tests/test.yml
+  options:
+    D: False
 
   host_vars:
     wildfly-centos6-9.0.2:
