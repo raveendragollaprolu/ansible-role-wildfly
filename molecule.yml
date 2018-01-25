@@ -113,8 +113,8 @@ docker:
 
 ansible:
   playbook: tests/test.yml
-  D: False
-
+  options:
+    diff: False
   host_vars:
 #    wildfly-centos6-9.0.2:
 #      wildfly_version: 9.0.2.Final
