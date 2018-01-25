@@ -3,26 +3,26 @@ driver:
   name: docker
 docker:
   containers:
-#    - name: wildfly-centos6-9.0.2
-#      image: centos
-#      image_version: 6.8
-#
-#    - name: wildfly-centos6-10.0.0
-#      image: centos
-#      image_version: 6.8
-#
-#    - name: wildfly-centos6-10.1.0
-#      image: centos
-#      image_version: 6.8
-#
-#    - name: wildfly-centos6-11.0.0
-#      image: centos
-#      image_version: 6.8
-#
-#    - name: wildfly-centos7-9.0.2
-#      image: milcom/centos7-systemd
-#      image_version: latest
-#      privileged: True
+    - name: wildfly-centos6-9.0.2
+      image: centos
+      image_version: 6.8
+
+    - name: wildfly-centos6-10.0.0
+      image: centos
+      image_version: 6.8
+
+    - name: wildfly-centos6-10.1.0
+      image: centos
+      image_version: 6.8
+
+    - name: wildfly-centos6-11.0.0
+      image: centos
+      image_version: 6.8
+
+    - name: wildfly-centos7-9.0.2
+      image: milcom/centos7-systemd
+      image_version: latest
+      privileged: True
 
     - name: wildfly-centos7-10.0.0
       image: milcom/centos7-systemd
@@ -39,26 +39,26 @@ docker:
       image_version: latest
       privileged: True
 
-#    - name: wildfly-centos6-9.0.2-domain
-#      image: centos
-#      image_version: 6.8
-#
-#    - name: wildfly-centos6-10.0.0-domain
-#      image: centos
-#      image_version: 6.8
-#
-#    - name: wildfly-centos6-10.1.0-domain
-#      image: centos
-#      image_version: 6.8
-#
-#    - name: wildfly-centos6-11.0.0-domain
-#      image: centos
-#      image_version: 6.8
-#
-#    - name: wildfly-centos7-9.0.2-domain
-#      image: milcom/centos7-systemd
-#      image_version: latest
-#      privileged: True
+    - name: wildfly-centos6-9.0.2-domain
+      image: centos
+      image_version: 6.8
+
+    - name: wildfly-centos6-10.0.0-domain
+      image: centos
+      image_version: 6.8
+
+    - name: wildfly-centos6-10.1.0-domain
+      image: centos
+      image_version: 6.8
+
+    - name: wildfly-centos6-11.0.0-domain
+      image: centos
+      image_version: 6.8
+
+    - name: wildfly-centos7-9.0.2-domain
+      image: milcom/centos7-systemd
+      image_version: latest
+      privileged: True
 
     - name: wildfly-centos7-10.0.0-domain
       image: milcom/centos7-systemd
@@ -75,26 +75,26 @@ docker:
       image_version: latest
       privileged: True
 
-#    - name: wildfly-centos6-9.0.2-domain-controller
-#      image: centos
-#      image_version: 6.8
-#
-#    - name: wildfly-centos6-10.0.0-domain-controller
-#      image: centos
-#      image_version: 6.8
-#
-#    - name: wildfly-centos6-10.1.0-domain-controller
-#      image: centos
-#      image_version: 6.8
-#
-#    - name: wildfly-centos6-11.0.0-domain-controller
-#      image: centos
-#      image_version: 6.8
-#
-#    - name: wildfly-centos7-9.0.2-domain-controller
-#      image: milcom/centos7-systemd
-#      image_version: latest
-#      privileged: True
+    - name: wildfly-centos6-9.0.2-domain-controller
+      image: centos
+      image_version: 6.8
+
+    - name: wildfly-centos6-10.0.0-domain-controller
+      image: centos
+      image_version: 6.8
+
+    - name: wildfly-centos6-10.1.0-domain-controller
+      image: centos
+      image_version: 6.8
+
+    - name: wildfly-centos6-11.0.0-domain-controller
+      image: centos
+      image_version: 6.8
+
+    - name: wildfly-centos7-9.0.2-domain-controller
+      image: milcom/centos7-systemd
+      image_version: latest
+      privileged: True
 
     - name: wildfly-centos7-10.0.0-domain-controller
       image: milcom/centos7-systemd
@@ -115,16 +115,16 @@ ansible:
   playbook: tests/test.yml
   diff: False
   host_vars:
-#    wildfly-centos6-9.0.2:
-#      wildfly_version: 9.0.2.Final
-#    wildfly-centos6-10.0.0:
-#      wildfly_version: 10.0.0.Final
-#    wildfly-centos6-10.1.0:
-#      wildfly_version: 10.1.0.Final
-#    wildfly-centos6-11.0.0:
-#      wildfly_version: 11.0.0.Final
-#    wildfly-centos7-9.0.2:
-#      wildfly_version: 9.0.2.Final
+    wildfly-centos6-9.0.2:
+      wildfly_version: 9.0.2.Final
+    wildfly-centos6-10.0.0:
+      wildfly_version: 10.0.0.Final
+    wildfly-centos6-10.1.0:
+      wildfly_version: 10.1.0.Final
+    wildfly-centos6-11.0.0:
+      wildfly_version: 11.0.0.Final
+    wildfly-centos7-9.0.2:
+      wildfly_version: 9.0.2.Final
     wildfly-centos7-10.0.0:
       wildfly_version: 10.0.0.Final
     wildfly-centos7-10.1.0:
@@ -132,21 +132,21 @@ ansible:
     wildfly-centos7-11.0.0:
       wildfly_version: 11.0.0.Final
 
-#    wildfly-centos6-9.0.2-domain:
-#      wildfly_version: 9.0.2.Final
-#      wildfly_mode: domain
-#    wildfly-centos6-10.0.0-domain:
-#      wildfly_version: 10.0.0.Final
-#      wildfly_mode: domain
-#    wildfly-centos6-10.1.0-domain:
-#      wildfly_version: 10.1.0.Final
-#      wildfly_mode: domain
-#    wildfly-centos6-11.0.0-domain:
-#      wildfly_version: 11.0.0.Final
-#      wildfly_mode: domain
-#    wildfly-centos7-9.0.2-domain:
-#      wildfly_version: 9.0.2.Final
-#      wildfly_mode: domain
+    wildfly-centos6-9.0.2-domain:
+      wildfly_version: 9.0.2.Final
+      wildfly_mode: domain
+    wildfly-centos6-10.0.0-domain:
+      wildfly_version: 10.0.0.Final
+      wildfly_mode: domain
+    wildfly-centos6-10.1.0-domain:
+      wildfly_version: 10.1.0.Final
+      wildfly_mode: domain
+    wildfly-centos6-11.0.0-domain:
+      wildfly_version: 11.0.0.Final
+      wildfly_mode: domain
+    wildfly-centos7-9.0.2-domain:
+      wildfly_version: 9.0.2.Final
+      wildfly_mode: domain
     wildfly-centos7-10.0.0-domain:
       wildfly_version: 10.0.0.Final
       wildfly_mode: domain
@@ -157,26 +157,26 @@ ansible:
       wildfly_version: 11.0.0.Final
       wildfly_mode: domain
 
-#    wildfly-centos6-9.0.2-domain-controller:
-#      wildfly_version: 9.0.2.Final
-#      wildfly_mode: domain
-#      wildfly_role: domain-master-slave
-#    wildfly-centos6-10.0.0-domain-controller:
-#      wildfly_version: 10.0.0.Final
-#      wildfly_mode: domain
-#      wildfly_role: domain-master-slave
-#    wildfly-centos6-10.1.0-domain-controller:
-#      wildfly_version: 10.1.0.Final
-#      wildfly_mode: domain
-#      wildfly_role: domain-master-slave
-#    wildfly-centos6-11.0.0-domain-controller:
-#      wildfly_version: 11.0.0.Final
-#      wildfly_mode: domain
-#      wildfly_role: domain-master-slave
-#    wildfly-centos7-9.0.2-domain-controller:
-#      wildfly_version: 9.0.2.Final
-#      wildfly_mode: domain
-#      wildfly_role: domain-master-slave
+    wildfly-centos6-9.0.2-domain-controller:
+      wildfly_version: 9.0.2.Final
+      wildfly_mode: domain
+      wildfly_role: domain-master-slave
+    wildfly-centos6-10.0.0-domain-controller:
+      wildfly_version: 10.0.0.Final
+      wildfly_mode: domain
+      wildfly_role: domain-master-slave
+    wildfly-centos6-10.1.0-domain-controller:
+      wildfly_version: 10.1.0.Final
+      wildfly_mode: domain
+      wildfly_role: domain-master-slave
+    wildfly-centos6-11.0.0-domain-controller:
+      wildfly_version: 11.0.0.Final
+      wildfly_mode: domain
+      wildfly_role: domain-master-slave
+    wildfly-centos7-9.0.2-domain-controller:
+      wildfly_version: 9.0.2.Final
+      wildfly_mode: domain
+      wildfly_role: domain-master-slave
     wildfly-centos7-10.0.0-domain-controller:
       wildfly_version: 10.0.0.Final
       wildfly_mode: domain
