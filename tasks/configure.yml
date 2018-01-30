@@ -226,11 +226,11 @@
         name: '{{ wildfly_instance_name }}'
         state: started
         enabled: yes
-    - name: wait for wildfly to start
-      wait_for:
-        path: '{{ wildfly_dir }}/{{ wildfly_mode }}/log/server.log'
-        search_regex: 'started in'
-      ignore_errors: yes
+#    - name: wait for wildfly to start
+#      wait_for:
+#        path: '{{ wildfly_dir }}/{{ wildfly_mode }}/log/server.log'
+#        search_regex: 'started in'
+#      ignore_errors: yes
     - name: cat file
       command: 'cat {{ wildfly_dir }}/{{ wildfly_mode }}/log/server.log'
       ignore_errors: yes
@@ -242,11 +242,11 @@
         name: '{{ wildfly_instance_name }}'
         state: started
         enabled: yes
-    - name: wait for wildfly to start
-      wait_for:
-        path: '{{ wildfly_dir }}/{{ wildfly_mode }}/log/host-controller.log'
-        search_regex: 'started in'
-      ignore_errors: yes
+#    - name: wait for wildfly to start
+#      wait_for:
+#        path: '{{ wildfly_dir }}/{{ wildfly_mode }}/log/host-controller.log'
+#        search_regex: 'started in'
+#      ignore_errors: yes
     - name: cat file
       command: 'cat {{ wildfly_dir }}/{{ wildfly_mode }}/log/host-controller.log'
       ignore_errors: yes
