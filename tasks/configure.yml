@@ -183,11 +183,10 @@
 - name: copy wildfly systemd unit file
   template: src=wildfly-dc.service.j2 dest={{ wildfly_systemd_dir }}/{{ wildfly_dc_instance_name }}.service owner=root
             group=root mode=0640
-  when: ansible_service_mgr == 'systemd' and ( ( ansible_os_family == 'RedHat' and ansible_distribution_major_version|int  > 6 ) or ansible_os_family != 'RedHat' )
+  when: wildfly_role == 'domain-master-slave' and ansible_service_mgr == 'systemd' and ( ( ansible_os_family == 'RedHat' and ansible_distribution_major_version|int  > 6 ) or ansible_os_family != 'RedHat' )
   notify:
     - restart wildfly
     - change data mode
-  when: wildfly_role == 'domain-master-slave'
 
 - block:
   - name: open wildfly management http tcp port
