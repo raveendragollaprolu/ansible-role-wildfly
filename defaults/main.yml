@@ -52,12 +52,17 @@ wildfly_node_name: ''
 
 wildfly_bind_address: 0.0.0.0
 wildfly_management_bind_address: 0.0.0.0
-wildfly_manage_http_port: 9990
-wildfly_manage_https_port: 9993
+wildfly_master_address: 127.0.0.1
+wildfly_manage_port: 19999
+wildfly_manage_http_port: 19990
+wildfly_manage_https_port: 19993
 wildfly_http_port: 8080
 wildfly_https_port: 8443
 wildfly_bind_address_unsecure: ''
 wildfly_messaging_group_address: ''
+
+wildfly_modcluster_address=224.0.0.1
+wildfly_multicast_address=230.0.0.1
 
 wildfly_management_users:
  - name: admin

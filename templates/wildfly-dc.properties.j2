@@ -4,12 +4,9 @@ jboss.bind.address.management={{ wildfly_management_bind_address }}
 
 jboss.management.http.port={{ wildfly_manage_http_port }}
 jboss.management.https.port={{ wildfly_manage_https_port }}
-
-jboss.http.port={{ wildfly_http_port }}
-jboss.https.port={{ wildfly_https_port }}
+jboss.management.native.port={{ wildfly_manage_port }}
 
 jboss.server.temp.dir=/tmp/wildfly
-
 {% if wildfly_node_name %}
 jboss.node.name={{ wildfly_node_name }}
 {% endif %}
@@ -19,10 +16,6 @@ jboss.bind.address.unsecure={{ wildfly_bind_address_unsecure }}
 {% if wildfly_messaging_group_address %}
 jboss.messaging.group.address={{ wildfly_messaging_group_address }}
 {% endif %}
-
-jboss.domain.master.address=172.20.1.104
-jboss.domain.master.port={{ wildfly_manage_port }}
-
 {% if wildfly_modcluster_address %}
 jboss.default.modcluster.address={{ wildfly_modcluster_address }}
 {% endif %}

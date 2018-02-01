@@ -8,3 +8,14 @@
   notify:
     - restart wildfly
     - change data mode
+
+- name: copy wildfly properties file
+  template:
+    src: wildfly-dc.properties.j2
+    dest: '{{ wildfly_conf_dir }}/wildfly-dc.properties'
+    owner: '{{ wildfly_user }}'
+    group: '{{ wildfly_group }}'
+    mode: '0640'
+  notify:
+    - restart wildfly
+    - change data mode
