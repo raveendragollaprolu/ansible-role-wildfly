@@ -38,6 +38,8 @@ wildfly_download_dir: '{{ wildfly_install_dir }}/tmp'
 wildfly_console_log_dir: '{{ wildfly_install_dir }}/{{ wildfly_instance_name }}/log'
 wildfly_console_log_file: 'console.log'
 wildfly_console_log: '{{ wildfly_console_log_dir }}/{{ wildfly_console_log_file }}'
+wildfly_console_dc_log_file: 'console-dc.log'
+wildfly_console_dc_log: '{{ wildfly_console_log_dir }}/{{ wildfly_console_dc_log_file }}'
 
 wildfly_conf_dir: /etc/wildfly
 
@@ -83,3 +85,5 @@ wildfly_application_ssl_identity: '
 wildfly_https_listener: '
     <https-listener name="https-server" socket-binding="https"
      security-realm="ManagementRealm"/>'
+
+wildfly_java_home: ''
