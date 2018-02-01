@@ -61,8 +61,8 @@ wildfly_https_port: 8443
 wildfly_bind_address_unsecure: ''
 wildfly_messaging_group_address: ''
 
-wildfly_modcluster_address=224.0.0.1
-wildfly_multicast_address=230.0.0.1
+wildfly_modcluster_address: 224.0.0.1
+wildfly_multicast_address: 230.0.0.1
 
 wildfly_management_users:
  - name: admin
