@@ -46,3 +46,5 @@ JBOSS_OPTS="-P={{ wildfly_conf_dir }}/wildfly.properties"
 JAVA_HOME={{ wildfly_java_home }}
 
 {% endif %}
+JBOSS_PIDFILE=/var/run/wildfly/{{ wildfly_instance_name }}.pid
+JBOSS_LOCKFILE=/var/lock/subsys/{{ wildfly_instance_name }}
