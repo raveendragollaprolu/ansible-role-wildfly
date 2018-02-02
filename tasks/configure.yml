@@ -126,47 +126,26 @@
 
 - include: configure-properties.yml
 
-- name: create symlink to upstream init script
-  file:
-    state: link
-    src: '{{ wildfly_link_dir}}/{{ wildfly_init_src_path }}/init.d/wildfly-init-{{ ansible_os_family | lower }}.sh'
+- name: create template to upstream init script
+  template:
+    src: wildfly_init.j2
     dest: '{{ wildfly_init_dir }}/{{ wildfly_instance_name }}'
+    owner: root
+    group: root
+    mode: '0755'
     force: yes
 #  when: ansible_service_mgr in ['init', 'upstart']
   notify:
     - restart wildfly
     - change data mode
 
-- name: create symlink to upstream init script for domain-controller
-  file:
-    state: link
-    src: '{{ wildfly_link_dir}}/{{ wildfly_init_src_path }}/init.d/wildfly-init-{{ ansible_os_family | lower }}.sh'
+- name: copy wildfly domain-controller configuration
+  template:
+    src: wildfly-dc_init.j2
     dest: '{{ wildfly_init_dir }}/{{ wildfly_dc_instance_name }}'
-    force: yes
-#  when: ansible_service_mgr in ['init', 'upstart']
-  notify:
-    - restart wildfly
-    - change data mode
-  when: wildfly_role == 'domain-master-slave'
-
-- name: create symlink to upstream init script
-  file:
-    state: link
-    src: '{{ wildfly_link_dir}}/{{ wildfly_init_src_path }}/init.d/wildfly-init-{{ ansible_os_family | lower }}.sh'
-    dest: '{{ wildfly_init_dir }}/{{ wildfly_instance_name }}'
-    force: yes
-#  when: ansible_service_mgr in ['init', 'upstart']
-  notify:
-    - restart wildfly
-    - change data mode
-
-- name: create symlink to upstream init script for domain-controller
-  file:
-    state: link
-    src: '{{ wildfly_link_dir}}/{{ wildfly_init_src_path }}/init.d/wildfly-init-{{ ansible_os_family | lower }}.sh'
-    dest: '{{ wildfly_init_dir }}/{{ wildfly_dc_instance_name }}'
-    force: yes
-#  when: ansible_service_mgr in ['init', 'upstart']
+    owner: root
+    group: root
+    mode: '0755'
   notify:
     - restart wildfly
     - change data mode

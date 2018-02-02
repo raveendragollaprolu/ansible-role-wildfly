@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+# WildFly control script
+#
+# chkconfig: - 80 20
+# description: WildFly ({{ wildfly_instance_name }}) domain controller startup script
+# processname: {{ wildfly_dc_instance_name }}
+# pidfile: /var/run/wildfly/{{ wildfly_dc_instance_name }}.pid
+# config: {{ wildfly_conf_dir }}/{{ wildfly_dc_instance_name }}.conf
+export JBOSS_CONF={{ wildfly_conf_dir }}/{{ wildfly_dc_instance_name }}.conf
+{{ wildfly_link_dir}}/{{ wildfly_init_src_path }}/init.d/wildfly-init-{{ ansible_os_family | lower }}.sh $@
