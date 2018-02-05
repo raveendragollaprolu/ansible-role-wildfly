@@ -1,0 +1,8 @@
+---
+# task file for wildfly
+
+- name: Install OpenJDK
+  yum:
+    name: java-1.8.0-openjdk-headless
+    state: present
+  when: wildfly_manage_java_pkg
