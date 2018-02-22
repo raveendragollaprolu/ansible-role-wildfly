@@ -183,14 +183,14 @@ provisioner:
         wildfly_version: 10.1.0.Final
       wildfly_1100:
         wildfly_version: 11.0.0.Final
-    all:
-      wildfly_installer_keep: True
-      wildfly_management_users:
-        - { name: 'david', password: 'ruomlig' }
-        - { name: 'roger', password: 'sretaw' }
-      wildfly_app_users:
-        - { name: 'rich', password: 'thgirw' }
-        - { name: 'nick', password: 'nosam' }
+      all:
+        wildfly_installer_keep: True
+        wildfly_management_users:
+          - { name: 'david', password: 'ruomlig' }
+          - { name: 'roger', password: 'sretaw' }
+        wildfly_app_users:
+          - { name: 'rich', password: 'thgirw' }
+          - { name: 'nick', password: 'nosam' }
 scenario:
   name: default
 verifier:
