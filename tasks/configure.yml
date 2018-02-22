@@ -40,10 +40,10 @@
     group: '{{ wildfly_group }}'
     mode: '{{ wildfly_file_mode }}'
   with_items:
-   - application-roles.properties
-   - application-users.properties
-   - mgmt-groups.properties
-   - mgmt-users.properties
+    - application-roles.properties
+    - application-users.properties
+    - mgmt-groups.properties
+    - mgmt-users.properties
 
 - name: 'create domain server configuration in: {{ wildfly_dir }}/domain/configuration'
   copy:
@@ -69,10 +69,10 @@
     group: '{{ wildfly_group }}'
     mode: '{{ wildfly_file_mode }}'
   with_items:
-   - application-roles.properties
-   - application-users.properties
-   - mgmt-groups.properties
-   - mgmt-users.properties
+    - application-roles.properties
+    - application-users.properties
+    - mgmt-groups.properties
+    - mgmt-users.properties
   when: wildfly_role == 'domain-master-slave'
 
 - name: 'create domain-controller server configuration in: {{ wildfly_dir }}/domain-controller/configuration'
@@ -83,10 +83,10 @@
     group: '{{ wildfly_group }}'
     mode: '{{ wildfly_file_mode }}'
   with_items:
-   - default-server-logging.properties
-   - domain.xml
-   - host-master.xml
-   - logging.properties
+    - default-server-logging.properties
+    - domain.xml
+    - host-master.xml
+    - logging.properties
   when: wildfly_role == 'domain-master-slave'
 
 - name: 'create standalone user configuration in: {{ wildfly_dir }}/standalone/configuration'
@@ -97,10 +97,10 @@
     group: '{{ wildfly_group }}'
     mode: '{{ wildfly_dir_mode }}'
   with_items:
-   - application-roles.properties
-   - application-users.properties
-   - mgmt-groups.properties
-   - mgmt-users.properties
+    - application-roles.properties
+    - application-users.properties
+    - mgmt-groups.properties
+    - mgmt-users.properties
 
 - name: 'create standalone server configuration configuration in: {{ wildfly_dir }}/standalone/configuration'
   copy:
@@ -167,33 +167,33 @@
     - change data mode
 
 - block:
-  - name: open wildfly management http tcp port
-    firewalld:
-      port: '{{ wildfly_manage_http_port }}/tcp'
-      permanent: yes
-      immediate: yes
-      state: enabled
+    - name: open wildfly management http tcp port
+      firewalld:
+        port: '{{ wildfly_manage_http_port }}/tcp'
+        permanent: yes
+        immediate: yes
+        state: enabled
 
-  - name: open wildfly management https tcp port
-    firewalld:
-      port: '{{ wildfly_manage_https_port }}/tcp'
-      permanent: yes
-      immediate: yes
-      state: enabled
+    - name: open wildfly management https tcp port
+      firewalld:
+        port: '{{ wildfly_manage_https_port }}/tcp'
+        permanent: yes
+        immediate: yes
+        state: enabled
 
-  - name: open wildfly http tcp port
-    firewalld:
-      port: '{{ wildfly_http_port }}/tcp'
-      permanent: yes
-      immediate: yes
-      state: enabled
+    - name: open wildfly http tcp port
+      firewalld:
+        port: '{{ wildfly_http_port }}/tcp'
+        permanent: yes
+        immediate: yes
+        state: enabled
 
-  - name: open wildfly https tcp port
-    firewalld:
-      port: '{{ wildfly_https_port }}/tcp'
-      permanent: yes
-      immediate: yes
-      state: enabled
+    - name: open wildfly https tcp port
+      firewalld:
+        port: '{{ wildfly_https_port }}/tcp'
+        permanent: yes
+        immediate: yes
+        state: enabled
   when: ansible_distribution_version|version_compare(7, '=') and wildfly_manage_firewall
 
 - meta: flush_handlers
@@ -251,4 +251,3 @@
     path: '{{ wildfly_download_dir }}/{{ wildfly_download_file }}'
     state: absent
   when: wildfly_installer_keep == False
-

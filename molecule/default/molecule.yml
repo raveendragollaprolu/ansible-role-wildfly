@@ -188,11 +188,11 @@ provisioner:
       all:
         wildfly_installer_keep: True
         wildfly_management_users:
-          - { name: 'david', password: 'ruomlig' }
-          - { name: 'roger', password: 'sretaw' }
+          - {name: 'david', password: 'ruomlig'}
+          - {name: 'roger', password: 'sretaw'}
         wildfly_app_users:
-          - { name: 'rich', password: 'thgirw' }
-          - { name: 'nick', password: 'nosam' }
+          - {name: 'rich', password: 'thgirw'}
+          - {name: 'nick', password: 'nosam'}
 scenario:
   name: default
 verifier:
