@@ -6,7 +6,7 @@
     group: '{{ wildfly_group }}'
     mode: '0640'
   notify:
-    - restart wildfly
+    - restart wildfly services
     - change data mode
 
 - name: copy wildfly properties file
@@ -17,5 +17,5 @@
     group: '{{ wildfly_group }}'
     mode: '0640'
   notify:
-    - restart wildfly
+    - restart wildfly services
     - change data mode

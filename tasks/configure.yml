@@ -28,7 +28,7 @@
     group: root
     mode: '0640'
   notify:
-    - restart wildfly
+    - restart wildfly services
     - change data mode
   when: wildfly_role == 'domain-master-slave'
 
@@ -101,7 +101,6 @@
    - application-users.properties
    - mgmt-groups.properties
    - mgmt-users.properties
-  when: wildfly_mode == 'standalone'
 
 - name: 'create standalone server configuration configuration in: {{ wildfly_dir }}/standalone/configuration'
   copy:
@@ -136,7 +135,7 @@
     force: yes
 #  when: ansible_service_mgr in ['init', 'upstart']
   notify:
-    - restart wildfly
+    - restart wildfly services
     - change data mode
 
 - name: copy wildfly domain-controller configuration
@@ -147,7 +146,7 @@
     group: root
     mode: '0755'
   notify:
-    - restart wildfly
+    - restart wildfly services
     - change data mode
   when: wildfly_role == 'domain-master-slave'
 
@@ -156,7 +155,7 @@
             group=root mode=0640
   when: ansible_service_mgr == 'systemd' and ( ( ansible_os_family == 'RedHat' and ansible_distribution_major_version|int  > 6 ) or ansible_os_family != 'RedHat' )
   notify:
-    - restart wildfly
+    - restart wildfly services
     - change data mode
 
 - name: copy wildfly systemd unit file
@@ -164,7 +163,7 @@
             group=root mode=0640
   when: wildfly_role == 'domain-master-slave' and ansible_service_mgr == 'systemd' and ( ( ansible_os_family == 'RedHat' and ansible_distribution_major_version|int  > 6 ) or ansible_os_family != 'RedHat' )
   notify:
-    - restart wildfly
+    - restart wildfly services
     - change data mode
 
 - block:
@@ -200,36 +199,52 @@
 - meta: flush_handlers
 
 - block:
-    - name: enable and start the service
+    - name: enable and start the standalone service
       service:
         name: '{{ wildfly_instance_name }}'
         state: started
-        enabled: yes
-#    - name: wait for wildfly to start
-#      wait_for:
-#        path: '{{ wildfly_dir }}/{{ wildfly_mode }}/log/server.log'
-#        search_regex: 'started in'
-#      ignore_errors: yes
+        enabled: '{{ wildfly_service_enabled }}'
+    - name: wait for wildfly to start
+      wait_for:
+        path: '{{ wildfly_dir }}/{{ wildfly_mode }}/log/server.log'
+        search_regex: 'started in'
+      ignore_errors: yes
     - name: cat file
       command: 'cat {{ wildfly_dir }}/{{ wildfly_mode }}/log/server.log'
       ignore_errors: yes
-  when: wildfly_manage_service and wildfly_mode == 'standalone'
+  when: wildfly_manage_service == True and wildfly_mode == 'standalone'
 
 - block:
-    - name: enable and start the service
+    - name: enable and start the domain controller service
+      service:
+        name: '{{ wildfly_dc_instance_name }}'
+        state: started
+        enabled: '{{ wildfly_service_enabled }}'
+#    - name: wait for wildfly to start
+#      wait_for:
+#        path: '{{ wildfly_dir }}/domain-controller/log/host-controller.log'
+#        search_regex: 'started in'
+#      ignore_errors: yes
+#    - name: cat file
+#      command: 'cat {{ wildfly_dir }}/domain-controller/log/host-controller.log'
+#      ignore_errors: yes
+  when: wildfly_manage_service == True and wildfly_mode == 'domain' and ( wildfly_role == 'domain-master-slave' or wildfly_role == 'domain-master')
+
+- block:
+    - name: enable and start the domain service
       service:
         name: '{{ wildfly_instance_name }}'
         state: started
-        enabled: yes
+        enabled: '{{ wildfly_service_enabled }}'
 #    - name: wait for wildfly to start
 #      wait_for:
 #        path: '{{ wildfly_dir }}/{{ wildfly_mode }}/log/host-controller.log'
 #        search_regex: 'started in'
 #      ignore_errors: yes
-    - name: cat file
-      command: 'cat {{ wildfly_dir }}/{{ wildfly_mode }}/log/host-controller.log'
-      ignore_errors: yes
-  when: wildfly_manage_service and wildfly_mode == 'domain'
+#    - name: cat file
+#      command: 'cat {{ wildfly_dir }}/{{ wildfly_mode }}/log/host-controller.log'
+#      ignore_errors: yes
+  when: wildfly_manage_service == True and wildfly_mode == 'domain' and ( wildfly_role == 'domain-master-slave' or wildfly_role == 'domain-slave' or wildfly_role == 'domain')
 
 - name: delete wildfly tar file
   file:

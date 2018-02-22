@@ -10,7 +10,7 @@
     group: '{{ wildfly_group }}'
     mode: '0750'
   notify:
-    - restart wildfly
+    - restart wildfly services
     - change data mode
 
 - name: add SSL identity to the management realm
@@ -22,7 +22,7 @@
     group: '{{ wildfly_group }}'
     mode: '0750'
   notify:
-    - restart wildfly
+    - restart wildfly services
     - change data mode
 
 - name: add https listener for applications
@@ -34,7 +34,7 @@
     group: '{{ wildfly_group }}'
     mode: '0750'
   notify:
-    - restart wildfly
+    - restart wildfly services
     - change data mode
 
 - name: add https socket binding to management interfaces
@@ -46,5 +46,5 @@
     group: '{{ wildfly_group }}'
     mode: '0750'
   notify:
-    - restart wildfly
+    - restart wildfly services
     - change data mode

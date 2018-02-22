@@ -5,6 +5,15 @@
   service:
     name: '{{ wildfly_instance_name }}'
     state: restarted
+    enabled: '{{ wildfly_service_enabled }}'
+  listen: 'restart wildfly services'
+
+- name: restart wildfly domain controller
+  service:
+    name: '{{ wildfly_dc_instance_name }}'
+    state: restarted
+    enabled: '{{ wildfly_service_enabled }}'
+  listen: 'restart wildfly services'
 
 - name: change data mode
   file:

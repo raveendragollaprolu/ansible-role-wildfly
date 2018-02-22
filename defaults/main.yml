@@ -5,6 +5,7 @@ wildfly_manage_java_pkg: True
 wildfly_manage_firewall: True
 wildfly_manage_data: True
 wildfly_manage_service: True
+wildfly_service_enabled: True
 
 force_wildfly_install: False
 
