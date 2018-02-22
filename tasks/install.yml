@@ -1,7 +1,8 @@
 ---
 # task file for wildfly
 
-- stat: path='{{ wildfly_dir }}/README.txt'
+- name: check if Wildfly is installed.
+  stat: path='{{ wildfly_dir }}/README.txt'
   register: wildfly_installed
 
 - name: Install OpenJDK
@@ -79,7 +80,7 @@
   copy:
     src: '{{ wildfly_download_file }}'
     dest: '{{ wildfly_download_dir }}/{{ wildfly_download_file }}'
-    mode: 644
+    mode: 0644
   when: ( wildfly_is_download_file.stat.exists == False or wildfly_installer_force_overwrite == True ) and wildfly_installer_force_download == False and wildfly_installer_local == True
 
 - block:
