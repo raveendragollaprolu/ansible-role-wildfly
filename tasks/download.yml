@@ -59,28 +59,28 @@
   when: ( wildfly_is_download_file.stat.exists == False or wildfly_installer_force_overwrite == True ) and wildfly_installer_force_download == False and wildfly_installer_local == True
 
 - block:
-  - name: 'downloading Wildfly {{ wildfly_download_file }} to local machine'
-    local_action:
-      module: get_url
-      url: '{{ wildfly_download_url }}'
-      validate_certs:  '{{ wildfly_download_validate_certs }}'
-      dest: './{{ wildfly_download_file }}'
-      mode: 0644
-    run_once: True
-    when: ( wildfly_is_local_download_file.stat.exists == False or wildfly_installer_force_overwrite == True ) and wildfly_installer_force_download == True and wildfly_installer_local == True
+    - name: 'downloading Wildfly {{ wildfly_download_file }} to local machine'
+      local_action:
+        module: get_url
+        url: '{{ wildfly_download_url }}'
+        validate_certs: '{{ wildfly_download_validate_certs }}'
+        dest: './{{ wildfly_download_file }}'
+        mode: 0644
+      run_once: True
+      when: ( wildfly_is_local_download_file.stat.exists == False or wildfly_installer_force_overwrite == True ) and wildfly_installer_force_download == True and wildfly_installer_local == True
 
-  - name: copy downloaded wildfly tar file
-    copy:
-      src: '{{ wildfly_download_file }}'
-      dest: '{{ wildfly_archive }}'
-      mode: 0644
-    when: (wildfly_is_download_file.stat.exists == False or wildfly_installer_force_overwrite == True) and wildfly_installer_local == True
+    - name: copy downloaded wildfly tar file
+      copy:
+        src: '{{ wildfly_download_file }}'
+        dest: '{{ wildfly_archive }}'
+        mode: 0644
+      when: (wildfly_is_download_file.stat.exists == False or wildfly_installer_force_overwrite == True) and wildfly_installer_local == True
   when: wildfly_installer_local == True
 
 - name: 'download wildfly tar file {{ wildfly_download_file }}'
   get_url:
     url: '{{ wildfly_download_url }}'
     dest: '{{ wildfly_download_dir }}/{{ wildfly_download_file }}'
-    validate_certs:  '{{ wildfly_download_validate_certs }}'
+    validate_certs: '{{ wildfly_download_validate_certs }}'
     mode: 644
   when: (wildfly_is_download_file.stat.exists == False or wildfly_installer_force_overwrite == True) and wildfly_installer_force_download == True and wildfly_installer_local == False

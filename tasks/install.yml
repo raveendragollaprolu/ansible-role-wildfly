@@ -184,4 +184,3 @@
     dest: '{{ wildfly_link_dir }}'
     force: yes
   when: wildfly_create_symlink
-

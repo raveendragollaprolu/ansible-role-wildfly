@@ -53,12 +53,12 @@
     group: '{{ wildfly_group }}'
     mode: '{{ wildfly_file_mode }}'
   with_items:
-   - default-server-logging.properties
-   - domain.xml
-   - host-master.xml
-   - host-slave.xml
-   - host.xml
-   - logging.properties
+    - default-server-logging.properties
+    - domain.xml
+    - host-master.xml
+    - host-slave.xml
+    - host.xml
+    - logging.properties
   when: wildfly_mode == 'domain'
 
 - name: 'create domain-controller user configuration in: {{ wildfly_dir }}/domain-controller/configuration'
@@ -110,11 +110,11 @@
     group: '{{ wildfly_group }}'
     mode: '{{ wildfly_dir_mode }}'
   with_items:
-   - logging.properties
-   - standalone-full-ha.xml
-   - standalone-full.xml
-   - standalone-ha.xml
-   - standalone.xml
+    - logging.properties
+    - standalone-full-ha.xml
+    - standalone-full.xml
+    - standalone-ha.xml
+    - standalone.xml
   when: wildfly_mode == 'standalone'
 
 - name: create symlink to /etc/default/wildfly.conf

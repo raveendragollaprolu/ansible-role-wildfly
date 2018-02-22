@@ -16,4 +16,3 @@ wildfly_init_src_path: '{{ "docs/contrib/scripts" if wildfly_major_v | version_c
 
 wildfly_init_dir: /etc/init.d
 wildfly_systemd_dir: /usr/lib/systemd/system
-
