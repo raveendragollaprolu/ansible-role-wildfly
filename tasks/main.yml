@@ -3,6 +3,7 @@
 
 - include_tasks: install.yml
 - include_tasks: configure.yml
+- include_tasks: ulimits.yml
 - include_tasks: users.yml
 
 - include_tasks: ssl.yml
