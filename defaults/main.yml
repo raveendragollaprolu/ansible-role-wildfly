@@ -94,7 +94,7 @@ wildfly_https_listener: '
 
 wildfly_java_home: ''
 
-wildfly_limits_file: '/etc/security/limits.d/{{ tomcat_system_user }}'
+wildfly_limits_file: '/etc/security/limits.d/{{ wildfly_user }}'
 wildfly_limits_conf:
  - domain: '{{ wildfly_user }}'
    type: soft
