@@ -82,7 +82,7 @@
     dest: '{{ wildfly_download_dir }}/{{ wildfly_download_file }}'
     mode: 0644
   when: (not wildfly_is_download_file.stat.exists or wildfly_installer_force_overwrite) and
-        not wildfly_installer_force_download False and wildfly_installer_local
+        not wildfly_installer_force_download and wildfly_installer_local
 
 - block:
     - name: 'downloading Wildfly {{ wildfly_download_file }} to local machine'
