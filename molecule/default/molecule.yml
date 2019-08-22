@@ -35,28 +35,28 @@ platforms:
   - name: wildfly-centos7-9.0.2
     image: milcom/centos7-systemd
     image_version: latest
-    privileged: True
+    privileged: true
     groups:
       - standalone
       - wildfly_902
   - name: wildfly-centos7-10.0.0
     image: milcom/centos7-systemd
     image_version: latest
-    privileged: True
+    privileged: true
     groups:
       - standalone
       - wildfly_1000
   - name: wildfly-centos7-10.1.0
     image: milcom/centos7-systemd
     image_version: latest
-    privileged: True
+    privileged: true
     groups:
       - standalone
       - wildfly_1010
   - name: wildfly-centos7-11.0.0
     image: milcom/centos7-systemd
     image_version: latest
-    privileged: True
+    privileged: true
     groups:
       - standalone
       - wildfly_1100
@@ -87,28 +87,28 @@ platforms:
   - name: wildfly-centos7-9.0.2-domain
     image: milcom/centos7-systemd
     image_version: latest
-    privileged: True
+    privileged: true
     groups:
       - domain
       - wildfly_902
   - name: wildfly-centos7-10.0.0-domain
     image: milcom/centos7-systemd
     image_version: latest
-    privileged: True
+    privileged: true
     groups:
       - domain
       - wildfly_1000
   - name: wildfly-centos7-10.1.0-domain
     image: milcom/centos7-systemd
     image_version: latest
-    privileged: True
+    privileged: true
     groups:
       - domain
       - wildfly_1010
   - name: wildfly-centos7-11.0.0-domain
     image: milcom/centos7-systemd
     image_version: latest
-    privileged: True
+    privileged: true
     groups:
       - domain
       - wildfly_1100
@@ -139,28 +139,28 @@ platforms:
   - name: wildfly-centos7-9.0.2-domain-controller
     image: milcom/centos7-systemd
     image_version: latest
-    privileged: True
+    privileged: true
     groups:
       - domain_controller
       - wildfly_902
   - name: wildfly-centos7-10.0.0-domain-controller
     image: milcom/centos7-systemd
     image_version: latest
-    privileged: True
+    privileged: true
     groups:
       - domain_controller
       - wildfly_1000
   - name: wildfly-centos7-10.1.0-domain-controller
     image: milcom/centos7-systemd
     image_version: latest
-    privileged: True
+    privileged: true
     groups:
       - domain_controller
       - wildfly_1010
   - name: wildfly-centos7-11.0.0-domain-controller
     image: milcom/centos7-systemd
     image_version: latest
-    privileged: True
+    privileged: true
     groups:
       - domain_controller
       - wildfly_1100
@@ -186,7 +186,7 @@ provisioner:
       wildfly_1100:
         wildfly_version: 11.0.0.Final
       all:
-        wildfly_installer_keep: True
+        wildfly_installer_keep: true
         wildfly_management_users:
           - {name: 'david', password: 'ruomlig'}
           - {name: 'roger', password: 'sretaw'}

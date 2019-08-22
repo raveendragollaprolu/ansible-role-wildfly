@@ -1,6 +1,5 @@
-#
+---
 # Setting ulimits
-#
 
 - name: setting application ulimits
   pam_limits:

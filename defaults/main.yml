@@ -1,28 +1,28 @@
 ---
 # defaults file for wildfly
 
-wildfly_manage_java_pkg: True
-wildfly_manage_firewall: True
-wildfly_manage_data: True
-wildfly_manage_service: True
-wildfly_service_enabled: True
+wildfly_manage_java_pkg: true
+wildfly_manage_firewall: true
+wildfly_manage_data: true
+wildfly_manage_service: true
+wildfly_service_enabled: true
 
-force_wildfly_install: False
+force_wildfly_install: false
 
-wildfly_installer_force_download: True
-wildfly_installer_force_overwrite: True
-wildfly_installer_keep: True
-wildfly_installer_local: False # The True means try to copy from Ansible's local files folder
+wildfly_installer_force_download: true
+wildfly_installer_force_overwrite: true
+wildfly_installer_keep: true
+wildfly_installer_local: false  # The true means try to copy from Ansible's local files folder
 
-wildfly_mode: domain # supported modes: standalone domain
-wildfly_role: domain-master-slave # supported roles: domain-master domain-master-slave domain-slave domain
+wildfly_mode: domain  # supported modes: standalone domain
+wildfly_role: domain-master-slave  # supported roles: domain-master domain-master-slave domain-slave domain
 
 wildfly_instance_name: wildfly_app-system
 wildfly_dc_instance_name: wildfly-dc_app-system
 
-wildfly_version: 10.1.0.Final # supported versions: 9.0.2.Final; 10.0.0.Final; 10.1.0.Final; 11.0.0.Final
+wildfly_version: 10.1.0.Final  # supported versions: 9.0.2.Final; 10.0.0.Final; 10.1.0.Final; 11.0.0.Final
 
-wildfly_manage_user: True
+wildfly_manage_user: true
 wildfly_user: wildfly
 wildfly_group: wildfly
 
@@ -32,7 +32,7 @@ wildfly_download_validate_certs: 'yes'
 wildfly_install_dir: /opt
 wildfly_dir_mode: '0770'
 wildfly_file_mode: '0660'
-wildfly_create_symlink: True
+wildfly_create_symlink: true
 
 wildfly_download_dir: '{{ wildfly_install_dir }}/tmp'
 
@@ -72,7 +72,7 @@ wildfly_app_users:
  - name: user
    password: rock
 
-wildfly_enable_ssl: no
+wildfly_enable_ssl: false
 wildfly_keystore_name: my.jks
 wildfly_keystore_path: '{{ wildfly_dir }}/{{ wildfly_mode }}/configuration/{{ wildfly_keystore_name }}'
 wildfly_keystore_alias: my

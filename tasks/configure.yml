@@ -30,7 +30,7 @@
   notify:
     - restart wildfly services
     - change data mode
-  when: wildfly_role == 'domain-master-slave'
+  when: wildfly_role is  'domain-master-slave'
 
 - name: 'create domain user configuration in: {{ wildfly_dir }}/domain/configuration'
   copy:
@@ -73,7 +73,7 @@
     - application-users.properties
     - mgmt-groups.properties
     - mgmt-users.properties
-  when: wildfly_role == 'domain-master-slave'
+  when: wildfly_role is  'domain-master-slave'
 
 - name: 'create domain-controller server configuration in: {{ wildfly_dir }}/domain-controller/configuration'
   copy:
@@ -87,7 +87,7 @@
     - domain.xml
     - host-master.xml
     - logging.properties
-  when: wildfly_role == 'domain-master-slave'
+  when: wildfly_role is  'domain-master-slave'
 
 - name: 'create standalone user configuration in: {{ wildfly_dir }}/standalone/configuration'
   copy:
@@ -132,8 +132,8 @@
     owner: root
     group: root
     mode: '0755'
-    force: yes
-#  when: ansible_service_mgr in ['init', 'upstart']
+    force: true
+  #  when: ansible_service_mgr in ['init', 'upstart']
   notify:
     - restart wildfly services
     - change data mode
@@ -148,59 +148,61 @@
   notify:
     - restart wildfly services
     - change data mode
-  when: wildfly_role == 'domain-master-slave'
+  when: wildfly_role is  'domain-master-slave'
 
 - block:
-  - name: copy wildfly systemd unit file
-    template: src=wildfly.service.j2 dest={{ wildfly_systemd_dir }}/{{ wildfly_instance_name }}.service owner=root
-              group=root mode=0640
-    notify:
-      - restart wildfly services
-      - change data mode
-  - name: systemd reload
-      systemd:
-        daemon_reload: yes
-    when: ansible_service_mgr == 'systemd' and ( ( ansible_os_family == 'RedHat' and ansible_distribution_major_version|int  > 6 ) or ansible_os_family != 'RedHat' )
-
-- block:
-  - name: copy wildfly systemd unit file
-    template: src=wildfly-dc.service.j2 dest={{ wildfly_systemd_dir }}/{{ wildfly_dc_instance_name }}.service owner=root
-              group=root mode=0640
+    - name: copy wildfly systemd unit file
+      template: src=wildfly.service.j2 dest={{ wildfly_systemd_dir }}/{{ wildfly_instance_name }}.service owner=root
+                group=root mode=0640
       notify:
         - restart wildfly services
         - change data mode
-  - name: systemd reload
+    - name: systemd reload
       systemd:
-        daemon_reload: yes
-  when: wildfly_role == 'domain-master-slave' and ansible_service_mgr == 'systemd' and ( ( ansible_os_family == 'RedHat' and ansible_distribution_major_version|int  > 6 ) or ansible_os_family != 'RedHat' )
+        daemon_reload: true
+  when: ansible_service_mgr is 'systemd' and
+        ((ansible_os_family is 'RedHat' and ansible_distribution_major_version|int > 6) or ansible_os_family != 'RedHat')
+
+- block:
+    - name: copy wildfly domain controller systemd unit file
+      template: src=wildfly-dc.service.j2 dest={{ wildfly_systemd_dir }}/{{ wildfly_dc_instance_name }}.service owner=root
+                group=root mode=0640
+      notify:
+        - restart wildfly services
+        - change data mode
+    - name: systemd reload
+      systemd:
+        daemon_reload: true
+  when: wildfly_role is 'domain-master-slave' and ansible_service_mgr is  'systemd' and
+        ((ansible_os_family is 'RedHat' and ansible_distribution_major_version|int  > 6) or ansible_os_family != 'RedHat')
 
 - block:
     - name: open wildfly management http tcp port
       firewalld:
         port: '{{ wildfly_manage_http_port }}/tcp'
-        permanent: yes
-        immediate: yes
+        permanent: true
+        immediate: true
         state: enabled
 
     - name: open wildfly management https tcp port
       firewalld:
         port: '{{ wildfly_manage_https_port }}/tcp'
-        permanent: yes
-        immediate: yes
+        permanent: true
+        immediate: true
         state: enabled
 
     - name: open wildfly http tcp port
       firewalld:
         port: '{{ wildfly_http_port }}/tcp'
-        permanent: yes
-        immediate: yes
+        permanent: true
+        immediate: true
         state: enabled
 
     - name: open wildfly https tcp port
       firewalld:
         port: '{{ wildfly_https_port }}/tcp'
-        permanent: yes
-        immediate: yes
+        permanent: true
+        immediate: true
         state: enabled
   when: ansible_distribution_version|version_compare(7, '=') and wildfly_manage_firewall
 
@@ -216,11 +218,11 @@
       wait_for:
         path: '{{ wildfly_dir }}/{{ wildfly_mode }}/log/server.log'
         search_regex: 'started in'
-      ignore_errors: yes
+      ignore_errors: true
     - name: cat file
       command: 'cat {{ wildfly_dir }}/{{ wildfly_mode }}/log/server.log'
-      ignore_errors: yes
-  when: wildfly_manage_service == True and wildfly_mode == 'standalone'
+      ignore_errors: true
+  when: wildfly_manage_service is  True and wildfly_mode == 'standalone'
 
 - block:
     - name: enable and start the domain controller service
@@ -228,15 +230,16 @@
         name: '{{ wildfly_dc_instance_name }}'
         state: started
         enabled: '{{ wildfly_service_enabled }}'
-#    - name: wait for wildfly to start
-#      wait_for:
-#        path: '{{ wildfly_dir }}/domain-controller/log/host-controller.log'
-#        search_regex: 'started in'
-#      ignore_errors: yes
-#    - name: cat file
-#      command: 'cat {{ wildfly_dir }}/domain-controller/log/host-controller.log'
-#      ignore_errors: yes
-  when: wildfly_manage_service == True and wildfly_mode == 'domain' and ( wildfly_role == 'domain-master-slave' or wildfly_role == 'domain-master')
+  #    - name: wait for wildfly to start
+  #      wait_for:
+  #        path: '{{ wildfly_dir }}/domain-controller/log/host-controller.log'
+  #        search_regex: 'started in'
+  #      ignore_errors: true
+  #    - name: cat file
+  #      command: 'cat {{ wildfly_dir }}/domain-controller/log/host-controller.log'
+  #      ignore_errors: true
+  when: wildfly_manage_service is True and wildfly_mode == 'domain' and
+        ( wildfly_role is 'domain-master-slave' or wildfly_role is 'domain-master')
 
 - block:
     - name: enable and start the domain service
@@ -244,18 +247,19 @@
         name: '{{ wildfly_instance_name }}'
         state: started
         enabled: '{{ wildfly_service_enabled }}'
-#    - name: wait for wildfly to start
-#      wait_for:
-#        path: '{{ wildfly_dir }}/{{ wildfly_mode }}/log/host-controller.log'
-#        search_regex: 'started in'
-#      ignore_errors: yes
-#    - name: cat file
-#      command: 'cat {{ wildfly_dir }}/{{ wildfly_mode }}/log/host-controller.log'
-#      ignore_errors: yes
-  when: wildfly_manage_service == True and wildfly_mode == 'domain' and ( wildfly_role == 'domain-master-slave' or wildfly_role == 'domain-slave' or wildfly_role == 'domain')
+  #    - name: wait for wildfly to start
+  #      wait_for:
+  #        path: '{{ wildfly_dir }}/{{ wildfly_mode }}/log/host-controller.log'
+  #        search_regex: 'started in'
+  #      ignore_errors: true
+  #    - name: cat file
+  #      command: 'cat {{ wildfly_dir }}/{{ wildfly_mode }}/log/host-controller.log'
+  #      ignore_errors: true
+  when: wildfly_manage_service is  True and wildfly_mode == 'domain' and
+        (wildfly_role is 'domain-master-slave' or wildfly_role is 'domain-slave' or wildfly_role is 'domain')
 
 - name: delete wildfly tar file
   file:
     path: '{{ wildfly_download_dir }}/{{ wildfly_download_file }}'
     state: absent
-  when: wildfly_installer_keep == False
+  when: wildfly_installer_keep is false

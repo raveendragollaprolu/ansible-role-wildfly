@@ -1,3 +1,5 @@
+---
+
 - name: copy wildfly properties file
   template:
     src: wildfly.properties.j2

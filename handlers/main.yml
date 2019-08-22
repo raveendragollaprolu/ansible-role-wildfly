@@ -21,6 +21,6 @@
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     mode: '0750'
-    recurse: yes
+    recurse: true
     state: directory
   when: wildfly_manage_data
