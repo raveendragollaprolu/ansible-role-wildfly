@@ -96,19 +96,19 @@ wildfly_java_home: ''
 
 wildfly_limits_file: '/etc/security/limits.d/{{ tomcat_system_user }}'
 wildfly_limits_conf:
- - domain: '{{ wildfly_system_user }}'
+ - domain: '{{ wildfly_user }}'
    type: soft
    item: nofile
    value: 14000
- - domain: '{{ wildfly_system_user }}'
+ - domain: '{{ wildfly_user }}'
    type: hard
    item: nofile
    value: 16384
- - domain: '{{ wildfly_system_user }}'
+ - domain: '{{ wildfly_user }}'
    type: soft
    item: nproc
    value: 7000
- - domain: '{{ wildfly_system_user }}'
+ - domain: '{{ wildfly_user }}'
    type: hard
    item: nproc
    value: 8192
