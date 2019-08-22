@@ -45,7 +45,7 @@
     path: '{{ wildfly_download_file }}'
   delegate_to: localhost
   register: wildfly_is_local_download_file
-  when: wildfly_installer_local is true
+  when: wildfly_installer_local
 
 - name: is already downloaded
   stat:
@@ -57,8 +57,8 @@
     src: '{{ wildfly_download_file }}'
     dest: '{{ wildfly_download_dir }}/{{ wildfly_download_file }}'
     mode: 0644
-  when: ( wildfly_is_download_file.stat.exists is false or wildfly_installer_force_overwrite is true ) and
-        wildfly_installer_force_download is false and wildfly_installer_local is true
+  when: (not wildfly_is_download_file.stat.exists or wildfly_installer_force_overwrite) and
+        not wildfly_installer_force_download and wildfly_installer_local
 
 - block:
     - name: 'downloading Wildfly {{ wildfly_download_file }} to local machine'
@@ -69,17 +69,17 @@
         mode: 0644
       delegate_to: localhost
       run_once: true
-      when: ( wildfly_is_local_download_file.stat.exists is false or wildfly_installer_force_overwrite is true ) and
-            wildfly_installer_force_download is true and wildfly_installer_local is true
+      when: (not wildfly_is_local_download_file.stat.exists or wildfly_installer_force_overwrite) and
+            wildfly_installer_force_download and wildfly_installer_local
 
     - name: copy downloaded wildfly tar file
       copy:
         src: '{{ wildfly_download_file }}'
         dest: '{{ wildfly_archive }}'
         mode: 0644
-      when: (wildfly_is_download_file.stat.exists is false or wildfly_installer_force_overwrite is true) and
-            wildfly_installer_local is true
-  when: wildfly_installer_local is true
+      when: (not wildfly_is_download_file.stat.exists or wildfly_installer_force_overwrite) and
+            wildfly_installer_local
+  when: wildfly_installer_local
 
 - name: 'download wildfly tar file {{ wildfly_download_file }}'
   get_url:
@@ -87,5 +87,5 @@
     dest: '{{ wildfly_download_dir }}/{{ wildfly_download_file }}'
     validate_certs: '{{ wildfly_download_validate_certs }}'
     mode: 0644
-  when: (wildfly_is_download_file.stat.exists is false or wildfly_installer_force_overwrite is true) and
-        wildfly_installer_force_download is true and wildfly_installer_local is false
+  when: (not wildfly_is_download_file.stat.exists or wildfly_installer_force_overwrite) and
+        wildfly_installer_force_download and not wildfly_installer_local
