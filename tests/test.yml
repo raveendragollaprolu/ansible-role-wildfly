@@ -17,6 +17,10 @@
 
 - hosts: CentOS-7
   tasks:
+    - name: install initscripts
+      package:
+        name: initscripts
+        state: present
     - name: remove requiretty from /etc/sudoers
       lineinfile:
         dest: "/etc/sudoers"
