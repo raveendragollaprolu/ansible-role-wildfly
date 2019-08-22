@@ -176,36 +176,6 @@
   when: wildfly_role == 'domain-master-slave' and ansible_service_mgr == 'systemd' and
         ((ansible_os_family == 'RedHat' and ansible_distribution_major_version|int  > 6) or ansible_os_family != 'RedHat')
 
-- block:
-    - name: open wildfly management http tcp port
-      firewalld:
-        port: '{{ wildfly_manage_http_port }}/tcp'
-        permanent: true
-        immediate: true
-        state: enabled
-
-    - name: open wildfly management https tcp port
-      firewalld:
-        port: '{{ wildfly_manage_https_port }}/tcp'
-        permanent: true
-        immediate: true
-        state: enabled
-
-    - name: open wildfly http tcp port
-      firewalld:
-        port: '{{ wildfly_http_port }}/tcp'
-        permanent: true
-        immediate: true
-        state: enabled
-
-    - name: open wildfly https tcp port
-      firewalld:
-        port: '{{ wildfly_https_port }}/tcp'
-        permanent: true
-        immediate: true
-        state: enabled
-  when: ((ansible_os_family == 'RedHat' and ansible_distribution_major_version|int  > 6) or ansible_os_family != 'RedHat') and wildfly_manage_firewall
-
 - meta: flush_handlers
 
 - block:
