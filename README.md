@@ -202,7 +202,7 @@ If you find this useful, please consider a donation:
 [Licensing]: #licensing
 [Author Information]: #author_information
 [Support]: #support
-[Admin User]: #admin_u  ser
+[Admin User]: #admin_user
 [SSL Support]: #ssl_support
 [Contributing]: #contributing
 [Donation]: #donation
