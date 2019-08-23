@@ -206,7 +206,3 @@ If you find this useful, please consider a donation:
 [SSL Support]: #ssl_support
 [Contributing]: #contributing
 [Donation]: #donation
-
-## License
-
-BSD
