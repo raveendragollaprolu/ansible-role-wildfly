@@ -1,8 +1,18 @@
 ---
 # task file for wildfly
 
-- include_tasks: install.yml
-- include_tasks: configure.yml
+- name: install Wildfly prerequisite
+  include_tasks: install-prerequisite.yml
+
+- name: download Wildfly installer
+  include_tasks: download.yml
+
+- name: install Wildfly
+  include_tasks: install.yml
+
+- name: configure Wildfly
+  include_tasks: configure.yml
+
 - include_tasks: ulimits.yml
 - include_tasks: users.yml
 

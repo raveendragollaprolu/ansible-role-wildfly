@@ -32,10 +32,10 @@
     - change data mode
   when: wildfly_role == 'domain-master-slave'
 
-- name: 'create domain user configuration in: {{ wildfly_dir }}/domain/configuration'
+- name: 'create domain user configuration in: {{ wildfly_base }}/domain/configuration'
   copy:
     src: '{{ item }}'
-    dest: '{{ wildfly_dir }}/domain/configuration/{{ item }}'
+    dest: '{{ wildfly_base }}/domain/configuration/{{ item }}'
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     mode: '{{ wildfly_file_mode }}'
@@ -45,10 +45,10 @@
     - mgmt-groups.properties
     - mgmt-users.properties
 
-- name: 'create domain server configuration in: {{ wildfly_dir }}/domain/configuration'
+- name: 'create domain server configuration in: {{ wildfly_base }}/domain/configuration'
   copy:
     src: '{{ wildfly_version }}/domain/{{ item }}'
-    dest: '{{ wildfly_dir }}/domain/configuration/{{ item }}'
+    dest: '{{ wildfly_base }}/domain/configuration/{{ item }}'
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     mode: '{{ wildfly_file_mode }}'
@@ -61,10 +61,10 @@
     - logging.properties
   when: wildfly_mode == 'domain'
 
-- name: 'create domain-controller user configuration in: {{ wildfly_dir }}/domain-controller/configuration'
+- name: 'create domain-controller user configuration in: {{ wildfly_base }}/domain-controller/configuration'
   copy:
     src: '{{ item }}'
-    dest: '{{ wildfly_dir }}/domain-controller/configuration/{{ item }}'
+    dest: '{{ wildfly_base }}/domain-controller/configuration/{{ item }}'
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     mode: '{{ wildfly_file_mode }}'
@@ -75,10 +75,10 @@
     - mgmt-users.properties
   when: wildfly_role == 'domain-master-slave'
 
-- name: 'create domain-controller server configuration in: {{ wildfly_dir }}/domain-controller/configuration'
+- name: 'create domain-controller server configuration in: {{ wildfly_base }}/domain-controller/configuration'
   copy:
     src: '{{ wildfly_version }}/domain/{{ item }}'
-    dest: '{{ wildfly_dir }}/domain-controller/configuration/{{ item }}'
+    dest: '{{ wildfly_base }}/domain-controller/configuration/{{ item }}'
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     mode: '{{ wildfly_file_mode }}'
@@ -89,10 +89,10 @@
     - logging.properties
   when: wildfly_role == 'domain-master-slave'
 
-- name: 'create standalone user configuration in: {{ wildfly_dir }}/standalone/configuration'
+- name: 'create standalone user configuration in: {{ wildfly_base }}/standalone/configuration'
   copy:
     src: '{{ item }}'
-    dest: '{{ wildfly_dir }}/standalone/configuration/{{ item }}'
+    dest: '{{ wildfly_base }}/standalone/configuration/{{ item }}'
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     mode: '{{ wildfly_dir_mode }}'
@@ -102,10 +102,10 @@
     - mgmt-groups.properties
     - mgmt-users.properties
 
-- name: 'create standalone server configuration configuration in: {{ wildfly_dir }}/standalone/configuration'
+- name: 'create standalone server configuration configuration in: {{ wildfly_base }}/standalone/configuration'
   copy:
     src: '{{ wildfly_version }}/standalone/{{ item }}'
-    dest: '{{ wildfly_dir }}/standalone/configuration/{{ item }}'
+    dest: '{{ wildfly_base }}/standalone/configuration/{{ item }}'
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     mode: '{{ wildfly_dir_mode }}'
@@ -190,7 +190,7 @@
         search_regex: 'started in'
       ignore_errors: true
     - name: cat file
-      command: 'cat {{ wildfly_dir }}/{{ wildfly_mode }}/log/server.log'
+      command: 'cat {{ wildfly_base }}/{{ wildfly_mode }}/log/server.log'
       ignore_errors: true
   when: wildfly_manage_service and wildfly_mode == 'standalone'
 
@@ -202,7 +202,7 @@
         enabled: '{{ wildfly_service_enabled }}'
   #    - name: wait for wildfly to start
   #      wait_for:
-  #        path: '{{ wildfly_dir }}/domain-controller/log/host-controller.log'
+  #        path: '{{ wildfly_base }}/domain-controller/log/host-controller.log'
   #        search_regex: 'started in'
   #      ignore_errors: true
   #    - name: cat file
@@ -219,7 +219,7 @@
         enabled: '{{ wildfly_service_enabled }}'
   #    - name: wait for wildfly to start
   #      wait_for:
-  #        path: '{{ wildfly_dir }}/{{ wildfly_mode }}/log/host-controller.log'
+  #        path: '{{ wildfly_base }}/{{ wildfly_mode }}/log/host-controller.log'
   #        search_regex: 'started in'
   #      ignore_errors: true
   #    - name: cat file

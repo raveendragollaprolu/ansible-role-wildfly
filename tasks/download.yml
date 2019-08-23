@@ -2,7 +2,8 @@
 # task file for wildfly
 
 - name: check if Wildfly is already installed
-  stat: path='{{ wildfly_dir }}/README.txt'
+  stat:
+    path: '{{ wildfly_dir }}/README.txt'
   register: wildfly_installed
 
 - block:
@@ -24,12 +25,15 @@
 
 - name: 'create application directory: {{ wildfly_dir }}'
   file:
-    path: '{{ wildfly_dir }}'
+    path: '{{ item }}'
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     mode: '{{ wildfly_dir_mode }}'
     recurse: true
     state: directory
+  with_items:
+    - '{{ wildfly_base }}'
+    - '{{ wildfly_dir }}'
 
 - name: create download directory
   file:

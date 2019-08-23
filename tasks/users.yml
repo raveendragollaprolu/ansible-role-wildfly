@@ -3,55 +3,55 @@
 
 - name: Create management users
   shell: >
-    {{ wildfly_dir }}/bin/add-user.sh -u {{ item.name }} -p {{ item.password }} &&
-    touch {{ wildfly_dir }}/.mgmt-users.{{ item.name }}.provisioned
+    {{ wildfly_base }}/bin/add-user.sh -u {{ item.name }} -p {{ item.password }} &&
+    touch {{ wildfly_base }}/.mgmt-users.{{ item.name }}.provisioned
   with_items: "{{ wildfly_management_users }}"
   become: true
   become_user: '{{ wildfly_user }}'
   # args:
-  #     creates: "{{ wildfly_dir }}/.mgmt-users.{{ item.name }}.provisioned"
+  #     creates: "{{ wildfly_base }}/.mgmt-users.{{ item.name }}.provisioned"
   when: wildfly_management_users | length > 0
   no_log: false
 
 - name: Create application users
   shell: >
-    {{ wildfly_dir }}/bin/add-user.sh -a -u {{ item.name }} -p {{ item.password }} &&
-    touch {{ wildfly_dir }}/.app-users.{{ item.name }}.provisioned
+    {{ wildfly_base }}/bin/add-user.sh -a -u {{ item.name }} -p {{ item.password }} &&
+    touch {{ wildfly_base }}/.app-users.{{ item.name }}.provisioned
   with_items: "{{ wildfly_app_users }}"
   become: true
   become_user: '{{ wildfly_user }}'
   #   args:
-  #     creates: "{{ wildfly_dir }}/.app-users.{{ item.name }}.provisioned"
+  #     creates: "{{ wildfly_base }}/.app-users.{{ item.name }}.provisioned"
   when: wildfly_app_users | length > 0
   no_log: false
 
 - name: Create management users
   shell: >
-    {{ wildfly_dir }}/bin/add-user.sh -dc {{ wildfly_dir }}/domain-controller/configuration -u {{ item.name }} -p {{ item.password }} &&
-    touch {{ wildfly_dir }}/.mgmt-users.{{ item.name }}.provisioned
+    {{ wildfly_base }}/bin/add-user.sh -dc {{ wildfly_base }}/domain-controller/configuration -u {{ item.name }} -p {{ item.password }} &&
+    touch {{ wildfly_base }}/.mgmt-users.{{ item.name }}.provisioned
   with_items: "{{ wildfly_management_users }}"
   become: true
   become_user: '{{ wildfly_user }}'
   #   args:
-  #     creates: "{{ wildfly_dir }}/.mgmt-users.{{ item.name }}.provisioned"
+  #     creates: "{{ wildfly_base }}/.mgmt-users.{{ item.name }}.provisioned"
   when: wildfly_management_users | length > 0 and wildfly_role == 'domain-master-slave'
   no_log: false
 
 - name: Create application users
   shell: >
-    {{ wildfly_dir }}/bin/add-user.sh -a -dc {{ wildfly_dir }}/domain-controller/configuration -u {{ item.name }} -p {{ item.password }} &&
-    touch {{ wildfly_dir }}/.app-users.{{ item.name }}.provisioned
+    {{ wildfly_base }}/bin/add-user.sh -a -dc {{ wildfly_base }}/domain-controller/configuration -u {{ item.name }} -p {{ item.password }} &&
+    touch {{ wildfly_base }}/.app-users.{{ item.name }}.provisioned
   with_items: "{{ wildfly_app_users }}"
   become: true
   become_user: '{{ wildfly_user }}'
   #   args:
-  #     creates: "{{ wildfly_dir }}/.app-users.{{ item.name }}.provisioned"
+  #     creates: "{{ wildfly_base }}/.app-users.{{ item.name }}.provisioned"
   when: wildfly_app_users | length > 0 and wildfly_role == 'domain-master-slave'
   no_log: false
 
 - name: Enforce secure permissions on password files
   file:
-    path: "{{ wildfly_dir }}/{{ wildfly_mode }}/configuration/{{ item }}"
+    path: "{{ wildfly_base }}/{{ wildfly_mode }}/configuration/{{ item }}"
     owner: "{{ wildfly_user }}"
     group: "{{ wildfly_group }}"
     mode: "0600"

@@ -1,10 +1,6 @@
 ---
 # task file for wildfly
 
-- name: check if Wildfly is installed.
-  stat: path='{{ wildfly_dir }}/README.txt'
-  register: wildfly_installed
-
 - block:
     - name: create wildfly group
       group:
@@ -22,24 +18,6 @@
         system: true
   when: wildfly_manage_user
 
-- name: 'create application directory: {{ wildfly_dir }}'
-  file:
-    path: '{{ wildfly_dir }}'
-    owner: '{{ wildfly_user }}'
-    group: '{{ wildfly_group }}'
-    mode: '{{ wildfly_dir_mode }}'
-    recurse: true
-    state: directory
-
-- name: create wildfly link directory
-  file:
-    path: '{{ wildfly_install_dir }}/wildfly'
-    owner: '{{ wildfly_user }}'
-    group: '{{ wildfly_group }}'
-    mode: '{{ wildfly_dir_mode }}'
-    recurse: false
-    state: directory
-
 - name: create wildfly log directory
   file:
     path: '{{ wildfly_console_log_dir }}'
@@ -48,65 +26,6 @@
     mode: '{{ wildfly_dir_mode }}'
     recurse: true
     state: directory
-
-- name: create download directory
-  file:
-    path: '{{ wildfly_download_dir }}'
-    owner: '{{ wildfly_user }}'
-    group: '{{ wildfly_group }}'
-    mode: '{{ wildfly_dir_mode }}'
-    recurse: true
-    state: directory
-
-- name: is already downloaded locally
-  stat:
-    path: '{{ wildfly_download_file }}'
-  delegate_to: localhost
-  register: wildfly_is_local_download_file
-  when: wildfly_installer_local
-
-- name: is already downloaded
-  stat:
-    path: '{{ wildfly_download_dir }}/{{ wildfly_download_file }}'
-  register: wildfly_is_download_file
-
-- name: copy local wildfly tar file
-  copy:
-    src: '{{ wildfly_download_file }}'
-    dest: '{{ wildfly_download_dir }}/{{ wildfly_download_file }}'
-    mode: 0644
-  when: (not wildfly_is_download_file.stat.exists or wildfly_installer_force_overwrite) and
-        not wildfly_installer_force_download and wildfly_installer_local
-
-- block:
-    - name: 'downloading Wildfly {{ wildfly_download_file }} to local machine'
-      get_url:
-        url: '{{ wildfly_download_url }}'
-        validate_certs: '{{ wildfly_download_validate_certs }}'
-        dest: './{{ wildfly_download_file }}'
-        mode: 0644
-      delegate_to: localhost
-      run_once: true
-      when: (not wildfly_is_local_download_file.stat.exists or wildfly_installer_force_overwrite) and
-            wildfly_installer_force_download and wildfly_installer_local
-
-    - name: copy downloaded wildfly tar file
-      copy:
-        src: '{{ wildfly_download_file }}'
-        dest: '{{ wildfly_archive }}'
-        mode: 0644
-      when: (not wildfly_is_download_file.stat.exists or wildfly_installer_force_overwrite) and
-            wildfly_installer_local
-  when: wildfly_installer_local
-
-- name: 'download wildfly tar file {{ wildfly_download_file }}'
-  get_url:
-    url: '{{ wildfly_download_url }}'
-    dest: '{{ wildfly_download_dir }}/{{ wildfly_download_file }}'
-    validate_certs: '{{ wildfly_download_validate_certs }}'
-    mode: 644
-  when: (not wildfly_is_download_file.stat.exists or wildfly_installer_force_overwrite) and
-        wildfly_installer_force_download and not wildfly_installer_local
 
 - name: 'unarchive downloaded {{ wildfly_download_file }} file'
   unarchive:
@@ -121,9 +40,31 @@
       - "configuration"
   when: not wildfly_installed.stat.exists or force_wildfly_install
 
-- name: 'create domain configuration directory in: {{ wildfly_dir }}'
+
+- name: create wildfly link directory
   file:
-    path: '{{ wildfly_dir }}/domain/{{ item }}'
+    path: '{{ wildfly_install_dir }}/wildfly'
+    owner: '{{ wildfly_user }}'
+    group: '{{ wildfly_group }}'
+    mode: '{{ wildfly_dir_mode }}'
+    recurse: false
+    state: directory
+
+- name: 'create configuration directory for domain and standalone'
+  file:
+    path: '{{ wildfly_base }}/{{ item }}'
+    owner: '{{ wildfly_user }}'
+    group: '{{ wildfly_group }}'
+    mode: '{{ wildfly_dir_mode }}'
+    recurse: true
+    state: directory
+  with_items:
+    - domain/configuration
+    - standalone/configuration
+
+- name: 'create domain configuration directory in: {{ wildfly_base }}'
+  file:
+    path: '{{ wildfly_base }}/domain/{{ item }}'
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     mode: '{{ wildfly_dir_mode }}'
@@ -135,9 +76,9 @@
     - tmp/auth
   when: wildfly_mode == 'domain'
 
-- name: 'create domain-controller configuration directory in: {{ wildfly_dir }}'
+- name: 'create domain-controller configuration directory in: {{ wildfly_base }}'
   file:
-    path: '{{ wildfly_dir }}/domain-controller/{{ item }}'
+    path: '{{ wildfly_base }}/domain-controller/{{ item }}'
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     mode: '{{ wildfly_dir_mode }}'
@@ -149,9 +90,9 @@
     - tmp/auth
   when: wildfly_role == 'domain-master-slave'
 
-- name: 'create standalone configuration directory in: {{ wildfly_dir }}'
+- name: 'create standalone configuration directory in: {{ wildfly_base }}'
   file:
-    path: '{{ wildfly_dir }}/standalone/{{ item }}'
+    path: '{{ wildfly_base }}/standalone/{{ item }}'
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     mode: '{{ wildfly_dir_mode }}'
@@ -164,17 +105,12 @@
     - tmp/auth
   when: wildfly_mode == 'standalone'
 
-- name: 'create configuration directory for domain and standalone'
+- name: create symlink for 'wildfly' to the installation directory
   file:
-    path: '{{ wildfly_dir }}/{{ item }}'
-    owner: '{{ wildfly_user }}'
-    group: '{{ wildfly_group }}'
-    mode: '{{ wildfly_dir_mode }}'
-    recurse: true
-    state: directory
-  with_items:
-    - domain/configuration
-    - standalone/configuration
+    src: '{{ wildfly_dir }}'
+    dest: '{{ wildfly_home }}'
+    state: link
+    mode: "u=rwx,go=rx"
 
 - name: create symlink to installed version
   file:
@@ -183,3 +119,19 @@
     dest: '{{ wildfly_link_dir }}'
     force: true
   when: wildfly_create_symlink
+
+- name: create symlink for 'bin' to the 'wildfly' directory
+  file:
+    src: '{{ wildfly_home }}/{{ item }}'
+    dest: '{{ wildfly_base }}/{{ item }}'
+    state: link
+    mode: "u=rwx,go=rx"
+  with_items:
+    - appclient
+    - bin
+    - copyright.txt
+    - docs
+    - jboss-modules.jar
+    - LICENSE.txt
+    - README.txt
+    - welcome-content
