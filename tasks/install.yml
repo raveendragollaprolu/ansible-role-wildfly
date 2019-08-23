@@ -5,12 +5,6 @@
   stat: path='{{ wildfly_dir }}/README.txt'
   register: wildfly_installed
 
-- name: Install OpenJDK
-  yum:
-    name: java-1.8.0-openjdk-headless
-    state: present
-  when: wildfly_manage_java_pkg
-
 - block:
     - name: create wildfly group
       group:
