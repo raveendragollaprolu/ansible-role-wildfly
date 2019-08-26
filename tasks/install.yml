@@ -110,7 +110,6 @@
     src: '{{ wildfly_dir }}'
     dest: '{{ wildfly_home }}'
     state: link
-    mode: "u=rwx,go=rx"
 
 - name: create symlink to installed version
   file:
