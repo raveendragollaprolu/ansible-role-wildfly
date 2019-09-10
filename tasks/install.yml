@@ -124,7 +124,6 @@
     src: '{{ wildfly_home }}/{{ item }}'
     dest: '{{ wildfly_base }}/{{ item }}'
     state: link
-    mode: "u=rwx,go=rx"
   with_items:
     - appclient
     - bin
