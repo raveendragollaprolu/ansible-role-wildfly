@@ -114,7 +114,7 @@
 - name: create symlink to installed version
   file:
     state: link
-    src: '{{ wildfly_dir }}'
+    src: '{{ wildfly_base }}'
     dest: '{{ wildfly_link_dir }}'
     force: true
   when: wildfly_create_symlink
