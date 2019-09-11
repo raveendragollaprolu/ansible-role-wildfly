@@ -51,6 +51,7 @@ wildfly_console_dc_log: '{{ wildfly_console_log_dir }}/{{ wildfly_console_dc_log
 wildfly_conf_dir: /etc/wildfly
 
 wildfly_config_file: '{{ wildfly_mode }}.xml'
+wildfly_config_file_overwrite: false
 
 wildfly_startup_wait: ''
 wildfly_shutdown_wait: ''
