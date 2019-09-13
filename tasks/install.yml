@@ -36,8 +36,6 @@
     # mode: '{{ wildfly_dir_mode }}'
     copy: false
     creates: "{{ wildfly_dir }}/bin/{{ wildfly_mode }}.sh"
-    exclude:
-      - "configuration"
   when: not wildfly_installed.stat.exists or force_wildfly_install
 
 
