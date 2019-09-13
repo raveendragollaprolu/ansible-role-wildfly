@@ -35,7 +35,7 @@
     group: '{{ wildfly_group }}'
     # mode: '{{ wildfly_dir_mode }}'
     copy: false
-    creates: "{{ wildfly_dir }}/bin/{{ wildfly_mode }}.sh"
+    creates: "{{ wildfly_dir }}/jboss-modules.jar"
   when: not wildfly_installed.stat.exists or force_wildfly_install
 
 
