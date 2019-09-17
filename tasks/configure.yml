@@ -108,7 +108,7 @@
 
 - name: 'create standalone server configuration configuration in: {{ wildfly_base }}/standalone/configuration'
   copy:
-    src: '{{ wildfly_version }}/standalone/configuration/{{ item }}'
+    src: '{{ wildfly_home }}/standalone/configuration/{{ item }}'
     dest: '{{ wildfly_base }}/standalone/configuration/{{ item }}'
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
