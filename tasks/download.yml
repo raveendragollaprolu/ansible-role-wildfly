@@ -33,7 +33,7 @@
 
 - name: 'create application directory: {{ wildfly_dir }}'
   file:
-    path: '{{ wildfly_dir }}''
+    path: '{{ wildfly_dir }}'
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     state: directory
