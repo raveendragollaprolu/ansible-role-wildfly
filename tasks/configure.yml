@@ -192,11 +192,11 @@
         enabled: '{{ wildfly_service_enabled }}'
     - name: wait for wildfly to start
       wait_for:
-        path: '{{ wildfly_dir }}/{{ wildfly_mode }}/log/server.log'
+        path: '{{ wildfly_console_log }}'
         search_regex: 'started in'
       ignore_errors: true
     - name: cat file
-      command: 'cat {{ wildfly_base }}/{{ wildfly_mode }}/log/server.log'
+      command: '{{ wildfly_console_log }}'
       ignore_errors: true
   when: wildfly_manage_service and wildfly_mode == 'standalone'
 
@@ -208,11 +208,11 @@
         enabled: '{{ wildfly_service_enabled }}'
     - name: wait for wildfly to start
       wait_for:
-        path: '{{ wildfly_base }}/domain-controller/log/host-controller.log'
+        path: '{{ wildfly_console_dc_log }}'
         search_regex: 'started in'
       ignore_errors: true
     - name: cat file
-      command: 'cat {{ wildfly_dir }}/domain-controller/log/host-controller.log'
+      command: 'cat {{ wildfly_console_dc_log }}'
       ignore_errors: true
   when: wildfly_manage_service and wildfly_mode == 'domain' and
         ( wildfly_role == 'domain-master-slave' or wildfly_role == 'domain-master')
@@ -225,11 +225,11 @@
         enabled: '{{ wildfly_service_enabled }}'
     - name: wait for wildfly to start
       wait_for:
-        path: '{{ wildfly_base }}/{{ wildfly_mode }}/log/host-controller.log'
+        path: '{{ wildfly_console_log }}'
         search_regex: 'started in'
       ignore_errors: true
     - name: cat file
-      command: 'cat {{ wildfly_dir }}/{{ wildfly_mode }}/log/host-controller.log'
+      command: 'cat {{ wildfly_console_log }}'
       ignore_errors: true
   when: wildfly_manage_service and wildfly_mode == 'domain' and
         (wildfly_role == 'domain-master-slave' or wildfly_role == 'main-slave' or wildfly_role == 'domain')
