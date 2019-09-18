@@ -48,17 +48,6 @@
     recurse: false
     state: directory
 
-- name: 'create configuration directory for domain and standalone'
-  file:
-    path: '{{ wildfly_base }}/{{ item }}'
-    owner: '{{ wildfly_user }}'
-    group: '{{ wildfly_group }}'
-    mode: '{{ wildfly_dir_mode }}'
-    state: directory
-  with_items:
-    - domain
-    - standalone
-
 - name: 'create domain configuration directory in: {{ wildfly_base }}'
   file:
     path: '{{ wildfly_base }}/domain/{{ item }}'
@@ -97,7 +86,7 @@
     - deployments
     - lib/ext
     - tmp/auth
-  when: wildfly_mode == 'standalone'
+  # when: wildfly_mode == 'standalone'
 
 - name: create symlink for 'wildfly' to the installation directory
   file:
