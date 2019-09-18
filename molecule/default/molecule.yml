@@ -187,6 +187,7 @@ provisioner:
         wildfly_version: 11.0.0.Final
       all:
         wildfly_installer_keep: true
+        wildfly_installer_force_overwrite: false
         wildfly_manage_firewalld: false
         wildfly_management_users:
           - {name: 'david', password: 'ruomlig'}
