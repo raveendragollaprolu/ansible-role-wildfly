@@ -23,17 +23,22 @@
         system: true
   when: wildfly_manage_user
 
-- name: 'create application directory: {{ wildfly_dir }}'
+- name: 'create application directory: {{ wildfly_base }}'
   file:
-    path: '{{ item }}'
+    path: '{{ wildfly_base }}'
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     mode: '{{ wildfly_dir_mode }}'
     recurse: true
     state: directory
-  with_items:
-    - '{{ wildfly_base }}'
-    - '{{ wildfly_dir }}'
+
+- name: 'create application directory: {{ wildfly_dir }}'
+  file:
+    path: '{{ wildfly_dir }}''
+    owner: '{{ wildfly_user }}'
+    group: '{{ wildfly_group }}'
+    recurse: true
+    state: directory
 
 - name: create download directory
   file:
