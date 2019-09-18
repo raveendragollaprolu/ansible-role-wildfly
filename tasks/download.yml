@@ -29,7 +29,6 @@
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     mode: '{{ wildfly_dir_mode }}'
-    recurse: true
     state: directory
 
 - name: 'create application directory: {{ wildfly_dir }}'
@@ -37,7 +36,6 @@
     path: '{{ wildfly_dir }}''
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
-    recurse: true
     state: directory
 
 - name: create download directory
@@ -46,7 +44,6 @@
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     mode: '{{ wildfly_dir_mode }}'
-    recurse: true
     state: directory
 
 - name: is already downloaded locally
