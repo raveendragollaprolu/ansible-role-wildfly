@@ -38,7 +38,8 @@
     dest: '{{ wildfly_base }}/domain/configuration/{{ item }}'
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
-    mode: '{{ wildfly_file_mode }}'
+    mode: '0600'
+    force: false
   with_items:
     - application-roles.properties
     - application-users.properties
@@ -69,7 +70,8 @@
     dest: '{{ wildfly_base }}/domain-controller/configuration/{{ item }}'
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
-    mode: '{{ wildfly_file_mode }}'
+    mode: '0600'
+    force: false
   with_items:
     - application-roles.properties
     - application-users.properties
@@ -99,7 +101,8 @@
     dest: '{{ wildfly_base }}/standalone/configuration/{{ item }}'
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
-    mode: '{{ wildfly_dir_mode }}'
+    mode: '0600'
+    force: false
   with_items:
     - application-roles.properties
     - application-users.properties
