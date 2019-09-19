@@ -206,7 +206,7 @@
         name: '{{ wildfly_dc_instance_name }}'
         state: started
         enabled: '{{ wildfly_service_enabled }}'
-    - name: wait for wildfly to start
+    - name: wait for wildfly domain controller to start
       wait_for:
         path: '{{ wildfly_console_dc_log }}'
         search_regex: 'started in'
