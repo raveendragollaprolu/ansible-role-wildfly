@@ -232,7 +232,7 @@
       command: 'cat {{ wildfly_console_log }}'
       ignore_errors: true
   when: wildfly_manage_service and wildfly_mode == 'domain' and
-        (wildfly_role == 'domain-master-slave' or wildfly_role == 'main-slave' or wildfly_role == 'domain')
+        (wildfly_role == 'domain-master-slave' or wildfly_role == 'domain-slave' or wildfly_role == 'domain')
 
 - name: delete wildfly tar file
   file:
