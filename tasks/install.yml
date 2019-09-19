@@ -59,7 +59,7 @@
     - configuration
     - data/content
     - tmp/auth
-  when: wildfly_mode == 'domain'
+#  when: wildfly_mode == 'domain'
 
 - name: 'create domain-controller configuration directory in: {{ wildfly_base }}'
   file:
@@ -86,7 +86,7 @@
     - deployments
     - lib/ext
     - tmp/auth
-  # when: wildfly_mode == 'standalone'
+# when: wildfly_mode == 'standalone'
 
 - name: create symlink for 'wildfly' to the installation directory
   file:
