@@ -1,7 +1,7 @@
 ---
 # tasks file for wildfly
 
-- name: Create management users
+- name: create management users
   become: true
   become_user: '{{ wildfly_user }}'
   shell: >
@@ -13,19 +13,19 @@
   when: wildfly_management_users | length > 0
   no_log: false
 
-- name: Create application users
+- name: create application users
   become: true
   become_user: '{{ wildfly_user }}'
   shell: >
     {{ wildfly_base }}/bin/add-user.sh -a -u {{ item.name }} -p {{ item.password }} &&
     touch {{ wildfly_base }}/.app-users.{{ item.name }}.provisioned
   args:
-    creates: "{{ wildfly_base }}/.mgmt-users.{{ item.name }}.provisioned"
+    creates: "{{ wildfly_base }}/.app-users.{{ item.name }}.provisioned"
   with_items: "{{ wildfly_app_users }}"
   when: wildfly_app_users | length > 0
   no_log: false
 
-- name: Create domain controller management users
+- name: create domain controller management users
   become: true
   become_user: '{{ wildfly_user }}'
   shell: >
@@ -37,7 +37,7 @@
   when: wildfly_management_users | length > 0 and (wildfly_role == 'domain-master-slave' or wildfly_role == 'domain-master')
   no_log: false
 
-- name: Enforce secure permissions on password files
+- name: enforce secure permissions on password files
   file:
     path: "{{ wildfly_base }}/{{ wildfly_mode }}/configuration/{{ item }}"
     owner: "{{ wildfly_user }}"
