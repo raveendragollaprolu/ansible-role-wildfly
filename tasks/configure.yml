@@ -64,6 +64,27 @@
     - logging.properties
   when: wildfly_mode == 'domain'
 
+- name: configure domain server logging (1)
+  lineinfile:
+    dest: '{{ wildfly_home }}/domain/configuration/logging.properties'
+    regexp: '^handler.BOOT_FILE.properties=autoFlush,fileName$'
+    line: 'handler.BOOT_FILE.properties=autoFlush,append,fileName'
+    state: present
+  when: wildfly_mode == 'domain'
+  notify:
+    - restart wildfly services
+
+- name: configure domain server logging (2)
+  lineinfile:
+    dest: '{{ wildfly_home }}/domain/configuration/logging.properties'
+    regexp: '^handler.BOOT_FILE.append=.*$'
+    line: 'handler.BOOT_FILE.append=true'
+    insertafter: 'handler.BOOT_FILE.properties=autoFlush,append,fileName'
+    state: present
+  when: wildfly_mode == 'domain'
+  notify:
+    - restart wildfly services
+
 - name: 'create domain-controller user configuration in: {{ wildfly_base }}/domain-controller/configuration'
   copy:
     src: '{{ item }}'
@@ -94,6 +115,38 @@
     - host-master.xml
     - logging.properties
   when: wildfly_role == 'domain-master-slave'
+
+- name: configure domain-controller server logging (1)
+  lineinfile:
+    dest: '{{ wildfly_home }}/domain-controller/configuration/logging.properties'
+    regexp: '^handler.BOOT_FILE.properties=autoFlush,fileName$'
+    line: 'handler.BOOT_FILE.properties=autoFlush,append,fileName'
+    state: present
+  when: wildfly_role == 'domain-master-slave'
+  notify:
+    - restart wildfly services
+
+- name: configure domain-controller server logging (2)
+  lineinfile:
+    dest: '{{ wildfly_home }}/domain-controller/configuration/logging.properties'
+    regexp: '^handler.BOOT_FILE.append=.*$'
+    line: 'handler.BOOT_FILE.append=true'
+    insertafter: 'handler.BOOT_FILE.properties=autoFlush,append,fileName'
+    state: present
+  when: wildfly_role == 'domain-master-slave'
+  notify:
+    - restart wildfly services
+
+- name: configure domain-controller server logging (3)
+  lineinfile:
+    dest: '{{ wildfly_home }}/domain-controller/configuration/logging.properties'
+    regexp: '^handler.BOOT_FILE.suffix=.*$'
+    line: 'handler.BOOT_FILE.suffix=.yyyy-MM-dd'
+    insertafter: 'handler.BOOT_FILE.formatter=PATTERN'
+    state: present
+  when: wildfly_role == 'domain-master-slave'
+  notify:
+    - restart wildfly services
 
 - name: 'create standalone user configuration in: {{ wildfly_base }}/standalone/configuration'
   copy:
