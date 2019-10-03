@@ -9,6 +9,7 @@ before_script:
     python3 python3-dev py3-pip gcc git curl build-base
     autoconf automake py3-cryptography linux-headers
     musl-dev libffi-dev openssl-dev openssh
+  - pip 3 install --upgrade pip
   - pip3 install ansible molecule docker 'molecule[docker]'
   - docker info
   - python3 --version
