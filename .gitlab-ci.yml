@@ -5,11 +5,13 @@ services:
   - docker:dind
 
 before_script:
-  - apk update && apk add --no-cache docker python3-dev py3-pip docker gcc git curl build-base autoconf automake py3-cryptography linux-headers musl-dev \
-    libffi-dev openssl-dev openssh gzip unzip tar
-  # - docker info
-  - python3 --version
+  - apk update && apk add --no-cache docker \
+    python3-dev py3-pip docker gcc git curl build-base \
+    autoconf automake py3-cryptography linux-headers \
+    musl-dev libffi-dev openssl-dev openssh
   - pip3 install ansible molecule docker 'molecule[docker]'
+  - docker info
+  - python3 --version
   - ansible --version
 
 molecule:
