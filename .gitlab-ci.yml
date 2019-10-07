@@ -1,13 +1,13 @@
 ---
-image: docker:19.03.1
+image: docker:18.09.7
 
 variables:
-  DOCKER_HOST: http://localhost:2375
+  DOCKER_HOST: http://docker:2375
   DOCKER_TLS_CERTDIR: ""
   DOCKER_DRIVER: overlay2
 
 services:
-  - docker:19.03.1-dind
+  - docker:18.09.7-dind
 
 before_script:
   - apk update && apk add --no-cache docker
