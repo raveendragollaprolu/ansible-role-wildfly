@@ -57,6 +57,7 @@ wildfly_startup_wait: ''
 wildfly_shutdown_wait: ''
 
 wildfly_node_name: ''
+wildfly_node_password: 'NX4dgWihp9QpHf6NLJtAX0qUq8oGQlSNfPdB'
 
 wildfly_bind_address: 0.0.0.0
 wildfly_http_port: 8080

@@ -37,6 +37,18 @@
   when: wildfly_management_users | length > 0 and (wildfly_role == 'domain-master-slave' or wildfly_role == 'domain-master')
   no_log: false
 
+- name: create domain controller cluster member users
+  become: true
+  become_user: '{{ wildfly_user }}'
+  shell: >
+    {{ wildfly_base }}/bin/add-user.sh -dc {{ wildfly_base }}/domain-controller/configuration -u {{ item.name }} -p {{ wildfly_node_password }} &&
+    touch {{ wildfly_base }}/.host-dc-users.{{ item.name }}.provisioned
+  args:
+    creates: "{{ wildfly_base }}/.host-dc-users.{{ item.name }}.provisioned"
+  with_items: "{{ wildfly_cluser_members }}"
+  when: (wildfly_role == 'domain-master-slave' or wildfly_role == 'domain-master')
+  no_log: false
+
 - name: enforce secure permissions on password files
   file:
     path: "{{ wildfly_base }}/{{ wildfly_mode }}/configuration/{{ item }}"
