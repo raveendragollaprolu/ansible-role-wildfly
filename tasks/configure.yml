@@ -193,7 +193,7 @@
 - name: copy wildfly domain configuration
   template:
     src: domain.conf.j2
-    dest: '{{ wildfly_base }}/bin/domain.conf'
+    dest: '{{ wildfly_base }}/domain/configuration/domain.conf'
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     mode: '0640'
@@ -204,7 +204,7 @@
 - name: copy wildfly domain domain-controller configuration
   template:
     src: domain-dc.conf.j2
-    dest: '{{ wildfly_base }}/bin/domain-dc.conf'
+    dest: '{{ wildfly_base }}/domain-controller/configuration/domain-dc.conf'
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     mode: '0640'

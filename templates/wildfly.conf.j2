@@ -50,6 +50,6 @@ JBOSS_PIDFILE=/var/run/wildfly/{{ wildfly_instance_name }}.pid
 JBOSS_LOCKFILE=/var/lock/subsys/{{ wildfly_instance_name }}
 
 export JAVA_HOME="${JAVA_HOME}"
-export PATH=$JAVA_HOME/bin:\$PATH
+export PATH=$JAVA_HOME/bin:$PATH
 export JBOSS_DOMAIN_DIR=${JBOSS_HOME}/{{ wildfly_mode }}
-export DOMAIN_CONF=${JBOSS_HOME}/bin/domain.conf
+export DOMAIN_CONF=${JBOSS_HOME}/domain/configuration/domain.conf
