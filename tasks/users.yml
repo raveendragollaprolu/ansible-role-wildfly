@@ -41,11 +41,11 @@
   become: true
   become_user: '{{ wildfly_user }}'
   shell: >
-    {{ wildfly_base }}/bin/add-user.sh -dc {{ wildfly_base }}/domain-controller/configuration -u {{ item.name }} -p {{ wildfly_node_password }} &&
-    touch {{ wildfly_base }}/.host-dc-users.{{ item.name }}.provisioned
+    {{ wildfly_base }}/bin/add-user.sh -dc {{ wildfly_base }}/domain-controller/configuration -u {{ item }} -p {{ wildfly_node_password }} &&
+    touch {{ wildfly_base }}/.host-dc-users.{{ item }}.provisioned
   args:
-    creates: "{{ wildfly_base }}/.host-dc-users.{{ item.name }}.provisioned"
-  with_items: "{{ wildfly_cluser_members }}"
+    creates: '{{ wildfly_base }}/.host-dc-users.{{ item }}.provisioned'
+  with_items: '{{ wildfly_cluser_members }}'
   when: (wildfly_role == 'domain-master-slave' or wildfly_role == 'domain-master')
   no_log: false
 
