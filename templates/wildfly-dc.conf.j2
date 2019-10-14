@@ -28,7 +28,7 @@ JBOSS_CONSOLE_LOG="{{ wildfly_console_dc_log }}"
 
 # Need to modify the init script to account for JBOSS_OPTS
 # Allows us to pass system properties to WildFly
-JBOSS_OPTS="-P={{ wildfly_conf_dir }}/wildfly-dc.properties"
+JBOSS_OPTS="-P={{ wildfly_conf_dir }}/wildfly.properties"
 
 {% if wildfly_java_home  %}
 ## Location of Java home
@@ -41,3 +41,4 @@ JBOSS_LOCKFILE=/var/lock/subsys/{{ wildfly_dc_instance_name }}
 export JAVA_HOME="${JAVA_HOME}"
 export PATH=\$JAVA_HOME/bin:\$PATH
 export JBOSS_DOMAIN_DIR=\${JBOSS_HOME}/domain-controller
+export DOMAIN_CONF=${WILDFLY_BASE}/bin/domain-dc.conf

@@ -1,12 +1,15 @@
 # System properties for wildfly
+jboss.domain.base.dir=${WILDFLY_BASE}/domain-controller
+
 jboss.bind.address={{ wildfly_bind_address }}
 jboss.bind.address.management={{ wildfly_management_bind_address }}
 
-jboss.management.http.port={{ wildfly_manage_http_port }}
-jboss.management.https.port={{ wildfly_manage_https_port }}
-jboss.management.native.port={{ wildfly_manage_port }}
+jboss.management.http.port={{ wildfly_management_http_port }}
+jboss.management.https.port={{ wildfly_management_https_port }}
+jboss.management.native.port={{ wildfly_management_port }}
 
-jboss.server.temp.dir=/tmp/wildfly
+jboss.server.temp.dir={{ wildfly_download_dir }}
+
 {% if wildfly_node_name %}
 jboss.node.name={{ wildfly_node_name }}
 {% endif %}
