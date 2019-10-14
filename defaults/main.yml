@@ -74,7 +74,7 @@ wildfly_master_http_port: 19990
 wildfly_master_https_port: 19993
 
 wildfly_cluser_members:
- - {{ wildfly_master_address }}
+ - "{{ wildfly_master_address }}"
 
 wildfly_modcluster_address: 224.0.0.1
 wildfly_multicast_address: 230.0.0.1
