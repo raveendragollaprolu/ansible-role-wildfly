@@ -2,11 +2,12 @@
 
 - name: create wildfly domain controller server properties directory
   file:
-    path: '{{ wildfly_conf_dir }}/properties/'
+    path: '{{ wildfly_base }}/domain-controller/configuration/properties/'
     state: directory
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     mode: '0750'
+  when: wildfly_role == 'domain-master'
 
 - name: copy wildfly properties file
   template:
@@ -30,4 +31,4 @@
   notify:
     - restart wildfly services
     - change data mode
-  when: wildfly_role == 'domain-master'
+  when: wildfly_role == 'domain-master' and wildfly_role == 'domain-master-slave'
