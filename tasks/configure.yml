@@ -190,11 +190,40 @@
     - standalone.xml
   when: wildfly_mode == 'standalone'
 
-- name: create symlink to /etc/default/wildfly.conf
+- name: copy wildfly domain configuration
+  template:
+    src: domain.conf.j2
+    dest: '{{ wildfly_base }/bin/domain.conf'
+    owner: '{{ wildfly_user }}'
+    group: '{{ wildfly_group }}'
+    mode: '0640'
+  notify:
+    - restart wildfly
+    - change data mode
+
+- name: copy wildfly domain domain-controller configuration
+  template:
+    src: domain-dc.conf.j2
+    dest: '{{ wildfly_base }/bin/domain-dc.conf'
+    owner: '{{ wildfly_user }}'
+    group: '{{ wildfly_group }}'
+    mode: '0640'
+  notify:
+    - restart wildfly services
+    - change data mode
+  when: wildfly_role == 'domain-master-slave' or wildfly_role == 'domain-master'
+
+create symlink to /etc/default/wildfly.conf
   file:
     state: link
     src: '{{ wildfly_conf_dir }}/{{ wildfly_instance_name }}.conf'
     dest: /etc/default/{{ wildfly_instance_name }}.conf
+
+create symlink to /etc/default/wildfly-dc.conf
+  file:
+    state: link
+    src: '{{ wildfly_conf_dir }}/{{ wildfly_dc__instance_name }}.conf'
+    dest: /etc/default/{{ wildfly_dc_instance_name }}.conf
 
 - include: configure-properties.yml
 
