@@ -213,13 +213,13 @@
     - change data mode
   when: wildfly_role == 'domain-master-slave' or wildfly_role == 'domain-master'
 
--name: create symlink to /etc/default/wildfly.conf
+- name: create symlink to /etc/default/wildfly.conf
   file:
     state: link
     src: '{{ wildfly_conf_dir }}/{{ wildfly_instance_name }}.conf'
     dest: /etc/default/{{ wildfly_instance_name }}.conf
 
-create symlink to /etc/default/wildfly-dc.conf
+- name: create symlink to /etc/default/wildfly-dc.conf
   file:
     state: link
     src: '{{ wildfly_conf_dir }}/{{ wildfly_dc__instance_name }}.conf'
