@@ -222,7 +222,7 @@
 - name: create symlink to /etc/default/wildfly-dc.conf
   file:
     state: link
-    src: '{{ wildfly_conf_dir }}/{{ wildfly_dc__instance_name }}.conf'
+    src: '{{ wildfly_conf_dir }}/{{ wildfly_dc_instance_name }}.conf'
     dest: /etc/default/{{ wildfly_dc_instance_name }}.conf
 
 - include: configure-properties.yml
