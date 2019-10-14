@@ -193,7 +193,7 @@
 - name: copy wildfly domain configuration
   template:
     src: domain.conf.j2
-    dest: '{{ wildfly_base }/bin/domain.conf'
+    dest: '{{ wildfly_base }}/bin/domain.conf'
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     mode: '0640'
@@ -204,7 +204,7 @@
 - name: copy wildfly domain domain-controller configuration
   template:
     src: domain-dc.conf.j2
-    dest: '{{ wildfly_base }/bin/domain-dc.conf'
+    dest: '{{ wildfly_base }}/bin/domain-dc.conf'
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     mode: '0640'
@@ -240,7 +240,7 @@
     - restart wildfly services
     - change data mode
 
-- name: copy wildfly domain-controller configuration
+- name: create template to upstream domain-controller init script
   template:
     src: wildfly-dc_init.j2
     dest: '{{ wildfly_init_dir }}/{{ wildfly_dc_instance_name }}'
@@ -250,7 +250,7 @@
   notify:
     - restart wildfly services
     - change data mode
-  when: wildfly_role == 'domain-master-slave'
+  when: wildfly_role == 'domain-master-slave' or wildfly_role == 'domain-master'
 
 - block:
     - name: copy wildfly systemd unit file
