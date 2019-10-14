@@ -11,7 +11,7 @@
 - name: copy wildfly properties file
   template:
     src: wildfly.properties.j2
-    dest: '{{ wildfly_conf_dir }}/wildfly.properties'
+    dest: '{{ wildfly_base }}/domain/configuration/wildfly.properties'
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     mode: '0640'
@@ -23,7 +23,7 @@
 - name: copy wildfly domain controller properties file
   template:
     src: wildfly-dc.properties.j2
-    dest: '{{ wildfly_conf_dir }}/properties/wildfly-dc.properties'
+    dest: '{{ wildfly_base }}/domain-controller/configuration/properties/wildfly-dc.properties'
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     mode: '0640'
