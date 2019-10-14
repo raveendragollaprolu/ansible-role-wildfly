@@ -7,7 +7,7 @@
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     mode: '0750'
-  when: wildfly_role == 'domain-master'
+  when: wildfly_role == 'domain-master' or wildfly_role == 'domain-master-slave'
 
 - name: copy wildfly properties file
   template:
@@ -19,7 +19,7 @@
   notify:
     - restart wildfly services
     - change data mode
-  when: wildfly_role == 'domain-slave' and wildfly_role == 'domain-master-slave'
+  when: wildfly_role == 'domain-slave' or wildfly_role == 'domain-master-slave'
 
 - name: copy wildfly domain controller properties file
   template:
@@ -31,4 +31,4 @@
   notify:
     - restart wildfly services
     - change data mode
-  when: wildfly_role == 'domain-master' and wildfly_role == 'domain-master-slave'
+  when: wildfly_role == 'domain-master' or wildfly_role == 'domain-master-slave'
