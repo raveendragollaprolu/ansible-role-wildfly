@@ -160,7 +160,7 @@
         xpath: '/h:host/management/management-interfaces/native-interface'
         namespaces:
           h: 'urn:jboss:domain:10.0'
-        attribute 'security-realm'
+        attribute: 'security-realm'
         value: 'ManagementRealm'
     - name: 'Setting domain-controller to use native port (2)'
       xml:
