@@ -157,23 +157,26 @@
     - name: 'Setting domain-controller to use native port (1)'
       xml:
         path: '{{ wildfly_base }}/domain-controller/configuration/host-master.xml'
-        xpath: '/h:host/management/management-interfaces/native-interface/@security-realm'
+        xpath: '/h:host/management/management-interfaces/native-interface'
         namespaces:
           h: 'urn:jboss:domain:10.0'
+        attribute 'security-realm'
         value: 'ManagementRealm'
     - name: 'Setting domain-controller to use native port (2)'
       xml:
         path: '{{ wildfly_base }}/domain-controller/configuration/host-master.xml'
-        xpath: '/h:host/management/management-interfaces/native-interface/security-realm/@socket interface'
+        xpath: '/h:host/management/management-interfaces/native-interface/security-realm'
         namespaces:
           h: 'urn:jboss:domain:10.0'
+        attribute: 'socket interface'
         value: 'management'
     - name: 'Setting domain-controller to use native port (3)'
       xml:
         path: '{{ wildfly_base }}/domain-controller/configuration/host-master.xml'
-        xpath: '/h:host/management/management-interfaces/native-interface/security-realm/@port'
+        xpath: '/h:host/management/management-interfaces/native-interface/security-realm'
         namespaces:
           h: 'urn:jboss:domain:10.0'
+        attribute: 'port'
         value: '${jboss.management.native.port:9999}'
   when: wildfly_role == 'domain-master-slave' or 'domain-master'
 
