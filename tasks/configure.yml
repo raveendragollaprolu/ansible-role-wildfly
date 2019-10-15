@@ -67,7 +67,7 @@
 - name: Setting node password for domain members to connect domain-controller
   xml:
     path: '{{ wildfly_base }}/domain/configuration/domain.xml'
-    xpath: host/management/security-realms/security-realm/server-identities/secret/@value'
+    xpath: 'host/management/security-realms/security-realm/server-identities/secret/@value'
     value: '{{ wildfly_node_password | b64encode }}'
 
 - name: configure domain server logging (1)
