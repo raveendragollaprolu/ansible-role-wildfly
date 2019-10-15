@@ -64,31 +64,31 @@
     - logging.properties
   when: wildfly_mode == 'domain'
 
-- block:
-    - name: 'Setting node password for domain members to connect domain-controller for host slaves (1)'
-      xml:
-        path: '{{ wildfly_base }}/domain/configuration/host-slave.xml'
-        xpath: '/h:host/management/security-realms/security-realm'
-        namespaces:
-          h: 'urn:jboss:domain:10.0'
-        attribute: 'name'
-        value: 'SlaveRealm'
-    - name: 'Setting node password for domain members to connect domain-controller for host slaves (2)'
-      xml:
-        path: '{{ wildfly_base }}/domain/configuration/host-slave.xml'
-        xpath: '/h:host/management/security-realms/security-realm/server-identities'
-        namespaces:
-          h: 'urn:jboss:domain:10.0'
-        state: present
-    - name: 'Setting node password for domain members to connect domain-controller for host slaves (3)'
-      xml:
-        path: '{{ wildfly_base }}/domain/configuration/host-slave.xml'
-        xpath: '/h:host/management/security-realms/security-realm/server-identities/secret'
-        namespaces:
-          h: 'urn:jboss:domain:10.0'
-        attribute: 'value'
-        value: '{{ wildfly_node_password | b64encode }}'
-  when: wildfly_role in [ 'domain-slave', 'domain-master-slave' ]
+# - block:
+#     - name: 'Setting node password for domain members to connect domain-controller for host slaves (1)'
+#       xml:
+#         path: '{{ wildfly_base }}/domain/configuration/host-slave.xml'
+#         xpath: '/h:host/management/security-realms/security-realm'
+#         namespaces:
+#           h: 'urn:jboss:domain:10.0'
+#         attribute: 'name'
+#         value: 'SlaveRealm'
+#     - name: 'Setting node password for domain members to connect domain-controller for host slaves (2)'
+#       xml:
+#         path: '{{ wildfly_base }}/domain/configuration/host-slave.xml'
+#         xpath: '/h:host/management/security-realms/security-realm/server-identities'
+#         namespaces:
+#           h: 'urn:jboss:domain:10.0'
+#         state: present
+#     - name: 'Setting node password for domain members to connect domain-controller for host slaves (3)'
+#       xml:
+#         path: '{{ wildfly_base }}/domain/configuration/host-slave.xml'
+#         xpath: '/h:host/management/security-realms/security-realm/server-identities/secret'
+#         namespaces:
+#           h: 'urn:jboss:domain:10.0'
+#         attribute: 'value'
+#         value: '{{ wildfly_node_password | b64encode }}'
+#   when: wildfly_role in [ 'domain-slave', 'domain-master-slave' ]
 
 - name: configure domain server logging (1)
   lineinfile:
@@ -153,32 +153,32 @@
     - logging.properties
   when: wildfly_role == 'domain-master-slave' or 'domain-master'
 
-- block:
-    - name: 'Setting domain-controller to use native port (1)'
-      xml:
-        path: '{{ wildfly_base }}/domain-controller/configuration/host-master.xml'
-        xpath: '/h:host/management/management-interfaces/native-interface'
-        namespaces:
-          h: 'urn:jboss:domain:10.0'
-        attribute: 'security-realm'
-        value: 'ManagementRealm'
-    - name: 'Setting domain-controller to use native port (2)'
-      xml:
-        path: '{{ wildfly_base }}/domain-controller/configuration/host-master.xml'
-        xpath: '/h:host/management/management-interfaces/native-interface/socket'
-        namespaces:
-          h: 'urn:jboss:domain:10.0'
-        attribute: 'interface'
-        value: 'management'
-    - name: 'Setting domain-controller to use native port (3)'
-      xml:
-        path: '{{ wildfly_base }}/domain-controller/configuration/host-master.xml'
-        xpath: '/h:host/management/management-interfaces/native-interface/socket'
-        namespaces:
-          h: 'urn:jboss:domain:10.0'
-        attribute: 'port'
-        value: '${jboss.management.native.port:9999}'
-  when: wildfly_role == 'domain-master-slave' or 'domain-master'
+# - block:
+#     - name: 'Setting domain-controller to use native port (1)'
+#       xml:
+#         path: '{{ wildfly_base }}/domain-controller/configuration/host-master.xml'
+#         xpath: '/h:host/management/management-interfaces/native-interface'
+#         namespaces:
+#           h: 'urn:jboss:domain:10.0'
+#         attribute: 'security-realm'
+#         value: 'ManagementRealm'
+#     - name: 'Setting domain-controller to use native port (2)'
+#       xml:
+#         path: '{{ wildfly_base }}/domain-controller/configuration/host-master.xml'
+#         xpath: '/h:host/management/management-interfaces/native-interface/socket'
+#         namespaces:
+#           h: 'urn:jboss:domain:10.0'
+#         attribute: 'interface'
+#         value: 'management'
+#     - name: 'Setting domain-controller to use native port (3)'
+#       xml:
+#         path: '{{ wildfly_base }}/domain-controller/configuration/host-master.xml'
+#         xpath: '/h:host/management/management-interfaces/native-interface/socket'
+#         namespaces:
+#           h: 'urn:jboss:domain:10.0'
+#         attribute: 'port'
+#         value: '${jboss.management.native.port:9999}'
+#   when: wildfly_role == 'domain-master-slave' or 'domain-master'
 
 - name: configure domain-controller server logging (1)
   lineinfile:
