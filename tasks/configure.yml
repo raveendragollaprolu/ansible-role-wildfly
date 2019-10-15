@@ -68,17 +68,17 @@
     - name: 'Setting node password for domain members to connect domain-controller for host slaves (1)'
       xml:
         path: '{{ wildfly_base }}/domain/configuration/host-slave.xml'
-        xpath: 'host/management/security-realms/security-realm/@name'
+        xpath: '/host/management/security-realms/security-realm/@name'
         value: 'SlaveRealm'
     - name: 'Setting node password for domain members to connect domain-controller for host slaves (2)'
       xml:
         path: '{{ wildfly_base }}/domain/configuration/host-slave.xml'
-        xpath: 'host/management/security-realms/security-realm/server-identities'
+        xpath: '/host/management/security-realms/security-realm/server-identities'
         state: present
     - name: 'Setting node password for domain members to connect domain-controller for host slaves (3)'
       xml:
         path: '{{ wildfly_base }}/domain/configuration/host-slave.xml'
-        xpath: 'host/management/security-realms/security-realm/server-identities/secret/@value'
+        xpath: '/host/management/security-realms/security-realm/server-identities/secret/@value'
         value: '{{ wildfly_node_password | b64encode }}'
   when: wildfly_role in [ 'domain-slave', 'domain-master-slave' ]
 
