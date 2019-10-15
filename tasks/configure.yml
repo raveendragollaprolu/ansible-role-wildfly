@@ -71,7 +71,7 @@
         xpath: '/h:host/h:management/h:security-realms/h:security-realm'
         namespaces:
           h: 'urn:jboss:domain:10.0'
-        attribute: h:name
+        attribute: 'h:name'
         value: 'SlaveRealm'
     - name: 'Setting node password for domain members to connect domain-controller for host slaves (2)'
       xml:
@@ -86,7 +86,7 @@
         xpath: '/h:host/h:management/h:security-realms/h:security-realm/h:server-identities/h:secret'
         namespaces:
           h: 'urn:jboss:domain:10.0'
-        attribute: h:value
+        attribute: 'h:value'
         value: '{{ wildfly_node_password | b64encode }}'
   when: wildfly_role in [ 'domain-slave', 'domain-master-slave' ]
 
