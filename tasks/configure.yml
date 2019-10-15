@@ -64,11 +64,19 @@
     - logging.properties
   when: wildfly_mode == 'domain'
 
-- name: Setting node password for domain members to connect domain-controller
+- name: 'Setting node password for domain members to connect domain-controller (host-slave)'
   xml:
-    path: '{{ wildfly_base }}/domain/configuration/domain.xml'
+    path: '{{ wildfly_base }}/domain/configuration/host-slave.xml'
     xpath: 'host/management/security-realms/security-realm/server-identities/secret/@value'
     value: '{{ wildfly_node_password | b64encode }}'
+  when: wildfly_role == 'domain-slave'
+
+- name: 'Setting node password for domain members to connect domain-controller (host)'
+  xml:
+    path: '{{ wildfly_base }}/domain/configuration/host.xml'
+    xpath: 'host/management/security-realms/security-realm/server-identities/secret/@value'
+    value: '{{ wildfly_node_password | b64encode }}'
+  when: wildfly_role == 'domain-master-slave'
 
 - name: configure domain server logging (1)
   lineinfile:
