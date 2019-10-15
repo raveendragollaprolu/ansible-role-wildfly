@@ -165,15 +165,15 @@
     - name: 'Setting domain-controller to use native port (2)'
       xml:
         path: '{{ wildfly_base }}/domain-controller/configuration/host-master.xml'
-        xpath: '/h:host/management/management-interfaces/native-interface/security-realm'
+        xpath: '/h:host/management/management-interfaces/native-interface/socket'
         namespaces:
           h: 'urn:jboss:domain:10.0'
-        attribute: 'socket interface'
+        attribute: 'interface'
         value: 'management'
     - name: 'Setting domain-controller to use native port (3)'
       xml:
         path: '{{ wildfly_base }}/domain-controller/configuration/host-master.xml'
-        xpath: '/h:host/management/management-interfaces/native-interface/security-realm'
+        xpath: '/h:host/management/management-interfaces/native-interface/socket'
         namespaces:
           h: 'urn:jboss:domain:10.0'
         attribute: 'port'
