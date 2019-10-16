@@ -9,10 +9,19 @@
     mode: '0750'
   when: wildfly_role == 'domain-master' or wildfly_role == 'domain-master-slave'
 
-- name: copy wildfly properties file
+- name: create wildfly domain server properties directory
+  file:
+    path: '{{ wildfly_base }}/domain/configuration/properties/'
+    state: directory
+    owner: '{{ wildfly_user }}'
+    group: '{{ wildfly_group }}'
+    mode: '0750'
+  when: wildfly_role == 'domain-slave' or wildfly_role == 'domain-master-slave'
+
+- name: copy wildfly domain properties file
   template:
     src: wildfly.properties.j2
-    dest: '{{ wildfly_base }}/domain/configuration/wildfly.properties'
+    dest: '{{ wildfly_base }}/domain/configuration/properties/wildfly-node.properties'
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     mode: '0640'

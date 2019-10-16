@@ -9,7 +9,7 @@
     group: '{{ wildfly_group }}'
     mode: '0750'
 
-- name: copy wildfly configuration
+- name: copy wildfly domain configuration
   template:
     src: wildfly.conf.j2
     dest: '{{ wildfly_conf_dir }}/{{ wildfly_instance_name }}.conf'

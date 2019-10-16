@@ -1,5 +1,11 @@
+#!/bin/bash
 
 JAVA_OPTS="-Xms256M -Xmx2048M -Djava.net.preferIPv4Stack=true"
 PROCESS_CONTROLLER_JAVA_OPTS="\$JAVA_OPTS"
 HOST_CONTROLLER_JAVA_OPTS="\$JAVA_OPTS"
 export LANG=hu_HU
+
+for PROP in ${JBOSS_HOME}/domain/configuration/properties/*.properties
+do
+    cat $PROP > ${JBOSS_HOME}/domain/configuration/wildfly.properties
+done
