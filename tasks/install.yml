@@ -12,7 +12,8 @@
       user:
         name: '{{ wildfly_user }}'
         group: '{{ wildfly_group }}'
-        createhome: false
+        createhome: "{% if wildfly_home == '' %}false{%else%}true{%endif%}"
+        home: "{% if wildfly_home == '' %}{{ omit }}{%else%}{{ wildfly_data }}{%endif%}"
         shell: "{{ wildfly_user_shell |default(omit) }}"
         state: present
         system: true

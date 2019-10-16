@@ -37,7 +37,7 @@ or undefine them and the user creation task will be skipped. You can also set
 the variable `wildfly_management_user_overwrite` to `no` to avoid the user
 creation or override and have the correct change status.
 
-Defaults:
+Available variables are listed below, along with default values (see `defaults/main.yml`):
 
     wildfly_version: 11.0.1.Final
 
@@ -53,6 +53,13 @@ Defaults:
     wildfly_download_dir: /tmp
 
     wildfly_install_dir: /opt
+    wildlfy_data: ''
+
+Locaton of optional data folder. The data directory is available for use by services that want to store content
+in the file system. It holds persistent data for services intended to survive a server restart. Serveral Wildfly
+services, such as the embedded Hypersonic database instance, store data here.
+Wildfly parameter name is 'jboss.server.data.dir'.
+
     wildfly_dir: "{{ wildfly_install_dir }}/{{ wildfly_name }}"
 
     wildfly_console_log_dir: "/var/log/wildfly"
