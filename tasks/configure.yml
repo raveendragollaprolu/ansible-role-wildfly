@@ -337,7 +337,7 @@
     - name: enable and start the standalone service
       service:
         name: '{{ wildfly_instance_name }}'
-        state: started
+        state: restarted
         enabled: '{{ wildfly_service_enabled }}'
     - name: wait for wildfly to start
       wait_for:
@@ -353,7 +353,7 @@
     - name: enable and start the domain controller service
       service:
         name: '{{ wildfly_dc_instance_name }}'
-        state: started
+        state: restarted
         enabled: '{{ wildfly_service_enabled }}'
     - name: wait for wildfly domain controller to start
       wait_for:
@@ -370,7 +370,7 @@
     - name: enable and start the domain service
       service:
         name: '{{ wildfly_instance_name }}'
-        state: started
+        state: restarted
         enabled: '{{ wildfly_service_enabled }}'
     - name: wait for wildfly to start
       wait_for:
