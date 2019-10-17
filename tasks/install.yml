@@ -1,23 +1,6 @@
 ---
 # task file for wildfly
 
-- block:
-    - name: create wildfly group
-      group:
-        name: '{{ wildfly_group }}'
-        system: true
-        state: present
-
-    - name: create wildfly user
-      user:
-        name: '{{ wildfly_user }}'
-        group: '{{ wildfly_group }}'
-        createhome: false
-        shell: "{{ wildfly_user_shell |default(omit) }}"
-        state: present
-        system: true
-  when: wildfly_manage_user
-
 - name: create wildfly log directory
   file:
     path: '{{ wildfly_console_log_dir }}'
@@ -37,7 +20,6 @@
     copy: false
     creates: "{{ wildfly_dir }}/jboss-modules.jar"
   when: not wildfly_installed.stat.exists or force_wildfly_install
-
 
 - name: create wildfly link directory
   file:
