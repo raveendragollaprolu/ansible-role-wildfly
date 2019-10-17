@@ -105,6 +105,10 @@ Wildfly parameter name is 'jboss.server.data.dir'.
     # wildfly_management_user: admin
     # wildfly_management_password: admin
 
+    wildfly_user_shell: ''
+
+Specifly the Wildfly Linux user's default Shell. Can be '' or a Shell like '/bin/bash'. The role creates the required Wildfly user and group only when wildfly_manage_user is set to true.
+
 ## Dependencies
 
 None.
