@@ -19,7 +19,7 @@
         group: '{{ wildfly_group }}'
         createhome: '{% if wildfly_data | length > 0  %}true{% else %}false{% endif %}'
         home: '{% if wildfly_data | length > 0  %}{{ wildfly_data }}{% else %}{{ omit }}{% endif %}'
-        shell: "{{ wildfly_user_shell |default(omit) }}"
+        shell: '{% if wildfly_user_shell | length > 0  %}{{ wildfly_user_shell }}{% else %}{{ omit }}{% endif %}'
         state: present
         system: true
   when: wildfly_manage_user
