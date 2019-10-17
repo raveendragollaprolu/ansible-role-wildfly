@@ -1,24 +1,6 @@
 ---
 # task file for wildfly
 
-- block:
-    - name: create wildfly group
-      group:
-        name: '{{ wildfly_group }}'
-        system: true
-        state: present
-
-    - name: create wildfly user
-      user:
-        name: '{{ wildfly_user }}'
-        group: '{{ wildfly_group }}'
-        createhome: "{% if wildfly_data | length > 0  %}true{% else %}false{% endif %}"
-        home: "{% if wildfly_data | length > 0  %}{{ wildfly_data }}{% else %}{{ omit }}{% endif %}"
-        shell: "{{ wildfly_user_shell |default(omit) }}"
-        state: present
-        system: true
-  when: wildfly_manage_user
-
 - name: create wildfly log directory
   file:
     path: '{{ wildfly_console_log_dir }}'
