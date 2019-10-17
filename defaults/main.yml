@@ -25,6 +25,7 @@ wildfly_version: 17.0.1.Final  # supported versions: 9.0.2.Final; 10.0.0.Final; 
 
 wildfly_manage_user: true
 wildfly_user: wildfly
+wildfly_user_shell: ''
 wildfly_group: wildfly
 
 wildfly_base_download_url: http://download.jboss.org/wildfly
