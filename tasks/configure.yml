@@ -17,7 +17,7 @@
     group: root
     mode: '0640'
   notify:
-    - restart wildfly
+    - restart wildfly services
     - change data mode
 
 - name: copy wildfly domain-controller configuration
@@ -64,6 +64,16 @@
     - logging.properties
   when: wildfly_mode == 'domain'
 
+- name: 'Setting node password for domain members to connect domain-controller for host slaves'
+  lineinfile:
+    dest: '{{ wildfly_base }}/domain/configuration/host-slave.xml'
+    line: '<secret value="{{ wildfly_node_password | b64encode }}" />'
+    regexp: '^[ \t]*<secret[ \t]*value=".*"[ \t]*\/>'
+  notify: restart wildfly services
+  when: wildfly_role in [ 'domain-slave', 'domain-master-slave' ]
+  tags:
+    - wildfly_domain_member
+
 # - block:
 #     - name: 'Setting node password for domain members to connect domain-controller for host slaves (1)'
 #       xml:
@@ -90,37 +100,33 @@
 #         value: '{{ wildfly_node_password | b64encode }}'
 #   when: wildfly_role in [ 'domain-slave', 'domain-master-slave' ]
 
-- name: configure domain server logging (1)
-  lineinfile:
-    dest: '{{ wildfly_base }}/domain/configuration/logging.properties'
-    regexp: '^handler.BOOT_FILE.properties=.*$'
-    line: 'handler.BOOT_FILE.properties=autoFlush,append,fileName'
-    state: present
-  when: wildfly_mode == 'domain'
-  notify:
-    - restart wildfly services
+- block:
+    - name: configure domain server logging (1)
+      lineinfile:
+        dest: '{{ wildfly_base }}/domain/configuration/logging.properties'
+        regexp: '^handler.BOOT_FILE.properties=.*$'
+        line: 'handler.BOOT_FILE.properties=autoFlush,append,fileName'
+        state: present
+      notify: restart wildfly services
 
-- name: configure domain server logging (2)
-  lineinfile:
-    dest: '{{ wildfly_base }}/domain/configuration/logging.properties'
-    regexp: '^handler.BOOT_FILE.append=.*$'
-    line: 'handler.BOOT_FILE.append=true'
-    insertafter: 'handler.BOOT_FILE.properties=autoFlush,append,fileName'
-    state: present
-  when: wildfly_mode == 'domain'
-  notify:
-    - restart wildfly services
+    - name: configure domain server logging (2)
+      lineinfile:
+        dest: '{{ wildfly_base }}/domain/configuration/logging.properties'
+        regexp: '^handler.BOOT_FILE.append=.*$'
+        line: 'handler.BOOT_FILE.append=true'
+        insertafter: 'handler.BOOT_FILE.properties=autoFlush,append,fileName'
+        state: present
+      notify: restart wildfly services
 
-- name: configure domain-controller server logging (3)
-  lineinfile:
-    dest: '{{ wildfly_base }}/domain/configuration/logging.properties'
-    regexp: '^handler.BOOT_FILE.suffix=.*$'
-    line: 'handler.BOOT_FILE.suffix=.yyyy-MM-dd'
-    insertafter: 'handler.BOOT_FILE.formatter=PATTERN'
-    state: present
+    - name: configure domain-controller server logging (3)
+      lineinfile:
+        dest: '{{ wildfly_base }}/domain/configuration/logging.properties'
+        regexp: '^handler.BOOT_FILE.suffix=.*$'
+        line: 'handler.BOOT_FILE.suffix=.yyyy-MM-dd'
+        insertafter: 'handler.BOOT_FILE.formatter=PATTERN'
+        state: present
+      notify: restart wildfly services
   when: wildfly_mode == 'domain'
-  notify:
-    - restart wildfly services
 
 - name: 'create domain-controller user configuration in: {{ wildfly_base }}/domain-controller/configuration'
   copy:
@@ -151,66 +157,67 @@
     - domain.xml
     - host-master.xml
     - logging.properties
-  when: wildfly_role == 'domain-master-slave' or 'domain-master'
+  when: wildfly_role in [ 'domain-master-slave', 'domain-master' ]
 
-# - block:
-#     - name: 'Setting domain-controller to use native port (1)'
-#       xml:
-#         path: '{{ wildfly_base }}/domain-controller/configuration/host-master.xml'
-#         xpath: '/h:host/management/management-interfaces/native-interface'
-#         namespaces:
-#           h: 'urn:jboss:domain:10.0'
-#         attribute: 'security-realm'
-#         value: 'ManagementRealm'
-#     - name: 'Setting domain-controller to use native port (2)'
-#       xml:
-#         path: '{{ wildfly_base }}/domain-controller/configuration/host-master.xml'
-#         xpath: '/h:host/management/management-interfaces/native-interface/socket'
-#         namespaces:
-#           h: 'urn:jboss:domain:10.0'
-#         attribute: 'interface'
-#         value: 'management'
-#     - name: 'Setting domain-controller to use native port (3)'
-#       xml:
-#         path: '{{ wildfly_base }}/domain-controller/configuration/host-master.xml'
-#         xpath: '/h:host/management/management-interfaces/native-interface/socket'
-#         namespaces:
-#           h: 'urn:jboss:domain:10.0'
-#         attribute: 'port'
-#         value: '${jboss.management.native.port:9999}'
-#   when: wildfly_role == 'domain-master-slave' or 'domain-master'
+- block:
+    - name: 'Setting domain-controller to use native port (1)'
+      xml:
+        path: '{{ wildfly_base }}/domain-controller/configuration/host-master.xml'
+        xpath: '/h:host/management/management-interfaces/native-interface'
+        namespaces:
+          h: 'urn:jboss:domain:10.0'
+        attribute: 'security-realm'
+        value: 'ManagementRealm'
+      notify: restart wildfly services
+    - name: 'Setting domain-controller to use native port (2)'
+      xml:
+        path: '{{ wildfly_base }}/domain-controller/configuration/host-master.xml'
+        xpath: '/h:host/management/management-interfaces/native-interface/socket'
+        namespaces:
+          h: 'urn:jboss:domain:10.0'
+        attribute: 'interface'
+        value: 'management'
+      notify: restart wildfly services
+    - name: 'Setting domain-controller to use native port (3)'
+      xml:
+        path: '{{ wildfly_base }}/domain-controller/configuration/host-master.xml'
+        xpath: '/h:host/management/management-interfaces/native-interface/socket'
+        namespaces:
+          h: 'urn:jboss:domain:10.0'
+        attribute: 'port'
+        value: '${jboss.management.native.port:9999}'
+      notify: restart wildfly services
+  when: wildfly_role in [ 'domain-master-slave', 'domain-master' ]
+  tags:
+    - wildfly_domain_controller
 
-- name: configure domain-controller server logging (1)
-  lineinfile:
-    dest: '{{ wildfly_base }}/domain-controller/configuration/logging.properties'
-    regexp: '^handler.BOOT_FILE.properties=.*$'
-    line: 'handler.BOOT_FILE.properties=autoFlush,append,fileName'
-    state: present
+- block:
+    - name: configure domain-controller server logging (1)
+      lineinfile:
+        dest: '{{ wildfly_base }}/domain-controller/configuration/logging.properties'
+        regexp: '^handler.BOOT_FILE.properties=.*$'
+        line: 'handler.BOOT_FILE.properties=autoFlush,append,fileName'
+        state: present
+      notify: restart wildfly services
+    - name: configure domain-controller server logging (2)
+      lineinfile:
+        dest: '{{ wildfly_base }}/domain-controller/configuration/logging.properties'
+        regexp: '^handler.BOOT_FILE.append=.*$'
+        line: 'handler.BOOT_FILE.append=true'
+        insertafter: 'handler.BOOT_FILE.properties=autoFlush,append,fileName'
+        state: present
+      notify: restart wildfly services
+    - name: configure domain-controller server logging (3)
+      lineinfile:
+        dest: '{{ wildfly_base }}/domain-controller/configuration/logging.properties'
+        regexp: '^handler.BOOT_FILE.suffix=.*$'
+        line: 'handler.BOOT_FILE.suffix=.yyyy-MM-dd'
+        insertafter: 'handler.BOOT_FILE.formatter=PATTERN'
+        state: present
+      notify: restart wildfly services
   when: wildfly_role == 'domain-master-slave'
-  notify:
-    - restart wildfly services
-
-- name: configure domain-controller server logging (2)
-  lineinfile:
-    dest: '{{ wildfly_base }}/domain-controller/configuration/logging.properties'
-    regexp: '^handler.BOOT_FILE.append=.*$'
-    line: 'handler.BOOT_FILE.append=true'
-    insertafter: 'handler.BOOT_FILE.properties=autoFlush,append,fileName'
-    state: present
-  when: wildfly_role == 'domain-master-slave'
-  notify:
-    - restart wildfly services
-
-- name: configure domain-controller server logging (3)
-  lineinfile:
-    dest: '{{ wildfly_base }}/domain-controller/configuration/logging.properties'
-    regexp: '^handler.BOOT_FILE.suffix=.*$'
-    line: 'handler.BOOT_FILE.suffix=.yyyy-MM-dd'
-    insertafter: 'handler.BOOT_FILE.formatter=PATTERN'
-    state: present
-  when: wildfly_role == 'domain-master-slave'
-  notify:
-    - restart wildfly services
+  tags:
+    - wildfly_domain_controller
 
 - name: 'create standalone user configuration in: {{ wildfly_base }}/standalone/configuration'
   copy:
@@ -251,7 +258,7 @@
     group: '{{ wildfly_group }}'
     mode: '0640'
   notify:
-    - restart wildfly
+    - restart wildfly services
     - change data mode
 
 - name: copy wildfly domain domain-controller configuration
