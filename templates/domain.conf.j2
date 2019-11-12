@@ -1,11 +1,18 @@
 #!/bin/bash
-
+JBOSS_WILDFLY_PROP=${JBOSS_DOMAIN_DIR}/configuration/wildfly.properties
 JAVA_OPTS="-Xms256M -Xmx2048M -Djava.net.preferIPv4Stack=true"
-PROCESS_CONTROLLER_JAVA_OPTS="\$JAVA_OPTS"
-HOST_CONTROLLER_JAVA_OPTS="\$JAVA_OPTS"
+PROCESS_CONTROLLER_JAVA_OPTS="$JAVA_OPTS"
+HOST_CONTROLLER_JAVA_OPTS="$JAVA_OPTS"
+
 export LANG=hu_HU
 
-for PROP in ${JBOSS_HOME}/domain/configuration/properties/*.properties
+echo -e "# Generated during startup. Do NOT edit manually! Timestamp: $(date "+%Y-%m-%d %H:%M:%S")" >  ${JBOSS_WILDFLY_PROP}
+
+for PROP in ${JBOSS_DOMAIN_DIR}/configuration/properties/*.properties ${JBOSS_HOME}/bin/domain.properties
 do
-    cat $PROP > ${JBOSS_HOME}/domain/configuration/wildfly.properties
+  echo "Including property file: ${PROP}"
+  echo -e "\n\n# Including property file: ${PROP}\n" | tee -a ${JBOSS_WILDFLY_PROP}
+  cat $PROP >> ${JBOSS_WILDFLY_PROP}
 done
+
+SERVER_OPTS="${SERVER_OPTS} -P ${JBOSS_WILDFLY_PROP}"
