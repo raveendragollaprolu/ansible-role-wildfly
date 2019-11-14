@@ -8,10 +8,10 @@ JBOSS_HOME="{{ wildfly_link_dir if wildfly_create_symlink else wildfly_dir }}"
 JBOSS_USER="{{ wildfly_user }}"
 
 ## The mode WildFly should start, standalone or domain
-JBOSS_MODE={{ wildfly_mode }}
+JBOSS_MODE="{{ wildfly_mode }}"
 
-JBOSS_DOMAIN_CONFIG={{ wildfly_config_file }}
-JBOSS_HOST_CONFIG=host-master.xml
+JBOSS_DOMAIN_CONFIG="{{ wildfly_config_file }}"
+JBOSS_HOST_CONFIG="host-master.xml"
 
 {% if wildfly_startup_wait %}
 ## The amount of time to wait for startup
@@ -32,13 +32,13 @@ JBOSS_OPTS="-P=${JBOSS_HOME}/domain-controller/configuration/wildfly.properties"
 
 {% if wildfly_java_home  %}
 ## Location of Java home
-JAVA_HOME={{ wildfly_java_home }}
+JAVA_HOME="{{ wildfly_java_home }}"
 
 {% endif %}
-JBOSS_PIDFILE=/var/run/wildfly/{{ wildfly_dc_instance_name }}.pid
-JBOSS_LOCKFILE=/var/lock/subsys/{{ wildfly_dc_instance_name }}
+JBOSS_PIDFILE="/var/run/wildfly/{{ wildfly_dc_instance_name }}.pid"
+JBOSS_LOCKFILE="/var/lock/subsys/{{ wildfly_dc_instance_name }}"
 
 export JAVA_HOME="${JAVA_HOME}"
-export PATH=$JAVA_HOME/bin:$PATH
-export JBOSS_DOMAIN_DIR=${JBOSS_HOME}/domain-controller
-export DOMAIN_CONF=${JBOSS_HOME}/domain-controller/configuration/domain-dc.conf
+export PATH="${JAVA_HOME}/bin:${PATH}"
+export JBOSS_DOMAIN_DIR="${JBOSS_HOME}/domain-controller"
+export DOMAIN_CONF="${JBOSS_HOME}/domain-controller/configuration/domain-dc.conf"
