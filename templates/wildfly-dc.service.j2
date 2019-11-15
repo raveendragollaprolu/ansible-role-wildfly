@@ -1,13 +1,24 @@
 [Unit]
-Description=WildFly application server
-After=network.target
+Description=WildFly Domain Controller {{ wildfly_system_name }} application server
+After=syslog.target network.target
+Before=httpd.service
 
 [Service]
 Type=simple
-User={{ wildfly_user }}
-Group={{ wildfly_group }}
+Environment=LAUNCH_JBOSS_IN_BACKGROUND=1
+Environment=JBOSS_CONF={{ wildfly_conf_dir }}/{{ wildfly_dc_instance_name }}.conf
 EnvironmentFile={{ wildfly_conf_dir }}/{{ wildfly_dc_instance_name }}.conf
-ExecStart={{ wildfly_link_dir if wildfly_create_symlink else wildfly_dir }}/bin/{{ wildfly_mode }}.sh $JBOSS_OPTS
+
+User=root
+Group={{ wildfly_group }}
+
+PIDFile=/var/run/wildfly/{{ wildfly_dc_instance_name }}.pid
+
+LimitNOFILE=102642
+
+ExecStart={{ wildfly_link_dir}}/{{ wildfly_init_src_path }}/init.d/wildfly-init-{{ ansible_os_family | lower }}.sh start
+ExecStop={{ wildfly_link_dir}}/{{ wildfly_init_src_path }}/init.d/wildfly-init-{{ ansible_os_family | lower }}.sh stop
+StandardOutput=null
 
 [Install]
 WantedBy=multi-user.target
