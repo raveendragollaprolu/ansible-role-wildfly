@@ -16,9 +16,6 @@ jboss.server.temp.dir={{ wildfly_download_dir }}
 {% if wildfly_node_name %}
 jboss.node.name={{ wildfly_node_name }}
 {% endif %}
-{% if wildfly_messaging_group_address %}
-jboss.messaging.group.address={{ wildfly_messaging_group_address }}
-{% endif %}
 
 jboss.domain.master.address={{ wildfly_master_address }}
 jboss.domain.master.port={{ wildfly_master_http_port }}
