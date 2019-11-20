@@ -82,7 +82,7 @@
     - name: copy downloaded wildfly tar file
       copy:
         src: '{{ wildfly_download_file }}'
-        dest: '{{ wildfly_archive }}'
+        dest: '{{ wildfly_download_dir }}/{{ wildfly_download_file }}'
         mode: 0644
       when: (not wildfly_is_download_file.stat.exists or wildfly_installer_force_overwrite)
   when: wildfly_installer_local
