@@ -39,6 +39,12 @@ creation or override and have the correct change status.
 
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
+
+    wildfly_service_status: 'restarted'
+
+Specify the state of service. Possible values are: reloaded, restarted, started, stopped. Default is restarted. The started and stopped state are idempotent actions that will not run commands
+unless necessary. The restarted state will always bounce the service and reloaded state will always reload.
+
     wildfly_version: 11.0.1.Final
 
     wildfly_user: wildfly

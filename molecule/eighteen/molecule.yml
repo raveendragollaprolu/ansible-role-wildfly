@@ -46,6 +46,8 @@ provisioner:
         wildfly_installer_force_download: true
         wildfly_installer_local: true
         wildfly_manage_firewalld: false
+        wildfly_service_status: 'started'
+        wildfly_manages:service: false
         wildfly_management_users:
           - {name: 'david', password: 'ruomlig'}
           - {name: 'roger', password: 'sretaw'}
