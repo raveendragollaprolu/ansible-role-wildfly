@@ -82,7 +82,7 @@ wildfly_cluser_members:
  - '{{ wildfly_master_address }}'
 
 wildfly_modcluster_address: '224.0.{{ wildfly_master_address.split('.')[2:4] | join('.') }}'
-wildfly_multicast_address: '224.0.{{ wildfly_master_address.split('.')[2:4] | join('.') }}'
+wildfly_multicast_address: '230.0.{{ wildfly_master_address.split('.')[2:4] | join('.') }}'
 
 wildfly_management_users:
  - name: admin
