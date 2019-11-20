@@ -73,13 +73,13 @@ wildfly_management_https_port: 9993
 wildfly_bind_address_unsecure: '{{ ansible_default_ipv4.address }}'
 wildfly_bind_address_private: '{{ ansible_default_ipv4.address }}'
 
-wildfly_master_address: 127.0.0.1
+wildfly_master_address: '{{ ansible_default_ipv4.address }}'
 wildfly_master_port: 19999
 wildfly_master_http_port: 19990
 wildfly_master_https_port: 19993
 
 wildfly_cluser_members:
- - "{{ wildfly_master_address }}"
+ - '{{ wildfly_master_address }}'
 
 wildfly_modcluster_address: 224.0.0.1
 wildfly_multicast_address: 230.0.0.1
