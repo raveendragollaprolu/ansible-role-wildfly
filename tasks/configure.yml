@@ -367,6 +367,7 @@
     - name: cat file
       command: '{{ wildfly_console_log }}'
       ignore_errors: true
+      changed_when: false
   when: wildfly_manage_service and wildfly_mode == 'standalone'
 
 - block:
@@ -383,6 +384,7 @@
     - name: cat file
       command: 'cat {{ wildfly_console_dc_log }}'
       ignore_errors: true
+      changed_when: false
   when: wildfly_manage_service and wildfly_mode == 'domain' and
         ( wildfly_role == 'domain-master-slave' or wildfly_role == 'domain-master')
 
@@ -400,6 +402,7 @@
     - name: cat file
       command: 'cat {{ wildfly_console_log }}'
       ignore_errors: true
+      changed_when: false
   when: wildfly_manage_service and wildfly_mode == 'domain' and
         (wildfly_role == 'domain-master-slave' or wildfly_role == 'domain-slave' or wildfly_role == 'domain')
 
