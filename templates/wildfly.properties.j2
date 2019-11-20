@@ -1,6 +1,12 @@
 # System properties for wildfly
 jboss.bind.address={{ wildfly_bind_address }}
 jboss.bind.address.management={{ wildfly_management_bind_address }}
+{% if wildfly_bind_address_unsecure %}
+jboss.bind.address.unsecure={{ wildfly_bind_address_unsecure }}
+{% endif %}
+{% if wildfly_bind_address_private %}
+jboss.bind.address.private={{ wildfly_bind_address_private }}
+{% endif %}
 
 jboss.http.port={{ wildfly_http_port }}
 jboss.https.port={{ wildfly_https_port }}
@@ -9,9 +15,6 @@ jboss.server.temp.dir={{ wildfly_download_dir }}
 
 {% if wildfly_node_name %}
 jboss.node.name={{ wildfly_node_name }}
-{% endif %}
-{% if wildfly_bind_address_unsecure %}
-jboss.bind.address.unsecure={{ wildfly_bind_address_unsecure }}
 {% endif %}
 {% if wildfly_messaging_group_address %}
 jboss.messaging.group.address={{ wildfly_messaging_group_address }}
@@ -22,6 +25,9 @@ jboss.domain.master.port={{ wildfly_master_http_port }}
 
 {% if wildfly_modcluster_address %}
 jboss.default.modcluster.address={{ wildfly_modcluster_address }}
+{% endif %}
+{% if wildfly_modcluster_address %}
+jboss.modcluster.multicast.address={{ wildfly_modcluster_address }}
 {% endif %}
 {% if wildfly_multicast_address %}
 jboss.default.multicast.address={{ wildfly_multicast_address }}

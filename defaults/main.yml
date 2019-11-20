@@ -55,23 +55,23 @@ wildfly_conf_dir: /etc/wildfly
 wildfly_config_file: '{{ wildfly_mode }}.xml'
 wildfly_config_file_force_overwrite: false
 
-wildfly_startup_wait: ''
-wildfly_shutdown_wait: ''
+wildfly_startup_wait: 60
+wildfly_shutdown_wait: 60
 
 wildfly_node_name: '{{ ansible_hostname }}'
 wildfly_node_password: 'NX4dgWihp9QpHf6NLJtAX0qUq8oGQlSNfPdB'
 
-wildfly_bind_address: 0.0.0.0
+wildfly_bind_address: {{ ansible_default_ipv4.address }}
 wildfly_http_port: 8080
 wildfly_https_port: 8443
 
-wildfly_management_bind_address: 0.0.0.0
+wildfly_management_bind_address: {{ ansible_default_ipv4.address }}
 wildfly_management_port: 9999
 wildfly_management_http_port: 9990
 wildfly_management_https_port: 9993
 
-wildfly_bind_address_unsecure: ''
-wildfly_messaging_group_address: ''
+wildfly_bind_address_unsecure: {{ ansible_default_ipv4.address }}
+wildfly_bind_address_private: {{ ansible_default_ipv4.address }}
 
 wildfly_master_address: 127.0.0.1
 wildfly_master_port: 19999
