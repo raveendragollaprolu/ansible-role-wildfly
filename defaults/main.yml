@@ -6,7 +6,7 @@ wildfly_manage_firewalld: true
 wildfly_manage_data: true
 wildfly_manage_service: true
 wildfly_service_enabled: true
-wildfly_service_status: 'restarted' #  Possible values are: reloaded, restarted, started, stopped
+wildfly_service_status: 'restarted'  # Possible values are: reloaded, restarted, started, stopped
 
 force_wildfly_install: false
 
