@@ -24,6 +24,14 @@
         system: true
   when: wildfly_manage_user
 
+- name: 'create wildfly system home directory: {{ wildfly_system_home }}'
+  file:
+    path: '{{ wildfly_system_home }}'
+    owner: '{{ wildfly_user }}'
+    group: '{{ wildfly_group }}'
+    mode: '{{ wildfly_dir_mode }}'
+    state: directory
+
 - name: 'create application directory: {{ wildfly_base }}'
   file:
     path: '{{ wildfly_base }}'

@@ -7,7 +7,6 @@
     owner: '{{ wildfly_user }}'
     group: '{{ wildfly_group }}'
     mode: '{{ wildfly_dir_mode }}'
-    recurse: true
     state: directory
 
 - name: 'unarchive downloaded {{ wildfly_download_file }} file'
