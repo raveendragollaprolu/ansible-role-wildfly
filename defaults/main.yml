@@ -59,7 +59,6 @@ wildfly_config_file_force_overwrite: false
 wildfly_startup_wait: 60
 wildfly_shutdown_wait: 60
 
-wildfly_node_name: '{{ ansible_hostname }}'
 wildfly_node_password: 'NX4dgWihp9QpHf6NLJtAX0qUq8oGQlSNfPdB'
 
 wildfly_bind_address: '{{ ansible_default_ipv4.address }}'
