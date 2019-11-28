@@ -141,6 +141,28 @@ This role was created in 2015 by Juan Diego Romero González, additional work in
 If you have any question, do not hesitate and drop me a line.
 If you found a bug, or have a feature request, you can [fill an issue](https://github.com/KAMI911/ansible-role-wildfly/issues).
 
+### Using as a submudule of an AWX playbook
+
+#### Add as a submodule
+
+```
+git submodule add --force git@github.com:KAMI911/ansible-role-wildfly.git roles/wildfly
+```
+
+#### Update as sumodule
+
+Update only this submodule
+
+```
+git submodule update --remote roles/wildfly/
+```
+
+Update all submodules:
+
+```
+git submodule foreach git pull origin master
+```
+
 ## Admin User
 
 It's recommended that you create Wildfly's admin user separately as follows:
