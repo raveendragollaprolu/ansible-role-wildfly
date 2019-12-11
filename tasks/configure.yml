@@ -309,7 +309,7 @@
 - block:
     - name: copy wildfly systemd unit file
       template: src=wildfly.service.j2 dest={{ wildfly_systemd_dir }}/{{ wildfly_instance_name }}.service owner=root
-                group=root mode=0640
+                group=root mode=0644
       notify:
         - restart wildfly services
         - change data mode
@@ -322,7 +322,7 @@
 - block:
     - name: copy wildfly domain controller systemd unit file
       template: src=wildfly-dc.service.j2 dest={{ wildfly_systemd_dir }}/{{ wildfly_dc_instance_name }}.service owner=root
-                group=root mode=0640
+                group=root mode=0644
       notify:
         - restart wildfly services
         - change data mode
