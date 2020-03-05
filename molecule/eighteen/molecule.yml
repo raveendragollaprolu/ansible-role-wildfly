@@ -3,10 +3,6 @@ dependency:
   name: galaxy
 driver:
   name: docker
-lint:
-  name: yamllint
-  options:
-    config-file: molecule/default/yaml-lint.yml
 platforms:
   - name: wildfly-centos7-18.0.0-domain-controller
     image: milcom/centos7-systemd
