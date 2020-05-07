@@ -17,3 +17,5 @@ wildfly_init_src_path: '{{ "docs/contrib/scripts" if wildfly_major_v is version(
 
 wildfly_init_dir: /etc/init.d
 wildfly_systemd_dir: /usr/lib/systemd/system
+
+python_version: ''
