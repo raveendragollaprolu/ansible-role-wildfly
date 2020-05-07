@@ -2,7 +2,23 @@
 # task file for wildfly
 
 - name: Install OpenJDK
-  yum:
+  package:
     name: java-1.8.0-openjdk-headless
     state: present
   when: wildfly_manage_java_pkg
+
+- name: setting distro fact
+  set_fact:
+    python_version: 3
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_distribution_major_version >= 8
+  tags:
+    - python3
+    - python_package
+
+- name: Install Python lxml module
+  package:
+    name: 'python{{ python_version }}-lxml'
+    state: present
+  when: wildfly_manage_python_pkg

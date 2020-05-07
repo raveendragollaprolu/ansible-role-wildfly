@@ -70,7 +70,9 @@
     line: '<secret value="{{ wildfly_node_password | b64encode }}" />'
     regexp: '^[ \t]*<secret[ \t]*value=".*"[ \t]*\/>'
   notify: restart wildfly services
-  when: wildfly_role in [ 'domain-slave', 'domain-master-slave' ]
+  when:
+    - wildfly_mode == 'domain'
+    - wildfly_role in [ 'domain-slave', 'domain-master-slave' ]
   tags:
     - wildfly_domain_member
 

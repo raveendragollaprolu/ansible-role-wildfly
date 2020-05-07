@@ -2,6 +2,8 @@
 # defaults file for wildfly
 
 wildfly_manage_java_pkg: true
+wildfly_manage_python_pkg: true
+
 wildfly_manage_firewalld: true
 wildfly_manage_data: true
 wildfly_manage_service: true
