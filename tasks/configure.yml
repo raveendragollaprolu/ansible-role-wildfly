@@ -281,6 +281,28 @@
     src: '{{ wildfly_conf_dir }}/{{ wildfly_dc_instance_name }}.conf'
     dest: /etc/default/{{ wildfly_dc_instance_name }}.conf
 
+- name: 'prepare daily wildfly logrotate'
+  template:
+    dest: '/etc/logrotate.d/{{ wildfly_system_name }}'
+    src: "logrotate.j2"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+
+- name: 'check cron.d folder'
+  stat:
+    path: /etc/cron.d
+  register: cron_d_dir
+
+- name: 'prepare daily logrotate cron.d task'
+  template:
+    dest: '/etc/cron.d/{{ wildfly_system_name }}-logs'
+    src: "wildfly-logs.j2"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  when: cron_d_dir.stat.exists
+
 - include: configure-properties.yml
 
 - name: create template to upstream init script

@@ -1,0 +1,24 @@
+# {{ ansible_managed }}
+{% if wildfly_mode == 'domain' %}
+{{ wildfly_base }}/log/*.log
+{% endif %}
+{% if wildfly_role == 'domain-slave' or wildfly_role == 'domain-master-slave' %}
+{{ wildfly_base }}/domain/log/*.log
+{% endif %}
+{% if wildfly_role == 'domain-master' or wildfly_role == 'domain-master-slave' %}
+{{ wildfly_base }}/domain-controller/log/*.log
+{% endif %}
+{
+  su {{ wildfly_user }} {{ wildfly_group }}
+  daily
+  rotate 730
+  copytruncate
+  compress
+  delaycompress
+  missingok
+  notifempty
+  minsize {{ wildfly_log_rotate_minsize }}
+  compresscmd {{ wildfly_log_compress_command }}
+  compressoptions "{{ wildfly_log_compress_options }}"
+  compressext {{ wildfly_log_compress_extension }}
+}

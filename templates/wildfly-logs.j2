@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+MAILTO=root
+
+{% if wildfly_role == 'domain-slave' or wildfly_role == 'domain-master-slave' %}
+10 2 * * * {{ wildfly_user }} find {{ wildfly_base }}/domain/servers/*/log/ ! \( -name '*.xz' -o -name '*.gz' \) -mtime +2 -type f -exec xz -T6 -9ev {} \;
+{% elif wildfly_mode == 'standalone' %}
+10 2 * * * {{ wildfly_user }} find {{ wildfly_base }}/standalone/log/ ! \( -name '*.xz' -o -name '*.gz' \) -mtime +2 -type f -exec xz -T6 -9ev {} \;
+{% endif %}

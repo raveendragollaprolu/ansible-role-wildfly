@@ -116,6 +116,30 @@ Wildfly parameter name is 'jboss.server.data.dir'.
     # wildfly_management_user: admin
     # wildfly_management_password: admin
 
+### Wildfly log compression options
+
+    wildfly_log_rotate_minsize: 20K
+
+Log files are rotated when they grow bigger than size bytes, but not before the additionally
+specified time interval (daily, weekly, monthly, or yearly). The related size option is
+ similar except that it is mutually exclusive with the time interval options, and it causes
+log files to be rotated without regard for the last rotation time. When minsize is used,
+both the size and timestamp of a log file are considered.
+
+    wildfly_log_compress_command: '/usr/bin/xz'
+
+Location is the compressor program. Default is xz so the dafault value is '/usr/bin/xz'.
+You can also use for example: '/usr/bin/gzip'.
+
+    wildfly_log_compress_options: '-9e'
+
+Options for compression program. For xz the default is '-9e' that means maximum compression.
+For gzip íou can use for example: '-9'.
+
+    wildfly_log_compress_extension: '.xz'
+
+File extension for logrotate specification. xz is '.xz', and gzip is 'gz'.
+
 ## Dependencies
 
 None.
