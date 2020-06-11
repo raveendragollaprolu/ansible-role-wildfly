@@ -82,7 +82,7 @@
 #         path: '{{ wildfly_base }}/domain/configuration/host-slave.xml'
 #         xpath: '/h:host/management/security-realms/security-realm'
 #         namespaces:
-#           h: 'urn:jboss:domain:10.0'
+#           h: 'urn:jboss:domain:{{ wildfly_file_version }}'
 #         attribute: 'name'
 #         value: 'SlaveRealm'
 #     - name: 'Setting node password for domain members to connect domain-controller for host slaves (2)'
@@ -90,14 +90,14 @@
 #         path: '{{ wildfly_base }}/domain/configuration/host-slave.xml'
 #         xpath: '/h:host/management/security-realms/security-realm/server-identities'
 #         namespaces:
-#           h: 'urn:jboss:domain:10.0'
+#           h: 'urn:jboss:domain:{{ wildfly_file_version }}'
 #         state: present
 #     - name: 'Setting node password for domain members to connect domain-controller for host slaves (3)'
 #       xml:
 #         path: '{{ wildfly_base }}/domain/configuration/host-slave.xml'
 #         xpath: '/h:host/management/security-realms/security-realm/server-identities/secret'
 #         namespaces:
-#           h: 'urn:jboss:domain:10.0'
+#           h: 'urn:jboss:domain:{{ wildfly_file_version }}'
 #         attribute: 'value'
 #         value: '{{ wildfly_node_password | b64encode }}'
 #   when: wildfly_role in [ 'domain-slave', 'domain-master-slave' ]
@@ -167,7 +167,7 @@
         path: '{{ wildfly_base }}/domain-controller/configuration/host-master.xml'
         xpath: '/h:host/h:management/h:management-interfaces/h:native-interface'
         namespaces:
-          h: 'urn:jboss:domain:10.0'
+          h: 'urn:jboss:domain:{{ wildfly_file_version }}'
         attribute: 'security-realm'
         value: 'ManagementRealm'
         pretty_print: true
@@ -178,7 +178,7 @@
         xpath: '/h:host/h:management/h:management-interfaces/h:native-interface'
         input_type: 'xml'
         namespaces:
-          h: 'urn:jboss:domain:10.0'
+          h: 'urn:jboss:domain:{{ wildfly_file_version }}'
         set_children:
           - '<socket interface="management" port="${jboss.management.native.port:{{ wildfly_master_port }}}"/>'
         pretty_print: true

@@ -47,6 +47,10 @@ unless necessary. The restarted state will always bounce the service and reloade
 
     wildfly_version: 11.0.1.Final
 
+    wildfly_file_version: '10.0'
+
+Specify Wildfly config file version. 10-14 is '10.0'; 20 is '13.0'.
+
     wildfly_user: wildfly
 
     wildfly_user_shell: ''
