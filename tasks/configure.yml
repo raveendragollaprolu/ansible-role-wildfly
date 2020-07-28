@@ -143,7 +143,9 @@
     - application-users.properties
     - mgmt-groups.properties
     - mgmt-users.properties
-  when: wildfly_role == 'domain-master-slave'
+  when:
+    - wildfly_mode == 'domain'
+    - wildfly_role in [ 'domain-master', 'domain-master-slave' ]
 
 - name: 'create domain-controller server configuration in: {{ wildfly_base }}/domain-controller/configuration'
   copy:
@@ -159,7 +161,9 @@
     - domain.xml
     - host-master.xml
     - logging.properties
-  when: wildfly_role in [ 'domain-master-slave', 'domain-master' ]
+  when:
+    - wildfly_mode == 'domain'
+    - wildfly_role in [ 'domain-master', 'domain-master-slave' ]
 
 - block:
     - name: 'Setting domain-controller to use native port (1)'
@@ -186,6 +190,22 @@
   when: wildfly_role in [ 'domain-master-slave', 'domain-master' ]
   tags:
     - wildfly_domain_controller
+
+- name: 'Setting domain member to use native port (1)'
+  xml:
+    path: '{{ wildfly_base }}/domain/configuration/host-slave.xml'
+    xpath: '/h:host/h:domain-controller'
+    input_type: 'xml'
+    namespaces:
+      h: 'urn:jboss:domain:{{ wildfly_file_version }}'
+    set_children:
+      - '<remote protocol="remote" host="${jboss.domain.master.address:{{ wildfly_master_address }}}" port="${jboss.management.native.port:{{ wildfly_master_port }}}"" username="{{ wildfly_bind_address }}" security-realm="ManagementRealm" />'
+    pretty_print: true
+  notify:
+    - restart wildfly services
+  when:
+    - wildfly_mode == 'domain'
+    - wildfly_role in [ 'domain-slave', 'domain-master-slave' ]
 
 - block:
     - name: configure domain-controller server logging (1)
