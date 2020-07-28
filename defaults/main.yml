@@ -93,6 +93,15 @@ wildfly_app_users:
  - name: user
    password: rock
 
+wildfly_enable_vault: true
+wildfly_vault_name: my.jks
+wildfly_vault_path: '{{ wildfly_home }}/{{ wildfly_mode }}/configuration/{{ wildfly_keystore_name }}'
+wildfly_vault_alias: my
+wildfly_vault_keystore_password: 'secret'
+wildfly_vault_key_password: 'secret'
+wildfly_vault_keyalg: 'AES'
+wildfly_vault_keysize: 256
+
 wildfly_enable_ssl: false
 wildfly_keystore_name: my.jks
 wildfly_keystore_path: '{{ wildfly_home }}/{{ wildfly_mode }}/configuration/{{ wildfly_keystore_name }}'

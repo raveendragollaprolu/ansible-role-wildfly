@@ -1,0 +1,1 @@
+keytool -genseckey -alias {{ wildfly_vault_alias }} -storetype jceks -keyalg {{ wildfly_vault_alg }} -keysize {{ wildfly_vault_keysize }} -storepass {{ wildfly_vault_keystore_password }} -keypass {{ wildfly_vault_key_password }} -keystore {{ wildfly_vault_path }}
