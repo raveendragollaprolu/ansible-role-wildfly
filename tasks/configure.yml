@@ -199,7 +199,7 @@
     namespaces:
       h: 'urn:jboss:domain:{{ wildfly_file_version }}'
     set_children:
-      - '<remote protocol="remote" host="${jboss.domain.master.address:{{ wildfly_master_address }}}" port="${jboss.management.native.port:{{ wildfly_master_port }}}"" username="{{ wildfly_bind_address }}" security-realm="ManagementRealm" />'
+      - '<remote protocol="remote" host="${jboss.domain.master.address:{{ wildfly_master_address }}}" port="${jboss.management.native.port:{{ wildfly_master_port }}}" username="{{ wildfly_bind_address }}" security-realm="ManagementRealm" />'
     pretty_print: true
   notify:
     - restart wildfly services
