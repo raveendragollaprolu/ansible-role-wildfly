@@ -13,7 +13,7 @@
     name: '{{ wildfly_dc_instance_name }}'
     state: '{{ wildfly_service_status }}'
     enabled: '{{ wildfly_service_enabled }}'
-  listen: 'restart wildfly services'
+  listen: 'restart wildfly domain services'
 
 - name: change data mode
   file:

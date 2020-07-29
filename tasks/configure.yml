@@ -28,7 +28,7 @@
     group: root
     mode: '0640'
   notify:
-    - restart wildfly services
+    - restart wildfly domain services
     - change data mode
   when: wildfly_role == 'domain-master-slave'
 
@@ -175,7 +175,7 @@
         attribute: 'security-realm'
         value: 'ManagementRealm'
         pretty_print: true
-      notify: restart wildfly services
+      notify: restart wildfly domain services
     - name: 'Setting domain-controller to use native port (2)'
       xml:
         path: '{{ wildfly_base }}/domain-controller/configuration/host-master.xml'
@@ -186,7 +186,7 @@
         set_children:
           - '<socket interface="management" port="${jboss.management.native.port:{{ wildfly_master_port }}}"/>'
         pretty_print: true
-      notify: restart wildfly services
+      notify: restart wildfly domain services
   when: wildfly_role in [ 'domain-master-slave', 'domain-master' ]
   tags:
     - wildfly_domain_controller
@@ -214,7 +214,7 @@
         regexp: '^handler.BOOT_FILE.properties=.*$'
         line: 'handler.BOOT_FILE.properties=autoFlush,append,fileName'
         state: present
-      notify: restart wildfly services
+      notify: restart wildfly domain services
     - name: configure domain-controller server logging (2)
       lineinfile:
         dest: '{{ wildfly_base }}/domain-controller/configuration/logging.properties'
@@ -222,7 +222,7 @@
         line: 'handler.BOOT_FILE.append=true'
         insertafter: 'handler.BOOT_FILE.properties=autoFlush,append,fileName'
         state: present
-      notify: restart wildfly services
+      notify: restart wildfly domain services
     - name: configure domain-controller server logging (3)
       lineinfile:
         dest: '{{ wildfly_base }}/domain-controller/configuration/logging.properties'
@@ -230,7 +230,7 @@
         line: 'handler.BOOT_FILE.suffix=.yyyy-MM-dd'
         insertafter: 'handler.BOOT_FILE.formatter=PATTERN'
         state: present
-      notify: restart wildfly services
+      notify: restart wildfly domain services
   when: wildfly_role == 'domain-master-slave'
   tags:
     - wildfly_domain_controller
@@ -292,7 +292,7 @@
         group: '{{ wildfly_group }}'
         mode: '0640'
       notify:
-        - restart wildfly services
+        - restart wildfly domain services
         - change data mode
 
     - name: create symlink to /etc/default/wildfly-dc.conf
@@ -347,7 +347,7 @@
     group: root
     mode: '0755'
   notify:
-    - restart wildfly services
+    - restart wildfly domain services
     - change data mode
   when: wildfly_role == 'domain-master-slave' or wildfly_role == 'domain-master'
 
@@ -369,7 +369,7 @@
       template: src=wildfly-dc.service.j2 dest={{ wildfly_systemd_dir }}/{{ wildfly_dc_instance_name }}.service owner=root
                 group=root mode=0644
       notify:
-        - restart wildfly services
+        - restart wildfly domain services
         - change data mode
     - name: systemd reload
       systemd:
