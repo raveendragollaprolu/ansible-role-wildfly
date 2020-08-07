@@ -3,7 +3,7 @@
 galaxy_info:
   author: Kálmán Szalai - KAMI
   role_name: wildfly
-  description: "Installs Wildfly's application runtime"
+  description: "Installs Wildfly's application runtime. This role supports Master-Slave Clustering, Standalone modes; wide range of versions from 10 to 20; secure settings and able to install more than one node at once in as already connected cluster."
   license: BSD
   min_ansible_version: 2.2
   platforms:
