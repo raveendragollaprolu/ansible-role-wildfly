@@ -28,7 +28,9 @@
   notify:
     - restart wildfly services
     - change data mode
-  when: wildfly_role == 'domain-slave' or wildfly_role == 'domain-master-slave'
+  when:
+    - wildfly_mode == 'domain'
+    - wildfly_role in [ 'domain-slave', 'domain-master-slave' ]
 
 - name: copy wildfly domain controller properties file
   template:
@@ -40,4 +42,6 @@
   notify:
     - restart wildfly domain services
     - change data mode
-  when: wildfly_role == 'domain-master' or wildfly_role == 'domain-master-slave'
+  when:
+    - wildfly_mode == 'domain'
+    - wildfly_role in [ 'domain-master', 'domain-master-slave' ]
