@@ -22,3 +22,5 @@
 - name: manage firewalld
   include_tasks: manage_firewalld.yml
   when: wildfly_manage_firewalld
+
+- include_tasks: service.yml
