@@ -7,6 +7,8 @@
     state: '{{ wildfly_service_status }}'
     enabled: '{{ wildfly_service_enabled }}'
   listen: 'restart wildfly services'
+  when:
+    - wildfly_manage_service
 
 - name: restart wildfly domain controller
   service:
@@ -14,6 +16,8 @@
     state: '{{ wildfly_service_status }}'
     enabled: '{{ wildfly_service_enabled }}'
   listen: 'restart wildfly domain services'
+  when:
+    - wildfly_manage_service
 
 - name: change data mode
   file:
