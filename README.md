@@ -45,11 +45,11 @@ Available variables are listed below, along with default values (see `defaults/m
 Specify the state of service. Possible values are: reloaded, restarted, started, stopped. Default is restarted. The started and stopped state are idempotent actions that will not run commands
 unless necessary. The restarted state will always bounce the service and reloaded state will always reload.
 
-    wildfly_version: 11.0.1.Final
+    wildfly_version: 20.0.1.Final
 
-    wildfly_file_version: '10.0'
+    wildfly_file_version: '13.0'
 
-Specify Wildfly config file version. 10-14 is '10.0'; 20 is '13.0'.
+Specify Wildfly config file version. 14 = '8.0'; 15-18 = '10.0'; 20 = '13.0'.
 
     wildfly_user: wildfly
 
