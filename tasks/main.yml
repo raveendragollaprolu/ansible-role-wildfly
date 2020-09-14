@@ -19,6 +19,9 @@
 - include_tasks: ssl.yml
   when: wildfly_enable_ssl
 
+- include_tasks: vault.yml
+  when: wildfly_vault_enable
+
 - name: manage firewalld
   include_tasks: manage_firewalld.yml
   when: wildfly_manage_firewalld
