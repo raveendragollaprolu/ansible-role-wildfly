@@ -24,7 +24,7 @@
     become: true
     become_user: '{{ wildfly_user }}'
     shell: >
-        {{ wildfly_base }}/bin/vault.sh -k {{ wildfly_vault_name }} -p {{ wildfly_vault_keystore_password }} \
+        {{ wildfly_base }}/bin/vault.sh -k {{ wildfly_vault_file }} -p {{ wildfly_vault_keystore_password }} \
         -e {{ wildfly_vault_path }} -i {{ wildfly_vault_iteration }} -s {{ wildfly_vault_salt }} \
         -v {{ wildfly_vault_alias }} -b {{ item.block }} -a {{ item.attribute }} -x {{ item.value }}
     with_items: '{{ wildfly_vault }}'
