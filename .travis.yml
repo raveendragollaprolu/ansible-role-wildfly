@@ -23,7 +23,7 @@ install:
   - pip3 install ansible ansible-lint docker 'molecule[docker]'
 
 script:
-  - travis_wait 60 molecule test -s default
+  - travis_wait 90 molecule test -s default
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
