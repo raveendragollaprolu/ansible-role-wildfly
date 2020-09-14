@@ -95,6 +95,23 @@ Wildfly parameter name is 'jboss.server.data.dir'.
     wildfly_http_port: 8080
     wildfly_https_port: 8443
 
+    wildfly_vault_enable: false
+    wildfly_vault_name: vault.store
+    wildfly_vault_path: '{{ wildfly_home }}/{{ wildfly_mode }}/configuration/store'
+    wildfly_vault_file: '{{ wildfly_vault_path }}/{{ wildfly_vault_name }}'
+    wildfly_vault_alias: myvault
+    wildfly_vault_keystore_password: 'bfNpAVdIklPWcta7WA8qsx'
+    wildfly_vault_key_password: 'Gg7BhLO0IOF5MUCwZTQDJF'
+    wildfly_vault_keyalg: 'AES'
+    wildfly_vault_keysize: 256
+    wildfly_vault_iteration: 50
+    wildfly_vault_salt: QTu1Mo4Z
+
+    wildfly_vault:
+    - block: 'ds_ExampleDS'
+        name: password
+        value: sa
+
     wildfly_enable_ssl: no
     wildfly_keystore_name: my.jks
     wildfly_keystore_path: "{{ wildfly_dir }}/standalone/configuration/\

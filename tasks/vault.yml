@@ -1,1 +1,35 @@
-keytool -genseckey -alias {{ wildfly_vault_alias }} -storetype jceks -keyalg {{ wildfly_vault_alg }} -keysize {{ wildfly_vault_keysize }} -storepass {{ wildfly_vault_keystore_password }} -keypass {{ wildfly_vault_key_password }} -keystore {{ wildfly_vault_path }}
+---
+# vault tasks file for wildfly
+
+- block:
+  - name: 'create Wildfly secure store directory'
+    file:
+      path: '{{ wildfly_vault_path }}'
+      owner: '{{ wildfly_user }}'
+      group: '{{ wildfly_group }}'
+      mode: '640'
+      state: directory
+
+  - name: create Wildfly Vault store
+    become: true
+    become_user: '{{ wildfly_user }}'
+    shell: >
+        keytool -genseckey -alias {{ wildfly_vault_alias }} -storetype jceks \
+        -keyalg {{ wildfly_vault_keyalg }} -keysize {{ wildfly_vault_keysize }} \
+        -storepass {{ wildfly_vault_keystore_password }} -keypass {{ wildfly_vault_key_password }} \
+        -keystore {{ wildfly_vault_file }} -dname '{{ wildfly_vailt_dname }}'
+    args:
+        creates: "{{ wildfly_vault_file }}"
+    no_log: false
+
+  - name: create Wildfly Vault secrets
+    become: true
+    become_user: '{{ wildfly_user }}'
+    shell: >
+        {{ wildfly_base }}/bin/vault.sh -k {{ wildfly_vault_name }} -p {{ wildfly_vault_keystore_password }} \
+        -e {{ wildfly_vault_path }} -i {{ wildfly_vault_iteration }} -s {{ wildfly_vault_salt }} \
+        -v {{ wildfly_vault_alias }} -b {{ item.block }} -a {{ item.attribute }} -x {{ item.value }}
+    with_items: "{{ wildfly_vault }}"
+    when: wildfly_vault | length > 0
+    no_log: false
+  when: wildfly_enable_vault
