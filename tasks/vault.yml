@@ -17,7 +17,7 @@
         keytool -genseckey -alias {{ wildfly_vault_alias }} -storetype jceks \
         -keyalg {{ wildfly_vault_keyalg }} -keysize {{ wildfly_vault_keysize }} \
         -storepass {{ wildfly_vault_keystore_password }} -keypass {{ wildfly_vault_key_password }} \
-        -keystore {{ wildfly_vault_file }} -dname '{{ wildfly_vailt_dname }}'
+        -keystore {{ wildfly_vault_file }} -dname '{{ wildfly_vault_dname }}'
     args:
         creates: "{{ wildfly_vault_file }}"
     no_log: false
