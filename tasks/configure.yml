@@ -187,7 +187,9 @@
           - '<socket interface="management" port="${jboss.management.native.port:{{ wildfly_master_port }}}"/>'
         pretty_print: true
       notify: restart wildfly domain services
-  when: wildfly_role in [ 'domain-master-slave', 'domain-master' ]
+  when:
+    - wildfly_mode == 'domain'
+    - wildfly_role in [ 'domain-master-slave', 'domain-master' ]
   tags:
     - wildfly_domain_controller
 
@@ -302,7 +304,9 @@
         state: link
         src: '{{ wildfly_conf_dir }}/{{ wildfly_dc_instance_name }}.conf'
         dest: /etc/default/{{ wildfly_dc_instance_name }}.conf
-  when: wildfly_role == 'domain-master-slave' or wildfly_role == 'domain-master'
+  when:
+    - wildfly_mode == 'domain'
+    - wildfly_role in [ 'domain-master', 'domain-master-slave' ]
 
 - name: 'prepare daily wildfly logrotate'
   template:
