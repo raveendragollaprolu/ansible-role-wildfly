@@ -11,6 +11,8 @@
       state: directory
 
   - name: create Wildfly Vault store
+    become: true
+    become_user: '{{ wildfly_user }}'
     shell: >
         {{ wildfly_java_home }}/bin/keytool -genseckey -alias {{ wildfly_vault_alias }} -storetype pkcs12 \
         -keyalg {{ wildfly_vault_keyalg }} -keysize {{ wildfly_vault_keysize }} \
