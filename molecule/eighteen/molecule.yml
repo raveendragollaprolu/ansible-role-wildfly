@@ -64,12 +64,14 @@ provisioner:
         wildfly_role: 'domain-master-slave'
       wildfly_1800:
         wildfly_version: 18.0.0.Final
+        wildfly_file_version: '10.0'
       python3:
         ansible_python_interpreter: '/usr/bin/env python3'
       all:
         wildfly_installer_keep: true
         wildfly_installer_force_overwrite: false
         wildfly_installer_force_download: true
+        wildfly_vault_enable: true
         wildfly_installer_local: true
         wildfly_manage_firewalld: false
         wildfly_service_status: 'started'
