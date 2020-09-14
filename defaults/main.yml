@@ -104,6 +104,7 @@ wildfly_vault_keyalg: 'AES'
 wildfly_vault_keysize: 256
 wildfly_vault_iteration: 50
 wildfly_vault_salt: QTu1Mo4Z
+wildfly_vault_dname: 'CN=Picketbox vault,OU=picketbox,O=JBoss,L=chicago,ST=il,C=us'
 
 wildfly_vault:
   - block: 'ds_ExampleDS'
