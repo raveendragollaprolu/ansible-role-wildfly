@@ -32,4 +32,4 @@
     with_items: "{{ wildfly_vault }}"
     when: wildfly_vault | length > 0
     no_log: false
-  when: wildfly_enable_vault
+  when: wildfly_vault_enable
