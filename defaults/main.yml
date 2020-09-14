@@ -107,7 +107,7 @@ wildfly_vault_dname: 'CN=Picketbox vault,OU=picketbox,O=JBoss,L=chicago,ST=il,C=
 
 wildfly_vault:
   - block: 'ds_ExampleDS'
-    name: password
+    attribute: password
     value: sa
 
 wildfly_enable_ssl: false
