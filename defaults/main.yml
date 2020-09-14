@@ -95,7 +95,7 @@ wildfly_app_users:
 
 wildfly_vault_enable: true
 wildfly_vault_name: vault.store
-wildfly_vault_path: '{{ wildfly_home }}/store'
+wildfly_vault_path: '{{ wildfly_base }}/store'
 wildfly_vault_file: '{{ wildfly_vault_path }}/{{ wildfly_vault_name }}'
 wildfly_vault_alias: myvault
 wildfly_vault_keystore_password: 'bfNpAVdIklPWcta7WA8qsx'
@@ -112,7 +112,7 @@ wildfly_vault:
 
 wildfly_enable_ssl: false
 wildfly_keystore_name: my.jks
-wildfly_keystore_path: '{{ wildfly_home }}/{{ wildfly_mode }}/configuration/{{ wildfly_keystore_name }}'
+wildfly_keystore_path: '{{ wildfly_base }}/store/{{ wildfly_keystore_name }}'
 wildfly_keystore_alias: my
 wildfly_keystore_password: 'secret'
 wildfly_key_password: 'secret'
