@@ -1,0 +1,234 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: java-centos6-11-jdk
+    image: geerlingguy/docker-centos6-ansible
+    image_version: latest
+    groups:
+      - jdk
+      - centos6
+
+  - name: java-centos7-11-jdk
+    image: geerlingguy/docker-centos7-ansible
+    image_version: latest
+    privileged: true
+    groups:
+      - jdk
+      - centos7
+
+  - name: java-centos8-11-jdk
+    image: geerlingguy/docker-centos8-ansible
+    image_version: latest
+    privileged: true
+    groups:
+      - jdk
+      - python3
+      - centos8
+
+
+  - name: wildfly-centos6-9.0.2
+    image: geerlingguy/docker-centos6-ansible
+    image_version: latest
+    groups:
+      - standalone
+      - wildfly_902
+  - name: wildfly-centos6-10.0.0
+    image: geerlingguy/docker-centos6-ansible
+    image_version: latest
+    groups:
+      - standalone
+      - wildfly_1000
+  - name: wildfly-centos6-11.0.0
+    image: centos
+    image_version: latest
+    groups:
+      - standalone
+      - wildfly_1100
+  - name: wildfly-centos6-10.1.0
+    image: geerlingguy/docker-centos6-ansible
+    image_version: latest
+    groups:
+      - standalone
+      - wildfly_1401
+  - name: wildfly-centos7-9.0.2
+    image: geerlingguy/docker-centos7-ansible
+    image_version: latest
+    privileged: true
+    groups:
+      - standalone
+      - wildfly_902
+  - name: wildfly-centos7-10.0.0
+    image: geerlingguy/docker-centos7-ansible
+    image_version: latest
+    privileged: true
+    groups:
+      - standalone
+      - wildfly_1000
+  - name: wildfly-centos7-10.1.0
+    image: geerlingguy/docker-centos7-ansible
+    image_version: latest
+    privileged: true
+    groups:
+      - standalone
+      - wildfly_1010
+  - name: wildfly-centos7-11.0.0
+    image: geerlingguy/docker-centos7-ansible
+    image_version: latest
+    privileged: true
+    groups:
+      - standalone
+      - wildfly_1100
+  - name: wildfly-centos6-9.0.2-domain
+    image: centos
+    image_version: 6.8
+    groups:
+      - domain
+      - wildfly_902
+  - name: wildfly-centos6-10.0.0-domain
+    image: centos
+    image_version: 6.8
+    groups:
+      - domain
+      - wildfly_1000
+  - name: wildfly-centos6-10.1.0-domain
+    image: centos
+    image_version: 6.8
+    groups:
+      - domain
+      - wildfly_1010
+  - name: wildfly-centos6-11.0.0-domain
+    image: centos
+    image_version: 6.8
+    groups:
+      - domain
+      - wildfly_1100
+  - name: wildfly-centos7-9.0.2-domain
+    image: geerlingguy/docker-centos7-ansible
+    image_version: latest
+    privileged: true
+    groups:
+      - domain
+      - wildfly_902
+  - name: wildfly-centos7-10.0.0-domain
+    image: geerlingguy/docker-centos7-ansible
+    image_version: latest
+    privileged: true
+    groups:
+      - domain
+      - wildfly_1000
+  - name: wildfly-centos7-10.1.0-domain
+    image: geerlingguy/docker-centos7-ansible
+    image_version: latest
+    privileged: true
+    groups:
+      - domain
+      - wildfly_1010
+  - name: wildfly-centos7-11.0.0-domain
+    image: geerlingguy/docker-centos7-ansible
+    image_version: latest
+    privileged: true
+    groups:
+      - domain
+      - wildfly_1100
+  - name: wildfly-centos6-9.0.2-domain-controller
+    image: centos
+    image_version: 6.8
+    groups:
+      - domain_controller
+      - wildfly_902
+  - name: wildfly-centos6-10.0.0-domain-controller
+    image: centos
+    image_version: 6.8
+    groups:
+      - domain_controller
+      - wildfly_1000
+  - name: wildfly-centos6-10.1.0-domain-controller
+    image: centos
+    image_version: 6.8
+    groups:
+      - domain_controller
+      - wildfly_1010
+  - name: wildfly-centos6-11.0.0-domain-controller
+    image: centos
+    image_version: 6.8
+    groups:
+      - domain_controller
+      - wildfly_1100
+  - name: wildfly-centos7-9.0.2-domain-controller
+    image: geerlingguy/docker-centos7-ansible
+    image_version: latest
+    privileged: true
+    groups:
+      - domain_controller
+      - wildfly_902
+  - name: wildfly-centos7-10.0.0-domain-controller
+    image: geerlingguy/docker-centos7-ansible
+    image_version: latest
+    privileged: true
+    groups:
+      - domain_controller
+      - wildfly_1000
+  - name: wildfly-centos7-10.1.0-domain-controller
+    image: geerlingguy/docker-centos7-ansible
+    image_version: latest
+    privileged: true
+    groups:
+      - domain_controller
+      - wildfly_1010
+  - name: wildfly-centos7-11.0.0-domain-controller
+    image: geerlingguy/docker-centos7-ansible
+    image_version: latest
+    privileged: true
+    groups:
+      - domain_controller
+      - wildfly_1100
+provisioner:
+  name: ansible
+  lint:
+    name: ansible-lint
+  inventory:
+    group_vars:
+      standalone:
+        wildfly_mode: 'standalone'
+      domain:
+        wildfly_mode: 'domain'
+      domain_controller:
+        wildfly_mode: 'domain'
+        wildfly_role: 'domain-master-slave'
+      wildfly_902:
+        wildfly_version: 9.0.2.Final
+      wildfly_1000:
+        wildfly_version: 10.0.0.Final
+      wildfly_1010:
+        wildfly_version: 10.1.0.Final
+      wildfly_1100:
+        wildfly_version: 11.0.0.Final
+      wildfly_1401:
+        wildfly_version: 14.0.1.Final
+      wildfly_1801:
+        wildfly_version: 18.0.1.Final
+      wildfly_1910:
+        wildfly_version: 19.1.0.Final
+      all:
+        wildfly_installer_keep: true
+        wildfly_installer_force_overwrite: false
+        wildfly_installer_force_download: true
+        wildfly_installer_local: true
+        wildfly_manage_firewalld: false
+        wildfly_service_status: 'started'
+        wildfly_manage_service: false
+        wildfly_management_users:
+          - {name: 'david', password: 'ruomlig'}
+          - {name: 'roger', password: 'sretaw'}
+        wildfly_app_users:
+          - {name: 'rich', password: 'thgirw'}
+          - {name: 'nick', password: 'nosam'}
+scenario:
+  name: default
+verifier:
+  name: testinfra
+  lint:
+    name: flake8
