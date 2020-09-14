@@ -14,7 +14,7 @@
     become: true
     become_user: '{{ wildfly_user }}'
     shell: >
-        ${JAVA_HOME}/bin/keytool -genseckey -alias {{ wildfly_vault_alias }} -storetype jceks \
+        {{ wildfly_java_home }}/bin/keytool -genseckey -alias {{ wildfly_vault_alias }} -storetype jceks \
         -keyalg {{ wildfly_vault_keyalg }} -keysize {{ wildfly_vault_keysize }} \
         -storepass {{ wildfly_vault_keystore_password }} -keypass {{ wildfly_vault_key_password }} \
         -keystore {{ wildfly_vault_file }} -dname '{{ wildfly_vault_dname }}'
