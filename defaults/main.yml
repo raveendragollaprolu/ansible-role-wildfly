@@ -96,10 +96,11 @@ wildfly_app_users:
 wildfly_vault_enable: true
 wildfly_vault_name: vault.store
 wildfly_vault_path: '{{ wildfly_home }}/{{ wildfly_mode }}/configuration/store'
+wildfly_vault_dc_path: '{{ wildfly_home }}/domain-controller/configuration/store'
 wildfly_vault_file: '{{ wildfly_vault_path }}/{{ wildfly_vault_name }}'
+wildfly_vault_dc_file: '{{ wildfly_vault_dc_path }}/{{ wildfly_vault_name }}'
 wildfly_vault_alias: myvault
 wildfly_vault_keystore_password: 'bfNpAVdIklPWcta7WA8qsx'
-wildfly_vault_key_password: 'Gg7BhLO0IOF5MUCwZTQDJF'
 wildfly_vault_keyalg: 'AES'
 wildfly_vault_keysize: 256
 wildfly_vault_iteration: 50
