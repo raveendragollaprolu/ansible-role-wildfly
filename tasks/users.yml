@@ -34,7 +34,10 @@
   args:
     creates: "{{ wildfly_base }}/.mgmt-dc-users.{{ item.name }}.provisioned"
   with_items: "{{ wildfly_management_users }}"
-  when: wildfly_management_users | length > 0 and (wildfly_role == 'domain-master-slave' or wildfly_role == 'domain-master')
+  when:
+    - wildfly_management_users | length > 0
+    - wildfly_mode == 'domain'
+    - wildfly_role in [ 'domain-master', 'domain-master-slave' ]
   no_log: false
 
 - name: create domain controller cluster member users
@@ -46,7 +49,9 @@
   args:
     creates: '{{ wildfly_base }}/.host-dc-users.{{ item }}.provisioned'
   with_items: '{{ wildfly_cluser_members }}'
-  when: (wildfly_role == 'domain-master-slave' or wildfly_role == 'domain-master')
+  when:
+    - wildfly_mode == 'domain'
+    - wildfly_role in [ 'domain-master', 'domain-master-slave' ]
   no_log: false
 
 - name: enforce secure permissions on password files
