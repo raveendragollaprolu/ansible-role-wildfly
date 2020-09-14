@@ -18,21 +18,6 @@
         -keystore {{ wildfly_vault_file }} -dname '{{ wildfly_vault_dname }}'
     args:
         creates: "{{ wildfly_vault_file }}"
-    when:
-      - wildfly_role not in [ 'domain-master', 'domain-master-slave' ]
-    no_log: false
-
-  - name: create Wildfly Vault store for domain controller
-    shell: >
-        {{ wildfly_java_home }}/bin/keytool -genseckey -alias {{ wildfly_vault_alias }} -storetype pkcs12 \
-        -keyalg {{ wildfly_vault_keyalg }} -keysize {{ wildfly_vault_keysize }} \
-        -storepass {{ wildfly_vault_keystore_password }} -keypass {{ wildfly_vault_keystore_password }} \
-        -keystore {{ wildfly_vault_dc_file }} -dname '{{ wildfly_vault_dname }}'
-    args:
-        creates: "{{ wildfly_vault_file }}"
-    when:
-      - wildfly_mode == 'domain'
-      - wildfly_role in [ 'domain-master', 'domain-master-slave' ]
     no_log: false
 
   - name: create Wildfly Vault secrets
@@ -42,23 +27,6 @@
         {{ wildfly_base }}/bin/vault.sh -k {{ wildfly_vault_name }} -p {{ wildfly_vault_keystore_password }} \
         -e {{ wildfly_vault_path }} -i {{ wildfly_vault_iteration }} -s {{ wildfly_vault_salt }} \
         -v {{ wildfly_vault_alias }} -b {{ item.block }} -a {{ item.attribute }} -x {{ item.value }}
-    with_items: "{{ wildfly_vault }}"
-    when:
-      - wildfly_vault | length > 0
-      - wildfly_role not in [ 'domain-master', 'domain-master-slave' ]
-    no_log: false
-
-  - name: create Wildfly Vault secrets for domain controller
-    become: true
-    become_user: '{{ wildfly_user }}'
-    shell: >
-        {{ wildfly_base }}/bin/vault.sh -k {{ wildfly_vault_name }} -p {{ wildfly_vault_keystore_password }} \
-        -e {{ wildfly_vault_dc_path }} -i {{ wildfly_vault_iteration }} -s {{ wildfly_vault_salt }} \
-        -v {{ wildfly_vault_alias }} -b {{ item.block }} -a {{ item.attribute }} -x {{ item.value }}
-    with_items: "{{ wildfly_vault }}"
-    when:
-      - wildfly_vault | length > 0
-      - wildfly_mode == 'domain'
-      - wildfly_role in [ 'domain-master', 'domain-master-slave' ]
+    with_items: '{{ wildfly_vault }}'
     no_log: false
   when: wildfly_vault_enable
