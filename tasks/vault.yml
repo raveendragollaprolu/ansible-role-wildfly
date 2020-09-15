@@ -47,8 +47,9 @@
         - '<vault-option name="ITERATION_COUNT" value="{{ wildfly_vault_iteration }}" />'
         - '<vault-option name="ENC_FILE_DIR" value="{{ wildfly_vault_path }}" />'
       pretty_print: true
+    when:
+      - wildfly_mode == 'domain'
+      - wildfly_role in [ 'domain-master-slave', 'domain-slave' ]
     notify: restart wildfly services
   when:
-  - wildfly_mode == 'domain'
-  - wildfly_role in [ 'domain-master-slave', 'domain-master' ]
-  - wildfly_vault_enable
+    - wildfly_vault_enable
