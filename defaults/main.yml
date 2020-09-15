@@ -94,7 +94,7 @@ wildfly_app_users:
    password: rock
 
 wildfly_vault_enable: true
-wildfly_vault_name: vault.store
+wildfly_vault_name: VAULT.keystore
 wildfly_vault_path: '{{ wildfly_base }}/store'
 wildfly_vault_file: '{{ wildfly_vault_path }}/{{ wildfly_vault_name }}'
 wildfly_vault_alias: myvault
