@@ -4,20 +4,27 @@ dependency:
 driver:
   name: docker
 platforms:
-  - name: wildfly-centos7-11.0.0
-    image: milcom/centos7-systemd
+  - name: wildfly-centos8-default
+    image: geerlingguy/docker-centos8-ansible
     image_version: latest
     privileged: true
     groups:
+      - python3
       - standalone
-      - wildfly_1100
-  - name: wildfly-centos7-11.0.0-domain-controller
-    image: milcom/centos7-systemd
+  - name: wildfly-centos8-default-domain
+    image: geerlingguy/docker-centos8-ansible
     image_version: latest
     privileged: true
     groups:
+      - python3
+      - domain
+  - name: wildfly-centos8-default-domain_controller
+    image: geerlingguy/docker-centos8-ansible
+    image_version: latest
+    privileged: true
+    groups:
+      - python3
       - domain_controller
-      - wildfly_1100
 provisioner:
   name: ansible
   lint:
@@ -31,14 +38,6 @@ provisioner:
       domain_controller:
         wildfly_mode: 'domain'
         wildfly_role: 'domain-master-slave'
-      wildfly_902:
-        wildfly_version: 9.0.2.Final
-      wildfly_1000:
-        wildfly_version: 10.0.0.Final
-      wildfly_1010:
-        wildfly_version: 10.1.0.Final
-      wildfly_1100:
-        wildfly_version: 11.0.0.Final
       all:
         wildfly_installer_keep: true
         wildfly_installer_force_overwrite: false
