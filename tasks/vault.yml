@@ -7,7 +7,7 @@
       path: '{{ wildfly_vault_path }}'
       owner: '{{ wildfly_user }}'
       group: '{{ wildfly_group }}'
-      mode: '640'
+      mode: '0750'
       state: directory
 
   - name: create Wildfly Vault store
