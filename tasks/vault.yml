@@ -39,7 +39,7 @@
       input_type: 'xml'
       namespaces:
         h: 'urn:jboss:domain:{{ wildfly_file_version }}'
-      set_children:
+      add_children:
         - '<vault-option name="KEYSTORE_URL" value="{{ wildfly_vault_file }}" />'
         - '<vault-option name="KEYSTORE_PASSWORD" value="{{ wildfly_vault_keystore_password }}" />'
         - '<vault-option name="KEYSTORE_ALIAS" value="{{ wildfly_vault_alias }}" />'
