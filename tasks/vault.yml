@@ -51,5 +51,6 @@
       - wildfly_mode == 'domain'
       - wildfly_role in [ 'domain-master-slave', 'domain-slave' ]
     notify: restart wildfly services
+    no_log: false
   when:
     - wildfly_vault_enable
