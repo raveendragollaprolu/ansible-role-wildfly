@@ -31,26 +31,56 @@
         -v {{ wildfly_vault_alias }} -b {{ item.block }} -a {{ item.attribute }} -x {{ item.value }}
     with_items: '{{ wildfly_vault }}'
     no_log: false
+    register: wildfly_vault_secret
 
-  - name: 'setting domain member to use vault'
-    xml:
-      path: '{{ wildfly_base }}/domain/configuration/host-slave.xml'
-      xpath: '/h:host/h:vault'
-      input_type: 'xml'
-      namespaces:
-        h: 'urn:jboss:domain:{{ wildfly_file_version }}'
-      add_children:
-        - '<vault-option name="KEYSTORE_URL" value="{{ wildfly_vault_file }}" />'
-        - '<vault-option name="KEYSTORE_PASSWORD" value="{{ wildfly_vault_keystore_password }}" />'
-        - '<vault-option name="KEYSTORE_ALIAS" value="{{ wildfly_vault_alias }}" />'
-        - '<vault-option name="SALT" value="{{ wildfly_vault_salt }}" />'
-        - '<vault-option name="ITERATION_COUNT" value="{{ wildfly_vault_iteration }}" />'
-        - '<vault-option name="ENC_FILE_DIR" value="{{ wildfly_vault_path }}" />'
-      pretty_print: true
+  - debug:
+      msg: "{{ wildfly_vault_secret }}"
+
+  - debug:
+      msg: '{{ item.stdout }}'
+    with_items: '{{ wildfly_vault_secret.results }}'
+
+  - debug:
+      msg: '{{ item.stdout | regex_search("\/core-service.*\)\]\)", multiline=False, ignorecase=True) }}'
+    with_items: '{{ wildfly_vault_secret.results }}'
+
+  - set_fact:
+      wildfly_vault_command: '{{ item.stdout | regex_search("\/core-service.*\)\]\)", multiline=False, ignorecase=True) }}'
+    loop: '{{ wildfly_vault_secret.results }}'
+
+  - debug:
+      var: wildfly_vault_command
+
+  - name: restart servers before apply Wildfly JBoss command line commands
+    meta: flush_handlers
+
+  - name: process JBoss Vault command for standalone
+    jbosscli:
+      server: '{{ wildfly_master_address }}:{{ wildfly_master_http_port }}'
+      cli_path: '{{ wildfly_base }}/bin'
+      user: '{{ wildfly_management_users.0.name }}'
+      password: '{{ wildfly_management_users.0.password }}'
+      verbose: True
+      command: '{{ wildfly_vault_command }}'
+    when:
+      - wildfly_mode == 'standalone'
+    register: checkit
+
+  - debug: var=checkit
+
+  - name: process JBoss Vault command for domain member
+    jbosscli:
+      server: '{{ wildfly_master_address }}:{{ wildfly_master_http_port }}'
+      cli_path: '{{ wildfly_base }}/bin'
+      user: '{{ wildfly_management_users.0.name }}'
+      password: '{{ wildfly_management_users.0.password }}'
+      verbose: True
+      command: '/host={{ ansible_hostname }}/{{ wildfly_vault_command }}'
     when:
       - wildfly_mode == 'domain'
       - wildfly_role in [ 'domain-master-slave', 'domain-slave' ]
-    notify: restart wildfly services
-    no_log: false
+    register: checkit
+
+  - debug: var=checkit
   when:
     - wildfly_vault_enable
