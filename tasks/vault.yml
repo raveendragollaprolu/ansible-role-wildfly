@@ -75,7 +75,7 @@
       user: '{{ wildfly_management_users.0.name }}'
       password: '{{ wildfly_management_users.0.password }}'
       verbose: True
-      command: '/host={{ ansible_hostname }}/{{ wildfly_vault_command }}'
+      command: '/host={{ ansible_hostname }}{{ wildfly_vault_command }}'
     when:
       - wildfly_mode == 'domain'
       - wildfly_role in [ 'domain-master-slave', 'domain-slave' ]
