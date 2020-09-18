@@ -20,6 +20,10 @@
     - wildfly_mode == 'domain'
     - wildfly_role in [ 'domain-master-slave', 'domain-slave' ]
 
+- name: sleep for 30 seconds and continue with play
+  wait_for:
+    timeout: 30
+
 - name: process JBoss Vault command for standalone
   jbosscli:
     server: '{{ wildfly_master_address }}:{{ wildfly_master_http_port }}'
