@@ -11,9 +11,6 @@
     command: '{{ wildfly_vault_command }}'
   when:
     - wildfly_mode == 'standalone'
-  register: checkit
-
-- debug: var=checkit
 
 - name: process JBoss Vault command for domain member
   jbosscli:
@@ -26,8 +23,3 @@
   when:
     - wildfly_mode == 'domain'
     - wildfly_role in [ 'domain-master-slave', 'domain-slave' ]
-  register: checkit
-
-- debug: var=checkit
-  when:
-  - wildfly_vault_enable
