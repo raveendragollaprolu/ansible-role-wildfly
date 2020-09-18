@@ -1,6 +1,25 @@
 ---
 # vault_configure tasks file for wildfly
 
+- block:
+  - name: wait for wildfly domain member to master connection
+    wait_for:
+      path: '{{ wildfly_console_log }}'
+      search_regex: 'Connected to master host controller at'
+      timeout: 600
+      delay: 10
+      sleep: 3
+    ignore_errors: true
+    changed_when: false
+  - name: cat file
+    command: 'cat {{ wildfly_console_log }}'
+    ignore_errors: true
+    changed_when: false
+  when:
+    - wildfly_manage_service
+    - wildfly_mode == 'domain'
+    - wildfly_role in [ 'domain-master-slave', 'domain-slave' ]
+
 - name: process JBoss Vault command for standalone
   jbosscli:
     server: '{{ wildfly_master_address }}:{{ wildfly_master_http_port }}'
@@ -23,22 +42,3 @@
   when:
     - wildfly_mode == 'domain'
     - wildfly_role in [ 'domain-master-slave', 'domain-slave' ]
-
-    - block:
-      - name: wait for wildfly domain member to master connection
-        wait_for:
-          path: '{{ wildfly_console_log }}'
-          search_regex: 'Connected to master host controller at'
-          timeout: 600
-          delay: 10
-          sleep: 3
-        ignore_errors: true
-        changed_when: false
-      - name: cat file
-        command: 'cat {{ wildfly_console_log }}'
-        ignore_errors: true
-        changed_when: false
-      when:
-        - wildfly_manage_service
-        - wildfly_mode == 'domain'
-        - wildfly_role in [ 'domain-master-slave', 'domain-slave' ]
