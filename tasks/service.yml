@@ -8,6 +8,9 @@
       wait_for:
         path: '{{ wildfly_console_log }}'
         search_regex: 'started in'
+        timeout: 600
+        delay: 10
+        sleep: 3
       ignore_errors: true
     - name: cat file
       command: '{{ wildfly_console_log }}'
@@ -26,7 +29,7 @@
         path: '{{ wildfly_console_dc_log }}'
         search_regex: 'started in'
         timeout: 600
-        delay: 5
+        delay: 10
         sleep: 3
       ignore_errors: true
       changed_when: false
@@ -50,7 +53,7 @@
         path: '{{ wildfly_console_log }}'
         search_regex: 'started in'
         timeout: 600
-        delay: 5
+        delay: 10
         sleep: 3
       ignore_errors: true
       changed_when: false
@@ -64,9 +67,3 @@
     - wildfly_role in [ 'domain-master-slave', 'domain-slave' ]
 
 - meta: flush_handlers
-
-- name: delete wildfly tar file
-  file:
-    path: '{{ wildfly_download_dir }}/{{ wildfly_download_file }}'
-    state: absent
-  when: not wildfly_installer_keep

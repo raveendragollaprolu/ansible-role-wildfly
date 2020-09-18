@@ -1,0 +1,33 @@
+---
+# vault_configure tasks file for wildfly
+
+- name: process JBoss Vault command for standalone
+  jbosscli:
+    server: '{{ wildfly_master_address }}:{{ wildfly_master_http_port }}'
+    cli_path: '{{ wildfly_base }}/bin'
+    user: '{{ wildfly_management_users.0.name }}'
+    password: '{{ wildfly_management_users.0.password }}'
+    verbose: True
+    command: '{{ wildfly_vault_command }}'
+  when:
+    - wildfly_mode == 'standalone'
+  register: checkit
+
+- debug: var=checkit
+
+- name: process JBoss Vault command for domain member
+  jbosscli:
+    server: '{{ wildfly_master_address }}:{{ wildfly_master_http_port }}'
+    cli_path: '{{ wildfly_base }}/bin'
+    user: '{{ wildfly_management_users.0.name }}'
+    password: '{{ wildfly_management_users.0.password }}'
+    verbose: True
+    command: '/host={{ ansible_hostname }}{{ wildfly_vault_command }}'
+  when:
+    - wildfly_mode == 'domain'
+    - wildfly_role in [ 'domain-master-slave', 'domain-slave' ]
+  register: checkit
+
+- debug: var=checkit
+  when:
+  - wildfly_vault_enable
