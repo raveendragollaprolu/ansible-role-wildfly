@@ -54,6 +54,20 @@
   - name: restart servers before apply Wildfly JBoss command line commands
     meta: flush_handlers
 
+  - name: wait for local controller becomes available
+    wait_for:
+      host: {{ wildfly_master_address }}
+      port: {{ wildfly_master_http_port }}
+      delay: 15
+      connect_timeout: 15
+
+  - name: wait for local controller becomes available
+    wait_for:
+      host: {{ wildfly_management_bind_address }}
+      port: {{ wildfly_management_http_port }}
+      delay: 15
+      connect_timeout: 10
+
   - name: process JBoss Vault command for standalone
     jbosscli:
       server: '{{ wildfly_master_address }}:{{ wildfly_master_http_port }}'

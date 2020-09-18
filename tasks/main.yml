@@ -23,7 +23,16 @@
   when: wildfly_vault_enable
 
 - name: manage firewalld
-  include_tasks: manage_firewalld.yml
+  include_tasks: manage-firewalld.yml
   when: wildfly_manage_firewalld
 
 - include_tasks: service.yml
+
+- include_tasks: vault-configure.yml
+  when: wildfly_vault_enable
+
+- name: delete wildfly tar file
+  file:
+    path: '{{ wildfly_download_dir }}/{{ wildfly_download_file }}'
+    state: absent
+  when: not wildfly_installer_keep
