@@ -80,7 +80,7 @@
       get_url:
         url: '{{ wildfly_download_url }}'
         validate_certs: '{{ wildfly_download_validate_certs }}'
-        dest: './{{ wildfly_download_file }}'
+        dest: '{{ wildfly_download_file }}'
         mode: 0644
       delegate_to: localhost
       run_once: true
