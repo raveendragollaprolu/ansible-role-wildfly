@@ -31,7 +31,7 @@
     user: '{{ wildfly_management_users.0.name }}'
     password: '{{ wildfly_management_users.0.password }}'
     verbose: True
-    command: '{{ wildfly_vault_command }}'
+    command: 'if (outcome == success) of {{ wildfly_vault_command }},end-if'
   when:
     - wildfly_mode == 'standalone'
 
@@ -42,7 +42,7 @@
     user: '{{ wildfly_management_users.0.name }}'
     password: '{{ wildfly_management_users.0.password }}'
     verbose: True
-    command: '/host={{ ansible_hostname }}{{ wildfly_vault_command }}'
+    command: 'if (outcome == success) of /host={{ ansible_hostname }}{{ wildfly_vault_command }},end-if'
   when:
     - wildfly_mode == 'domain'
     - wildfly_role in [ 'domain-master-slave', 'domain-slave' ]

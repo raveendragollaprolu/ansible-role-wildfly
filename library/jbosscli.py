@@ -160,7 +160,7 @@ def main():
     if src:
         cmd.append('--file=' + str(src))
     else:
-        cmd.append('%s' % str(command))
+        cmd.append('--commands={}'.format(str(command)))
 
     rc = None
     out = ''
