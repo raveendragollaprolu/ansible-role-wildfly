@@ -18,7 +18,7 @@
     # mode: '{{ wildfly_dir_mode }}'
     copy: false
     creates: "{{ wildfly_dir }}/jboss-modules.jar"
-  when: not _app_installed.stat.exists or wildfly_force_update
+  when: not __app_installed.stat.exists or wildfly_force_update
 
 - name: create wildfly link directory
   file:
