@@ -4,6 +4,9 @@
 - name: install Wildfly prerequisite
   include_tasks: install-prerequisite.yml
 
+- name: set variables for download
+  include_vars: download_wildfly.yml
+
 - name: download Wildfly installer
   include_tasks: download.yml
 

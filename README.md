@@ -39,6 +39,10 @@ creation or override and have the correct change status.
 
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
+    wildfly_force_update: false
+
+Force update when same version is already installed. Old version is always updated.
+
 
     wildfly_service_status: 'restarted'
 

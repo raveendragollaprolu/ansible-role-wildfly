@@ -1,105 +1,83 @@
 ---
-# task file for wildfly
+# task file for application download
 
-- name: check if Wildfly is already installed
-  stat:
-    path: '{{ wildfly_dir }}/README.txt'
-  register: wildfly_installed
+- name: check if application is installed.
+  stat: path='{{ __app_dir }}/{{ __app_check_file }}'
+  register: __app_installed
 
 - block:
-    - name: create wildfly group
+    - name: create application group
       group:
-        name: '{{ wildfly_group }}'
+        name: '{{ __app_system_group }}'
         system: true
         state: present
 
-    - name: create wildfly user
+    - name: create application user
       user:
-        name: '{{ wildfly_user }}'
-        group: '{{ wildfly_group }}'
+        name: '{{ __app_system_user }}'
+        group: '{{ __app_system_group }}'
         createhome: '{% if wildfly_data | length > 0  %}true{% else %}false{% endif %}'
         home: '{% if wildfly_data | length > 0  %}{{ wildfly_data }}{% else %}{{ omit }}{% endif %}'
         shell: '{% if wildfly_user_shell | length > 0  %}{{ wildfly_user_shell }}{% else %}{{ omit }}{% endif %}'
         state: present
         system: true
-  when: wildfly_manage_user
+  when: __app_manage_user
 
-- name: 'create wildfly system home directory: {{ wildfly_system_home }}'
+- name: 'create application directory: {{ __app_dir }}'
   file:
-    path: '{{ wildfly_system_home }}'
-    owner: '{{ wildfly_user }}'
-    group: '{{ wildfly_group }}'
-    mode: '{{ wildfly_dir_mode }}'
+    path: '{{ __app_dir }}'
+    owner: '{{ __app_system_user }}'
+    group: '{{ __app_system_group }}'
+    mode: '{{ __app_dir_mode }}'
+    recurse: true
     state: directory
-
-- name: 'create application directory: {{ wildfly_base }}'
-  file:
-    path: '{{ wildfly_base }}'
-    owner: '{{ wildfly_user }}'
-    group: '{{ wildfly_group }}'
-    mode: '{{ wildfly_dir_mode }}'
-    state: directory
-
-- name: 'create application directory: {{ wildfly_dir }}'
-  file:
-    path: '{{ wildfly_dir }}'
-    owner: '{{ wildfly_user }}'
-    group: '{{ wildfly_group }}'
-    state: directory
-
-- name: create download directory
-  file:
-    path: '{{ wildfly_download_dir }}'
-    owner: '{{ wildfly_user }}'
-    group: '{{ wildfly_group }}'
-    mode: '{{ wildfly_dir_mode }}'
-    state: directory
+  when: (not __app_installed.stat.exists or __app_force_update)
 
 - name: is already downloaded locally
   stat:
-    path: '{{ wildfly_download_file }}'
+    path: '{{ __app_download_file }}'
   delegate_to: localhost
-  register: wildfly_is_local_download_file
-  when: wildfly_installer_local
+  register: __applicaton_is_local_download_file
+  when: __app_installer_local
 
 - name: is already downloaded
   stat:
-    path: '{{ wildfly_download_dir }}/{{ wildfly_download_file }}'
-  register: wildfly_is_download_file
+    path: '{{ __app_download_dir }}/{{ __app_download_file }}'
+  register: __app_is_download_file
 
-- name: copy local wildfly tar file
-  copy:
-    src: '{{ wildfly_download_file }}'
-    dest: '{{ wildfly_download_dir }}/{{ wildfly_download_file }}'
-    mode: 0644
-  when: (not wildfly_is_download_file.stat.exists or wildfly_installer_force_overwrite) and
-        not wildfly_installer_force_download and wildfly_installer_local
+- name: create download directory
+  file:
+    path: '{{ __app_download_dir }}'
+    owner: '{{ __app_system_user }}'
+    group: '{{ __app_system_group }}'
+    mode: '{{ __app_dir_mode }}'
+    recurse: true
+    state: directory
+  when: (not __app_installed.stat.exists or __app_installer_force_overwrite or not __app_is_download_file.stat.exists)
 
 - block:
-    - name: 'downloading Wildfly {{ wildfly_download_file }} to local machine'
+    - name: 'downloading application {{ __app_download_file }} to local machine'
       get_url:
-        url: '{{ wildfly_download_url }}'
-        validate_certs: '{{ wildfly_download_validate_certs }}'
-        dest: '{{ wildfly_download_file }}'
+        url: '{{ __app_download_url }}'
+        validate_certs: '{{ __app_download_validate_certs }}'
+        dest: '{{ __app_download_file }}'
         mode: 0644
       delegate_to: localhost
       run_once: true
-      when: (not wildfly_is_local_download_file.stat.exists or wildfly_installer_force_overwrite) and
-            wildfly_installer_force_download
+      when: (not __applicaton_is_local_download_file.stat.exists or __app_installer_force_overwrite) or __app_installer_force_download
 
-    - name: copy downloaded wildfly tar file
+    - name: copy downloaded application tar file
       copy:
-        src: '{{ wildfly_download_file }}'
-        dest: '{{ wildfly_download_dir }}/{{ wildfly_download_file }}'
+        src: '{{ __app_download_file }}'
+        dest: '{{ __app_download_dir }}/{{ __app_download_file }}'
         mode: 0644
-      when: (not wildfly_is_download_file.stat.exists or wildfly_installer_force_overwrite)
-  when: wildfly_installer_local
+      when: __app_installer_force_overwrite or not __app_is_download_file.stat.exists
+  when: __app_installer_local
 
-- name: 'download wildfly tar file {{ wildfly_download_file }}'
+- name: 'download application tar file {{ __app_download_file }}'
   get_url:
-    url: '{{ wildfly_download_url }}'
-    dest: '{{ wildfly_download_dir }}/{{ wildfly_download_file }}'
-    validate_certs: '{{ wildfly_download_validate_certs }}'
+    url: '{{ __app_download_url }}'
+    dest: '{{ __app_download_dir }}/{{ __app_download_file }}'
+    validate_certs: '{{ __app_download_validate_certs }}'
     mode: 0644
-  when: (not wildfly_is_download_file.stat.exists or wildfly_installer_force_overwrite) and
-        wildfly_installer_force_download and not wildfly_installer_local
+  when: (not __app_is_download_file.stat.exists or __app_installer_force_overwrite) and __app_installer_force_download and not __app_installer_local
