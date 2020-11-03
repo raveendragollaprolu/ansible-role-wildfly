@@ -10,6 +10,14 @@
 - name: download Wildfly installer
   include_tasks: download.yml
 
+- name: 'create application directory: {{ wildfly_base }}'
+  file:
+    path: '{{ wildfly_base }}'
+    owner: '{{ wildfly_user }}'
+    group: '{{ wildfly_group }}'
+    mode: '{{ wildfly_dir_mode }}'
+    state: directory
+
 - name: install Wildfly
   include_tasks: install.yml
 
