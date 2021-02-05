@@ -10,7 +10,7 @@ wildfly_manage_service: true
 wildfly_service_enabled: true
 wildfly_service_status: 'restarted'  # Possible values are: reloaded, restarted, started, stopped
 
-force_wildfly_install: false
+wildfly_force_update: false
 
 wildfly_installer_force_download: true
 wildfly_installer_force_overwrite: true
