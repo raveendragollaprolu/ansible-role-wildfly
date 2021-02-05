@@ -5,7 +5,7 @@ driver:
   name: docker
 platforms:
   - name: java-centos6-11-jdk
-    image: geerlingguy/docker-centos6-ansible
+    image: kami911/docker-centos6-ansible
     image_version: latest
     groups:
       - jdk
@@ -35,13 +35,13 @@ platforms:
       - centos8
 
   - name: wildfly-centos6-9.0.2
-    image: geerlingguy/docker-centos6-ansible
+    image: kami911/docker-centos6-ansible
     image_version: latest
     groups:
       - standalone
       - wildfly_902
   - name: wildfly-centos6-10.0.0
-    image: geerlingguy/docker-centos6-ansible
+    image: kami911/docker-centos6-ansible
     image_version: latest
     groups:
       - standalone
@@ -53,7 +53,7 @@ platforms:
       - standalone
       - wildfly_1100
   - name: wildfly-centos6-10.1.0
-    image: geerlingguy/docker-centos6-ansible
+    image: kami911/docker-centos6-ansible
     image_version: latest
     groups:
       - standalone

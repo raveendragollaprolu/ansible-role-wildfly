@@ -5,7 +5,7 @@ driver:
   name: docker
 platforms:
   - name: wildfly-centos6-default
-    image: geerlingguy/docker-centos6-ansible
+    image: kami911/docker-centos6-ansible
     image_version: latest
     groups:
       - standalone
