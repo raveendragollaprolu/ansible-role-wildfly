@@ -16,9 +16,15 @@ platforms:
     groups:
       - standalone
   - name: wildfly-centos8-default
-    image: geerlingguy/docker-centos8-ansible
+    image: kami911/docker-centos8-ansible
     image_version: latest
-    privileged: true
+    tmpfs:
+      - /run
+      - /tmp
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
     groups:
       - python3
       - standalone
@@ -35,9 +41,15 @@ platforms:
     groups:
       - domain
   - name: wildfly-centos8-default-domain
-    image: geerlingguy/docker-centos8-ansible
+    image: kami911/docker-centos8-ansible
     image_version: latest
-    privileged: true
+    tmpfs:
+      - /run
+      - /tmp
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
     groups:
       - python3
       - domain
@@ -53,9 +65,15 @@ platforms:
     groups:
       - domain_controller
   - name: wildfly-centos8-default-domain_controller
-    image: geerlingguy/docker-centos8-ansible
+    image: kami911/docker-centos8-ansible
     image_version: latest
-    privileged: true
+    tmpfs:
+      - /run
+      - /tmp
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
     groups:
       - python3
       - domain_controller
