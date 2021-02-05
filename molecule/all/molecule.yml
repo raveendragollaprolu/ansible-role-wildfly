@@ -20,14 +20,19 @@ platforms:
       - centos7
 
   - name: java-centos8-11-jdk
-    image: geerlingguy/docker-centos8-ansible
+    image: kami911/docker-centos8-ansible
     image_version: latest
-    privileged: true
+    tmpfs:
+      - /run
+      - /tmp
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
     groups:
       - jdk
       - python3
       - centos8
-
 
   - name: wildfly-centos6-9.0.2
     image: geerlingguy/docker-centos6-ansible
