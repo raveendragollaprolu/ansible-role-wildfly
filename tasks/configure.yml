@@ -369,6 +369,8 @@
     - name: systemd reload
       systemd:
         daemon_reload: true
+      when:
+        - ((ansible_os_family == 'RedHat' and ansible_distribution_major_version|int  > 7) or ansible_os_family != 'RedHat')
   when:
     - ansible_service_mgr == 'systemd'
     - ((ansible_os_family == 'RedHat' and ansible_distribution_major_version|int > 6) or ansible_os_family != 'RedHat')
@@ -383,7 +385,11 @@
     - name: systemd reload
       systemd:
         daemon_reload: true
+      when:
+        - ((ansible_os_family == 'RedHat' and ansible_distribution_major_version|int  > 7) or ansible_os_family != 'RedHat')
   when:
-    - wildfly_role == 'domain-master-slave'
+    - wildfly_mode == 'domain'
+    - wildfly_role in [ 'domain-master', 'domain-master-slave' ]
     - ansible_service_mgr == 'systemd'
     - ((ansible_os_family == 'RedHat' and ansible_distribution_major_version|int  > 6) or ansible_os_family != 'RedHat')
+ 

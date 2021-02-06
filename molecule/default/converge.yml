@@ -9,5 +9,21 @@
       changed_when: false
 - name: Converge
   hosts: all
+  vars:
+    wildfly_installer_keep: true
+    wildfly_installer_force_overwrite: false
+    wildfly_installer_force_download: true
+    wildfly_installer_local: true
+    wildfly_manage_firewalld: false
+    wildfly_service_status: 'started'
+    wildfly_manage_service: false
+    wildfly_vault_enable: false
+    wildfly_management_users:
+      - {name: 'david', password: 'ruomlig'}
+      - {name: 'roger', password: 'sretaw'}
+    wildfly_app_users:
+      - {name: 'rich', password: 'thgirw'}
+      - {name: 'nick', password: 'nosam'}
+
   roles:
     - role: ansible-role-wildfly
