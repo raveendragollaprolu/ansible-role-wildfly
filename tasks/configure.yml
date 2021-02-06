@@ -67,8 +67,9 @@
 - name: 'Setting node password for domain members to connect domain-controller for host slaves'
   lineinfile:
     dest: '{{ wildfly_base }}/domain/configuration/host-slave.xml'
-    line: '          <secret value="{{ wildfly_node_password | b64encode }}" />'
-    regexp: '^[ \t]*<secret[ \t]*value=".*"[ \t]*\/>'
+    regexp: '(.*)<secret value="(\S+)"(.*)$'
+    line: '\1<secret value="{{ wildfly_node_password | b64encode }}"\3'
+    backrefs: yes
   notify: restart wildfly services
   when:
     - wildfly_mode == 'domain'
