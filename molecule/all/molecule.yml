@@ -10,7 +10,6 @@ platforms:
     groups:
       - jdk
       - centos6
-
   - name: java-centos7-11-jdk
     image: geerlingguy/docker-centos7-ansible
     image_version: latest
@@ -18,7 +17,6 @@ platforms:
     groups:
       - jdk
       - centos7
-
   - name: java-centos8-11-jdk
     image: geerlingguy/docker-centos8-ansible
     image_version: latest
@@ -27,8 +25,6 @@ platforms:
       - jdk
       - python3
       - centos8
-
-
   - name: wildfly-centos6-9.0.2
     image: geerlingguy/docker-centos6-ansible
     image_version: latest

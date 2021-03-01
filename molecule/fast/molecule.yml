@@ -4,13 +4,6 @@ dependency:
 driver:
   name: docker
 platforms:
-  - name: wildfly-centos8-default
-    image: geerlingguy/docker-centos8-ansible
-    image_version: latest
-    privileged: true
-    groups:
-      - python3
-      - standalone
   - name: wildfly-centos8-default-domain
     image: geerlingguy/docker-centos8-ansible
     image_version: latest
@@ -18,13 +11,6 @@ platforms:
     groups:
       - python3
       - domain
-  - name: wildfly-centos8-default-domain_controller
-    image: geerlingguy/docker-centos8-ansible
-    image_version: latest
-    privileged: true
-    groups:
-      - python3
-      - domain_controller
 provisioner:
   name: ansible
   lint:
