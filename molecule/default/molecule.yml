@@ -4,59 +4,85 @@ dependency:
 driver:
   name: docker
 platforms:
-  - name: wildfly-centos6-default
-    image: geerlingguy/docker-centos6-ansible
-    image_version: latest
-    groups:
-      - standalone
   - name: wildfly-centos7-default
     image: geerlingguy/docker-centos7-ansible
     image_version: latest
-    privileged: true
+    tmpfs:
+      - /run
+      - /tmp
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
     groups:
+      - centos7
       - standalone
   - name: wildfly-centos8-default
-    image: geerlingguy/docker-centos8-ansible
+    image: kami911/docker-centos8-ansible
     image_version: latest
-    privileged: true
+    tmpfs:
+      - /run
+      - /tmp
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
     groups:
+      - centos8
       - python3
       - standalone
-  - name: wildfly-centos6-default-domain
-    image: centos
-    image_version: 6.8
-    groups:
-      - domain
-      - wildfly_1100
   - name: wildfly-centos7-default-domain
     image: geerlingguy/docker-centos7-ansible
     image_version: latest
-    privileged: true
+    tmpfs:
+      - /run
+      - /tmp
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
     groups:
+      - centos7
       - domain
   - name: wildfly-centos8-default-domain
-    image: geerlingguy/docker-centos8-ansible
+    image: kami911/docker-centos8-ansible
     image_version: latest
-    privileged: true
+    tmpfs:
+      - /run
+      - /tmp
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
     groups:
+      - centos8
       - python3
       - domain
-  - name: wildfly-centos6-default-domain-controller
-    image: centos
-    image_version: 6.8
-    groups:
-      - domain_controller
   - name: wildfly-centos7-default-domain-controller
     image: geerlingguy/docker-centos7-ansible
     image_version: latest
-    privileged: true
+    tmpfs:
+      - /run
+      - /tmp
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
     groups:
+      - centos7
       - domain_controller
   - name: wildfly-centos8-default-domain_controller
-    image: geerlingguy/docker-centos8-ansible
+    image: kami911/docker-centos8-ansible
     image_version: latest
-    privileged: true
+    tmpfs:
+      - /run
+      - /tmp
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
     groups:
+      - centos8
       - python3
       - domain_controller
 provisioner:
@@ -72,20 +98,14 @@ provisioner:
       domain_controller:
         wildfly_mode: 'domain'
         wildfly_role: 'domain-master-slave'
-      all:
-        wildfly_installer_keep: true
-        wildfly_installer_force_overwrite: false
-        wildfly_installer_force_download: true
-        wildfly_installer_local: true
-        wildfly_manage_firewalld: false
-        wildfly_service_status: 'started'
-        wildfly_manage_service: false
-        wildfly_management_users:
-          - {name: 'david', password: 'ruomlig'}
-          - {name: 'roger', password: 'sretaw'}
-        wildfly_app_users:
-          - {name: 'rich', password: 'thgirw'}
-          - {name: 'nick', password: 'nosam'}
+      centos6:
+        tomcat_manage_firewalld: false
+      centos7:
+        tomcat_manage_firewalld: true
+      centos8:
+        tomcat_manage_firewalld: true
+      python3:
+        ansible_python_interpreter: '/usr/bin/env python3'
 scenario:
   name: default
 verifier:
