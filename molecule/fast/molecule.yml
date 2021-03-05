@@ -9,6 +9,7 @@ platforms:
     image_version: latest
     privileged: true
     groups:
+      - wildfly_1800
       - python3
       - standalone
   - name: wildfly-centos8-default-domain
@@ -16,6 +17,7 @@ platforms:
     image_version: latest
     privileged: true
     groups:
+      - wildfly_1800
       - python3
       - domain
   - name: wildfly-centos8-default-domain_controller
@@ -23,8 +25,18 @@ platforms:
     image_version: latest
     privileged: true
     groups:
+      - wildfly_1800
       - python3
       - domain_controller
+  - name: wildfly-centos8-default-domain_controller_backup
+    image: geerlingguy/docker-centos8-ansible
+    image_version: latest
+    privileged: true
+    groups:
+      - wildfly_1800
+      - python3
+      - domain_controller
+      - domain_backup
 provisioner:
   name: ansible
   lint:
@@ -38,6 +50,12 @@ provisioner:
       domain_controller:
         wildfly_mode: 'domain'
         wildfly_role: 'domain-master-slave'
+      wildfly_1800:
+        wildfly_version: 18.0.0.Final
+        wildfly_file_version: '10.0'
+      domain_backup:
+        wildfly_dc_backup_mode: true
+        wildfly_dc_cached_mode: true
       all:
         wildfly_installer_keep: true
         wildfly_installer_force_overwrite: false

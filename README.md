@@ -43,7 +43,6 @@ Available variables are listed below, along with default values (see `defaults/m
 
 Force update when same version is already installed. Old version is always updated.
 
-
     wildfly_service_status: 'restarted'
 
 Specify the state of service. Possible values are: reloaded, restarted, started, stopped. Default is restarted. The started and stopped state are idempotent actions that will not run commands
@@ -140,6 +139,44 @@ Wildfly parameter name is 'jboss.server.data.dir'.
     # Manually defined variables
     # wildfly_management_user: admin
     # wildfly_management_password: admin
+
+### Standalone or Domain mode configuration
+
+
+    wildfly_mode: domain
+    
+Select Wildfly configuration mode. Supported modes are standalone and domain
+
+    wildfly_role: domain-master-slave  # supported roles: domain-master domain-master-slave domain-slave domain
+
+In case of Wildfly domain mode, please select roles for the host. For domain mode you must have one non slave mode Wildfly host. Hence you must have at least one domain-master or domain-master-slave or domain mode host.
+The difference between domain-master or domain-master-slave or domain mode are:
+* domain-master: contains only domain controller. Uses one Wildfly instance.
+* domain-master-slave: contains a domain controller and a separated domain slave. Uses two Wildfly instances in smart way.
+* domain: contains a domain controller and an intagrated domain slave. Uses one Wildfly instance.
+
+    wildfly_system_name: app-system
+
+Specify the system wide name of this installation. This has same value accross multiple hosts of same domain.
+
+    wildfly_instance_name: 'wildfly_{{ wildfly_system_name }}'
+
+Instance name of standalone and domain slave mode Wildfly installation. For example the name of init.s and systemd scripts.
+
+    wildfly_dc_instance_name: 'wildfly-dc_{{ wildfly_system_name }}'
+
+Instance name of domain master mode Wildfly installation. For example the name of init.s and systemd scripts.
+
+wildfly_dc_backup_mode: false
+
+Switch domain slaves to backup mode. Causes the slave host controller to create and maintain a local copy (domain.cached-remote.xml) of the domain configuration. If ignore-unused-configuration is unset in host.xml,a complete copy of the domain configuration will be stored locally, otherwise the configured value of ignore-unused-configuration in host.xml will be used.
+
+wildfly_dc_cached_mode: false
+
+Switch domain slaves to cached domain controller mode. If the slave host controller is unable to contact the master domain controller to get its configuration at boot, this option will allow the slave host controller to boot and becomeoperational using a previously cached copy of the domain configuration (domain.cached-remote.xml.) If the cached configuration is not present, this boot will fail. This file is created using using one ofthe following methods:
+* A previously successful connection to the master domain controller using --backup or --cached-dc.
+* Copying the domain configuration from an alternative host to domain/configuration/domain.cached-remote.xml.
+The unavailable master domain controller will be polled periodically for availability, and once becoming available, the slave host controller will reconnect to the master host controller and synchronize the domainconfiguration. During the interval the master domain controller is unavailable, the slave host controller will not be able make any modifications to the domain configuration, but it may launch servers and handlerequests to deployed applications etc.
 
 ### Wildfly log compression options
 

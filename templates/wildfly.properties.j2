@@ -11,6 +11,12 @@ jboss.bind.address.private={{ wildfly_bind_address_private }}
 jboss.http.port={{ wildfly_http_port }}
 jboss.https.port={{ wildfly_https_port }}
 
+{% if wildfly_dc_backup_mode or wildfly_dc_cached_mode %}
+jboss.management.http.port={{ wildfly_management_http_port }}
+jboss.management.https.port={{ wildfly_management_https_port }}
+jboss.management.native.port={{ wildfly_management_port }}
+{% endif %}
+
 jboss.server.temp.dir={{ wildfly_download_dir }}
 
 jboss.domain.master.address={{ wildfly_master_address }}

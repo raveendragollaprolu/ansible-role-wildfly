@@ -39,7 +39,7 @@ JBOSS_CONSOLE_LOG="{{ wildfly_console_log }}"
 
 # Need to modify the init script to account for JBOSS_OPTS
 # Allows us to pass system properties to WildFly
-JBOSS_OPTS="-P={{ wildfly_link_dir if wildfly_create_symlink else wildfly_dir }}/domain/configuration/wildfly.properties"
+JBOSS_OPTS="-P={{ wildfly_link_dir if wildfly_create_symlink else wildfly_dir }}/domain/configuration/wildfly.properties {% if wildfly_dc_backup_mode is defined and wildfly_dc_backup_mode != '' %} --backup{% endif %}{% if wildfly_dc_cached_mode is defined and wildfly_dc_cached_mode != '' %} --cached-dc{% endif %}"
 
 {% if wildfly_java_home  %}
 ## Location of Java home

@@ -27,6 +27,13 @@
         immediate: true
         state: enabled
 
+    - name: open wildfly management native tcp port
+      firewalld:
+        port: '{{ wildfly_management_port }}/tcp'
+        permanent: true
+        immediate: true
+        state: enabled
+  
     - name: open wildfly http tcp port
       firewalld:
         port: '{{ wildfly_http_port }}/tcp'
@@ -57,7 +64,7 @@
       immediate: true
       state: enabled
 
-  - name: open wildfly management tcp port on domain controller master
+  - name: open wildfly management native tcp port on domain controller master
     firewalld:
       port: '{{ wildfly_master_port }}/tcp'
       permanent: true
