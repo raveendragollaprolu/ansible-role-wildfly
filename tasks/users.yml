@@ -61,11 +61,12 @@
     {{ wildfly_base }}/bin/add-user.sh -dc {{ wildfly_base }}/domain/configuration -u {{ item }} -p {{ wildfly_node_password }} &&
     touch {{ wildfly_base }}/.host-users.{{ item }}.provisioned
   args:
-    creates: '{{ wildfly_base }}/.host-dc-users.{{ item }}.provisioned'
+    creates: '{{ wildfly_base }}/.host-users.{{ item }}.provisioned'
   with_items: '{{ wildfly_cluster_members }}'
   when:
     - wildfly_mode == 'domain'
     - wildfly_role in [ 'domain-slave', 'domain-master-slave' ]
+    - wildfly_dc_backup_mode or wildfly_dc_cached_mode
   no_log: false
 
 - name: enforce secure permissions on password files

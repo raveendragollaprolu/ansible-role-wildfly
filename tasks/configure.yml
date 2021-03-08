@@ -221,7 +221,7 @@
   tags:
     - wildfly_domain_controller
 
-name: 'Setting domain member to use native port (3a)'
+- name: 'Setting domain member to use native port (3a)'
   xml:
     path: '{{ wildfly_base }}/domain/configuration/host-slave.xml'
     xpath: '/h:host/h:domain-controller/h:remote/h:discovery-options'
@@ -229,8 +229,10 @@ name: 'Setting domain member to use native port (3a)'
       h: 'urn:jboss:domain:{{ wildfly_file_version }}'
     set_children:
       - static-discovery:
+          name: 'master'
           host: '${jboss.domain.master.address:{{ wildfly_master_address }}}'
-          port: '${jboss.domain.master.port:{{ wildfly_master_port }}}'      
+          port: '${jboss.domain.master.port:{{ wildfly_master_port }}}'
+          protocol: remote
     pretty_print: true
   notify:
     - restart wildfly services
@@ -253,10 +255,12 @@ name: 'Setting domain member to use native port (3a)'
           name: 'master'
           host: '${jboss.domain.master.address:{{ wildfly_master_address }}}'
           port: '${jboss.domain.master.port:{{ wildfly_master_port }}}'
+          protocol: remote
       - static-discovery:
           name: 'backupmaster'
           host: '${jboss.domain.master.address:{{ wildfly_master_address }}}'
           port: '${jboss.management.native.port:{{ wildfly_management_port }}}'
+          protocol: remote
     pretty_print: true
   notify:
     - restart wildfly services
@@ -280,14 +284,17 @@ name: 'Setting domain member to use native port (3a)'
           name: 'master'
           host: '${jboss.domain.master.address:{{ wildfly_master_address }}}'
           port: '${jboss.domain.master.port:{{ wildfly_master_port }}}'
+          protocol: remote
       - static-discovery:
           name: 'backupmaster'
           host: '${jboss.domain.master.address:{{ wildfly_master_address }}}'
           port: '${jboss.management.native.port:{{ wildfly_management_port }}}'
+          protocol: remote
       - static-discovery:
           name: 'backup'
           host: '${jboss.domain.master.address:{{ wildfly_cluster_members[1] }}}'
           port: '${jboss.management.native.port:{{ wildfly_management_port }}}'          
+          protocol: remote
     pretty_print: true
   notify:
     - restart wildfly services
@@ -303,7 +310,7 @@ name: 'Setting domain member to use native port (3a)'
 - name: 'Setting domain member to use native port (1)'
   xml:
     path: '{{ wildfly_base }}/domain/configuration/host-slave.xml'
-    xpath: '/h:host/h:domain-controller/h:remote/h:discovery-options'
+    xpath: '/h:host/h:domain-controller/h:remote'
     namespaces:
       h: 'urn:jboss:domain:{{ wildfly_file_version }}'
     attribute: '{{ item.k }}'
@@ -312,8 +319,6 @@ name: 'Setting domain member to use native port (3a)'
   notify:
     - restart wildfly services
   with_items:
-    - k: protocol
-      v: remote
     - k: username
       v: '{{ wildfly_bind_address }}'
     - k: security-realm
