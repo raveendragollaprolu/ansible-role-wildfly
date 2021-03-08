@@ -83,7 +83,7 @@ wildfly_master_port: 19999
 wildfly_master_http_port: 19990
 wildfly_master_https_port: 19993
 
-wildfly_cluser_members:
+wildfly_cluster_members:
  - '{{ wildfly_master_address }}'
 
 wildfly_modcluster_address: '224.0.{{ wildfly_master_address.split(".")[2:4] | join(".") }}'
