@@ -221,47 +221,16 @@
   tags:
     - wildfly_domain_controller
 
-- name: 'Setting domain member to use native port (1)'
+name: 'Setting domain member to use native port (3a)'
   xml:
     path: '{{ wildfly_base }}/domain/configuration/host-slave.xml'
-    xpath: '/h:host/h:domain-controller'
-    input_type: 'xml'
+    xpath: '/h:host/h:domain-controller/h:remote/h:discovery-options'
     namespaces:
       h: 'urn:jboss:domain:{{ wildfly_file_version }}'
     set_children:
-      - '<remote protocol="remote" username="{{ wildfly_bind_address }}" security-realm="ManagementRealm" />'
-    pretty_print: true
-  notify:
-    - restart wildfly services
-  when:
-    - wildfly_mode == 'domain'
-    - wildfly_role in [ 'domain-slave', 'domain-master-slave' ]
-
-- name: 'Setting domain member to use native port (2)'
-  xml:
-    path: '{{ wildfly_base }}/domain/configuration/host-slave.xml'
-    xpath: '/h:host/h:domain-controller/remote/discovery-options'
-    namespaces:
-      h: 'urn:jboss:domain:{{ wildfly_file_version }}'
-    pretty_print: true
-  notify:
-    - restart wildfly services
-  when:
-    - wildfly_mode == 'domain'
-    - wildfly_role in [ 'domain-slave', 'domain-master-slave' ]
-  tags:
-    - wildfly_domain_master
-    - wildfly_domain_backup
-
-- name: 'Setting domain member to use native port (3a)'
-  xml:
-    path: '{{ wildfly_base }}/domain/configuration/host-slave.xml'
-    xpath: '/h:host/h:domain-controller/remote/discovery-options'
-    input_type: 'xml'
-    namespaces:
-      h: 'urn:jboss:domain:{{ wildfly_file_version }}'
-    set_children:
-      - '<static-discovery host="${jboss.domain.master.address:{{ wildfly_master_address }}}" port="${jboss.management.native.port:{{ wildfly_master_port }}}" />'
+      - static-discovery:
+          host: '${jboss.domain.master.address:{{ wildfly_master_address }}}'
+          port: '${jboss.domain.master.port:{{ wildfly_master_port }}}'      
     pretty_print: true
   notify:
     - restart wildfly services
@@ -276,13 +245,18 @@
 - name: 'Setting domain member to use native port with backup option single slave (3b)'
   xml:
     path: '{{ wildfly_base }}/domain/configuration/host-slave.xml'
-    xpath: '/h:host/h:domain-controller/remote/discovery-options'
-    input_type: 'xml'
+    xpath: '/h:host/h:domain-controller/h:remote/h:discovery-options'
     namespaces:
       h: 'urn:jboss:domain:{{ wildfly_file_version }}'
     set_children:
-      - '<static-discovery name="master" host="${jboss.domain.master.address:{{ wildfly_master_address }}}" port="${jboss.management.native.port:{{ wildfly_master_port }}}" />'
-      - '<static-discovery name="backup" host="${jboss.domain.master.address:{{ wildfly_master_address }}}" port="${jboss.management.native.port:{{ wildfly_management_port }}}" />'
+      - static-discovery:
+          name: 'master'
+          host: '${jboss.domain.master.address:{{ wildfly_master_address }}}'
+          port: '${jboss.domain.master.port:{{ wildfly_master_port }}}'
+      - static-discovery:
+          name: 'backupmaster'
+          host: '${jboss.domain.master.address:{{ wildfly_master_address }}}'
+          port: '${jboss.management.native.port:{{ wildfly_management_port }}}'
     pretty_print: true
   notify:
     - restart wildfly services
@@ -295,17 +269,25 @@
     - wildfly_domain_master
     - wildfly_domain_backup
 
-- name: 'Setting domain member to use native port with backup option with multiple slave (3b)'
+- name: 'Setting domain member to use native port with backup option with multiple slave (3c)'
   xml:
     path: '{{ wildfly_base }}/domain/configuration/host-slave.xml'
-    xpath: '/h:host/h:domain-controller/remote/discovery-options'
-    input_type: 'xml'
+    xpath: '/h:host/h:domain-controller/h:remote/h:discovery-options'
     namespaces:
       h: 'urn:jboss:domain:{{ wildfly_file_version }}'
     set_children:
-      - '<static-discovery name="master" host="${jboss.domain.master.address:{{ wildfly_master_address }}}" port="${jboss.management.native.port:{{ wildfly_master_port }}}" />'
-      - '<static-discovery name="backupmaster" host="${jboss.domain.master.address:{{ wildfly_master_address }}}" port="${jboss.management.native.port:{{ wildfly_management_port }}}" />'
-      - '<static-discovery name="backup" host="${jboss.domain.master.address:{{ wildfly_domain_member[1] }}}" port="${jboss.management.native.port:{{ wildfly_management_port }}}" />'
+      - static-discovery:
+          name: 'master'
+          host: '${jboss.domain.master.address:{{ wildfly_master_address }}}'
+          port: '${jboss.domain.master.port:{{ wildfly_master_port }}}'
+      - static-discovery:
+          name: 'backupmaster'
+          host: '${jboss.domain.master.address:{{ wildfly_master_address }}}'
+          port: '${jboss.management.native.port:{{ wildfly_management_port }}}'
+      - static-discovery:
+          name: 'backup'
+          host: '${jboss.domain.master.address:{{ wildfly_cluster_members[1] }}}'
+          port: '${jboss.management.native.port:{{ wildfly_management_port }}}'          
     pretty_print: true
   notify:
     - restart wildfly services
@@ -314,6 +296,31 @@
     - wildfly_role in [ 'domain-slave', 'domain-master-slave' ]
     - wildfly_dc_backup_mode or wildfly_dc_cached_mode
     - wildfly_cluster_members | length > 1
+  tags:
+    - wildfly_domain_master
+    - wildfly_domain_backup
+
+- name: 'Setting domain member to use native port (1)'
+  xml:
+    path: '{{ wildfly_base }}/domain/configuration/host-slave.xml'
+    xpath: '/h:host/h:domain-controller/h:remote/h:discovery-options'
+    namespaces:
+      h: 'urn:jboss:domain:{{ wildfly_file_version }}'
+    attribute: '{{ item.k }}'
+    value: '{{ item.v }}'
+    pretty_print: true
+  notify:
+    - restart wildfly services
+  with_items:
+    - k: protocol
+      v: remote
+    - k: username
+      v: '{{ wildfly_bind_address }}'
+    - k: security-realm
+      v: 'ManagementRealm'
+  when:
+    - wildfly_mode == 'domain'
+    - wildfly_role in [ 'domain-slave', 'domain-master-slave' ]
   tags:
     - wildfly_domain_master
     - wildfly_domain_backup

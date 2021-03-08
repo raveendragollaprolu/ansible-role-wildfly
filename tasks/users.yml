@@ -54,6 +54,20 @@
     - wildfly_role in [ 'domain-master', 'domain-master-slave' ]
   no_log: false
 
+- name: create backup domain controller cluster member users
+  become: true
+  become_user: '{{ wildfly_user }}'
+  shell: >
+    {{ wildfly_base }}/bin/add-user.sh -dc {{ wildfly_base }}/domain/configuration -u {{ item }} -p {{ wildfly_node_password }} &&
+    touch {{ wildfly_base }}/.host-users.{{ item }}.provisioned
+  args:
+    creates: '{{ wildfly_base }}/.host-dc-users.{{ item }}.provisioned'
+  with_items: '{{ wildfly_cluster_members }}'
+  when:
+    - wildfly_mode == 'domain'
+    - wildfly_role in [ 'domain-slave', 'domain-master-slave' ]
+  no_log: false
+
 - name: enforce secure permissions on password files
   file:
     path: "{{ wildfly_base }}/{{ wildfly_mode }}/configuration/{{ item }}"
