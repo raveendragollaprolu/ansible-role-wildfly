@@ -290,7 +290,7 @@
     - wildfly_mode == 'domain'
     - wildfly_role in [ 'domain-slave', 'domain-master-slave' ]
     - wildfly_dc_backup_mode or wildfly_dc_cached_mode
-    - wildfly_cluster_members|int < 2
+    - wildfly_cluster_members | length < 2
   tags:
     - wildfly_domain_master
     - wildfly_domain_backup
@@ -313,7 +313,7 @@
     - wildfly_mode == 'domain'
     - wildfly_role in [ 'domain-slave', 'domain-master-slave' ]
     - wildfly_dc_backup_mode or wildfly_dc_cached_mode
-    - wildfly_cluster_members|int > 1
+    - wildfly_cluster_members | length > 1
   tags:
     - wildfly_domain_master
     - wildfly_domain_backup
