@@ -7,5 +7,5 @@
     limit_type: '{{ item.type }}'
     limit_item: '{{ item.item }}'
     value: '{{ item.value }}'
-    dest: '{{ wildfly_limits_file }}'
+    dest: '{{ wildfly_limits_file }}.conf'
   with_items: '{{ wildfly_limits_conf }}'
