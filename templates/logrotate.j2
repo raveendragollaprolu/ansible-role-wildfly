@@ -17,6 +17,8 @@
   delaycompress
   missingok
   notifempty
+  dateext
+  dateformat "-%Y%m%d"
   minsize {{ wildfly_log_rotate_minsize }}
   compresscmd {{ wildfly_log_compress_command }}
   compressoptions "{{ wildfly_log_compress_options }}"
