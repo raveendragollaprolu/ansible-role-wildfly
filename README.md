@@ -49,11 +49,11 @@ Force update when same version is already installed. Old version is always updat
 Specify the state of service. Possible values are: reloaded, restarted, started, stopped. Default is restarted. The started and stopped state are idempotent actions that will not run commands
 unless necessary. The restarted state will always bounce the service and reloaded state will always reload.
 
-    wildfly_version: 20.0.1.Final
+    wildfly_version: 24.0.1.Final
 
-    wildfly_file_version: '13.0'
+    wildfly_file_version: '17.0'
 
-Specify Wildfly config file version. 14 = '8.0'; 15-18 = '10.0'; 20 = '13.0'.
+Specify Wildfly config file version. 14 = '8.0'; 15-18 = '10.0'; 20 = '13.0'; 24 = 17.0.
 
     wildfly_user: wildfly
 
