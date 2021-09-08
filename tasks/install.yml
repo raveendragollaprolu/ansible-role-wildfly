@@ -88,6 +88,7 @@
     src: '{{ wildfly_home }}/{{ item }}'
     dest: '{{ wildfly_base }}/{{ item }}'
     state: link
+    force: true
   with_items:
     - appclient
     - bin

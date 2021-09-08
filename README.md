@@ -43,11 +43,16 @@ Available variables are listed below, along with default values (see `defaults/m
 
 Force update when same version is already installed. Old version is always updated.
 
-
     wildfly_service_status: 'restarted'
 
 Specify the state of service. Possible values are: reloaded, restarted, started, stopped. Default is restarted. The started and stopped state are idempotent actions that will not run commands
 unless necessary. The restarted state will always bounce the service and reloaded state will always reload.
+
+
+    wildfly_system_integration: false
+
+Put Wildfly configuration files into Unix filesystem standard location (true), or put files
+ into Wildfly application folders and create symlinks to binaries (false). Default: false
 
     wildfly_version: 24.0.1.Final
 
@@ -86,6 +91,10 @@ Wildfly parameter name is 'jboss.server.data.dir'.
     wildfly_console_log: "{{ wildfly_console_log_dir }}/\
                         {{ wildfly_console_log_file }}"
 
+    wildfly_var_dir: '{{ wildfly_install_dir }}/{{ wildfly_instance_name }}/var'
+
+Specify the Wildfly var dir for lock and pid files when wildfly_system_integration is disabled
+
     wildfly_conf_dir: /etc/wildfly
     wildfly_config_file: standalone.xml
     wildfly_config_path: "{{ wildfly_dir }}/standalone/configuration/\
@@ -105,11 +114,12 @@ Wildfly parameter name is 'jboss.server.data.dir'.
     wildfly_vault_file: '{{ wildfly_vault_path }}/{{ wildfly_vault_name }}'
     wildfly_vault_alias: myvault
     wildfly_vault_keystore_password: 'bfNpAVdIklPWcta7WA8qsx'
-    wildfly_vault_key_password: 'Gg7BhLO0IOF5MUCwZTQDJF'
     wildfly_vault_keyalg: 'AES'
     wildfly_vault_keysize: 256
     wildfly_vault_iteration: 50
     wildfly_vault_salt: QTu1Mo4Z
+
+Wildfly Vault Salt Must be 8 characters according to Wildfly Vault documentation.
 
     wildfly_vault:
     - block: 'ds_ExampleDS'
@@ -140,6 +150,70 @@ Wildfly parameter name is 'jboss.server.data.dir'.
     # Manually defined variables
     # wildfly_management_user: admin
     # wildfly_management_password: admin
+
+### Process limits configuration
+
+
+    wildfly_limits_file: '/etc/security/limits.d/{{ wildfly_user }}'
+
+Name and location of limits file to control system resource allocations.
+
+    wildfly_limits_conf:
+     - domain: '{{ wildfly_user }}'
+       type: soft
+       item: nofile
+       value: 14000
+       # Note: systemd service file will use this value to set LimitNOFILE
+       # value for node, domain controller is fixed to 2048.
+     - domain: '{{ wildfly_user }}'
+       type: hard
+       item: nofile
+       value: 16384
+     - domain: '{{ wildfly_user }}'
+       type: soft
+       item: nproc
+       value: 7000
+     - domain: '{{ wildfly_user }}'
+       type: hard
+       item: nproc
+       value: 8192
+
+Set limits for specified user (domain). Value is the limit.
+Note: systemd service file will use this value to set LimitNOFILE
+value for node, domain controller is fixed to 2048.
+
+Type is one of these:
+
+Limit Type | Description
+---------------------------------
+hard       | hard limit
+soft       | soft limit
+–          | both hard and soft limit
+
+
+Item is one of these:
+
+Item         | Description
+---------------------------------------------------------
+core         | limits the core file size (KB)
+data         | max data size (KB)
+fsize        | maximum filesize (KB)
+memlock      | max locked-in-memory address space (KB)
+nofile       | max number of open file descriptors
+rss          | max resident set size (KB)
+stack        | max stack size (KB)
+cpu          | max CPU time (MIN)
+nproc        | max number of processes
+as           | address space limit (KB)
+maxlogins    | max number of logins for this user
+maxsyslogins | max number of logins on the system
+priority     | the priority to run user process with
+locks        | max number of file locks the user can hold
+sigpending   | max number of pending signals
+msgqueue     | max memory used by POSIX message queues (bytes)
+nice         | max nice priority allowed to raise to values: [-20, 19]
+rtprio       | max realtime priority
+chroot       | change root to directory (Debian-specific)
 
 ### Wildfly log compression options
 

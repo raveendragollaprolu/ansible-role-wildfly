@@ -1,0 +1,31 @@
+#!/bin/bash
+
+if [ "x$WILDFLY_HOME" = "x" ]; then
+  WILDFLY_HOME="{{ wildfly_base }}"
+fi
+
+if [[ "$1" == "domain" ]]; then
+    case $2 in
+      "dc")
+{% if wildfly_system_integration %}
+      . '{{ wildfly_conf_dir }}/{{ wildfly_dc_instance_name }}.conf'
+{% else %}
+      . '{{ wildfly_base }}/domain-controller/configuration/{{ wildfly_dc_instance_name }}.conf'
+{% endif %}
+    ;;
+      "node")
+{% if wildfly_system_integration %}
+      . '{{ wildfly_conf_dir }}/{{ wildfly_instance_name }}.conf'
+{% else %}
+      . '{{ wildfly_base }}/domain/configuration/{{ wildfly_instance_name }}.conf'
+{% endif %}
+    ;;
+      *)
+      echo "Wrong doamin paramaters"
+      exit -2
+    ;;
+    esac
+    ${WILDFLY_HOME}/bin/domain.sh -c ${JBOSS_DOMAIN_CONFIG} --host-config=${JBOSS_HOST_CONFIG} -b 0.0.0.0 ${JBOSS_OPTS}
+else
+    $WILDFLY_HOME/bin/standalone.sh -c $2 -b $3
+fi

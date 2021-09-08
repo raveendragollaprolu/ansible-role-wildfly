@@ -2,35 +2,68 @@
 # task file for wildfly
 
 - name: create wildfly etc directory
+  become: true
   file:
     path: '{{ wildfly_conf_dir }}'
     state: directory
-    owner: '{{ wildfly_user }}'
+    owner: root
     group: '{{ wildfly_group }}'
     mode: '0750'
+  when: wildfly_system_integration
 
 - name: copy wildfly domain configuration
+  become: true
   template:
     src: wildfly.conf.j2
     dest: '{{ wildfly_conf_dir }}/{{ wildfly_instance_name }}.conf'
     owner: root
-    group: root
+    group: '{{ wildfly_group }}'
     mode: '0640'
   notify:
     - restart wildfly services
     - change data mode
+  when: wildfly_system_integration
+
+- name: copy wildfly domain configuration
+  template:
+    src: wildfly.conf.j2
+    dest: '{{ wildfly_base }}/domain/configuration/{{ wildfly_instance_name }}.conf'
+    owner: '{{ wildfly_user }}'
+    group: '{{ wildfly_group }}'
+    mode: '0640'
+  notify:
+    - restart wildfly services
+    - change data mode
+  when: not wildfly_system_integration
 
 - name: copy wildfly domain-controller configuration
+  become: true
   template:
     src: wildfly-dc.conf.j2
     dest: '{{ wildfly_conf_dir }}/{{ wildfly_dc_instance_name }}.conf'
     owner: root
-    group: root
+    group: '{{ wildfly_group }}'
     mode: '0640'
   notify:
     - restart wildfly domain services
     - change data mode
-  when: wildfly_role == 'domain-master-slave'
+  when:
+   - wildfly_role == 'domain-master-slave'
+   - wildfly_system_integration
+
+- name: copy wildfly domain-controller configuration
+  template:
+    src: wildfly-dc.conf.j2
+    dest: '{{ wildfly_base }}/domain-controller/configuration/{{ wildfly_dc_instance_name }}.conf'
+    owner: '{{ wildfly_user }}'
+    group: '{{ wildfly_group }}'
+    mode: '0640'
+  notify:
+    - restart wildfly domain services
+    - change data mode
+  when:
+   - wildfly_role == 'domain-master-slave'
+   - not wildfly_system_integration
 
 - name: 'create domain user configuration in: {{ wildfly_base }}/domain/configuration'
   copy:
@@ -283,10 +316,13 @@
     - change data mode
 
 - name: create symlink to /etc/default/wildfly.conf
+  become: true
   file:
     state: link
     src: '{{ wildfly_conf_dir }}/{{ wildfly_instance_name }}.conf'
     dest: /etc/default/{{ wildfly_instance_name }}.conf
+    force: true
+  when: wildfly_system_integration
 
 - block:
     - name: copy wildfly domain domain-controller configuration
@@ -301,15 +337,19 @@
         - change data mode
 
     - name: create symlink to /etc/default/wildfly-dc.conf
+      become: true
       file:
         state: link
         src: '{{ wildfly_conf_dir }}/{{ wildfly_dc_instance_name }}.conf'
         dest: /etc/default/{{ wildfly_dc_instance_name }}.conf
+        force: true
+      when: wildfly_system_integration
   when:
     - wildfly_mode == 'domain'
     - wildfly_role in [ 'domain-master', 'domain-master-slave' ]
 
 - name: 'prepare daily wildfly logrotate'
+  become: true
   template:
     dest: '/etc/logrotate.d/{{ wildfly_system_name }}'
     src: "logrotate.j2"
@@ -323,6 +363,7 @@
   register: cron_d_dir
 
 - name: 'prepare daily logrotate cron.d task'
+  become: true
   template:
     dest: '/etc/cron.d/{{ wildfly_system_name }}-logs'
     src: "wildfly-logs.j2"
@@ -333,41 +374,119 @@
 
 - include: configure-properties.yml
 
-- name: create template to upstream init script
-  template:
-    src: wildfly_init.j2
-    dest: '{{ wildfly_init_dir }}/{{ wildfly_instance_name }}'
-    owner: root
-    group: root
-    mode: '0755'
-    force: true
-  #  when: ansible_service_mgr in ['init', 'upstart']
-  notify:
-    - restart wildfly services
-    - change data mode
+- block:
+  - name: create template to upstream init script
+    become: true
+    template:
+      src: wildfly_init.j2
+      dest: '{{ wildfly_init_dir }}/{{ wildfly_instance_name }}'
+      owner: root
+      group: root
+      mode: '0755'
+      force: true
+    #  when: ansible_service_mgr in ['init', 'upstart']
+    notify:
+      - restart wildfly services
+      - change data mode
+    when:
+      - wildfly_system_integration
 
-- name: create template to upstream domain-controller init script
-  template:
-    src: wildfly-dc_init.j2
-    dest: '{{ wildfly_init_dir }}/{{ wildfly_dc_instance_name }}'
-    owner: root
-    group: root
-    mode: '0755'
-  notify:
-    - restart wildfly domain services
-    - change data mode
+  - name: create template to upstream init script into application folder
+    template:
+      src: wildfly_init.j2
+      dest: '{{ wildfly_base }}/domain/configuration/{{ wildfly_instance_name }}'
+      owner: '{{ wildfly_user }}'
+      group: '{{ wildfly_group }}'
+      mode: '0755'
+    notify:
+      - restart wildfly domain services
+      - change data mode
+    when: not wildfly_system_integration
+
+  - name: 'create symlink to {{ wildfly_base }}/domain/configuration/{{ wildfly_instance_name }}'
+    become: true
+    file:
+      state: link
+      src: '{{ wildfly_base }}/domain/configuration/{{ wildfly_instance_name }}'
+      dest: '{{ wildfly_init_dir }}/{{ wildfly_instance_name }}'
+      force: true
+    when: not wildfly_system_integration
+
+- block:
+  - name: create template to upstream domain-controller init script
+    become: true
+    template:
+      src: wildfly-dc_init.j2
+      dest: '{{ wildfly_init_dir }}/{{ wildfly_dc_instance_name }}'
+      owner: root
+      group: root
+      mode: '0755'
+    notify:
+      - restart wildfly domain services
+      - change data mode
+    when: wildfly_system_integration
+
+  - name: create template to upstream domain-controller init script into application folder
+    template:
+      src: wildfly-dc_init.j2
+      dest: '{{ wildfly_base }}/domain-controller/configuration/{{ wildfly_dc_instance_name }}'
+      owner: '{{ wildfly_user }}'
+      group: '{{ wildfly_group }}'
+      mode: '0755'
+    notify:
+      - restart wildfly domain services
+      - change data mode
+    when: not wildfly_system_integration
+
+  - name: 'create symlink to {{ wildfly_base }}/domain-controller/configuration/{{ wildfly_dc_instance_name }}'
+    become: true
+    file:
+      state: link
+      src: '{{ wildfly_base }}/domain-controller/configuration/{{ wildfly_dc_instance_name }}'
+      dest: '{{ wildfly_init_dir }}/{{ wildfly_dc_instance_name }}'
+      force: true
+    when: not wildfly_system_integration
   when:
     - wildfly_mode == 'domain'
     - wildfly_role in [ 'domain-master', 'domain-master-slave' ]
 
 - block:
     - name: copy wildfly systemd unit file
-      template: src=wildfly.service.j2 dest={{ wildfly_systemd_dir }}/{{ wildfly_instance_name }}.service owner=root
-                group=root mode=0644
+      become: true
+      template:
+        src: wildfly.service.j2
+        dest: '{{ wildfly_systemd_dir }}/{{ wildfly_instance_name }}.service'
+        owner: root
+        group: root
+        mode: 0644
       notify:
         - restart wildfly services
         - change data mode
+      when: wildfly_system_integration
+
+    - name: copy wildfly systemd unit file to application folder
+      template:
+        src: wildfly.service.j2
+        dest: '{{ wildfly_base }}/domain/configuration/{{ wildfly_instance_name }}.service'
+        owner: '{{ wildfly_user }}'
+        group:  '{{ wildfly_group }}'
+        mode: 0644
+      notify:
+        - restart wildfly services
+        - change data mode
+      when: not wildfly_system_integration
+
+    - name: 'create symlink to {{ wildfly_base }}/domain/configuration/{{ wildfly_instance_name }}.service'
+      become: true
+      file:
+        state: link
+        src: '{{ wildfly_base }}/domain/configuration/{{ wildfly_instance_name }}.service'
+        dest: '{{ wildfly_systemd_dir }}/{{ wildfly_instance_name }}.service'
+        force: true
+      when: not wildfly_system_integration
+
     - name: systemd reload
+      become: true
       systemd:
         daemon_reload: true
       when:
@@ -377,20 +496,73 @@
     - ((ansible_os_family == 'RedHat' and ansible_distribution_major_version|int > 6) or ansible_os_family != 'RedHat')
 
 - block:
-    - name: copy wildfly domain controller systemd unit file
-      template: src=wildfly-dc.service.j2 dest={{ wildfly_systemd_dir }}/{{ wildfly_dc_instance_name }}.service owner=root
-                group=root mode=0644
-      notify:
-        - restart wildfly domain services
-        - change data mode
-    - name: systemd reload
-      systemd:
-        daemon_reload: true
-      when:
-        - ((ansible_os_family == 'RedHat' and ansible_distribution_major_version|int  > 7) or ansible_os_family != 'RedHat')
+  - name: copy wildfly domain controller systemd unit file
+    become: true
+    template:
+      src: wildfly-dc.service.j2
+      dest: '{{ wildfly_systemd_dir }}/{{ wildfly_dc_instance_name }}.service'
+      owner: root
+      group: root
+      mode: 0644
+    notify:
+      - restart wildfly domain services
+      - change data mode
+    when: wildfly_system_integration
+
+  - name: copy wildfly domain controller systemd unit file to application folder
+    template:
+      src: wildfly-dc.service.j2
+      dest: '{{ wildfly_base }}/domain-controller/configuration/{{ wildfly_dc_instance_name }}.service'
+      owner: '{{ wildfly_user }}'
+      group: '{{ wildfly_group }}'
+      mode: 0644
+    notify:
+      - restart wildfly services
+      - change data mode
+    when: not wildfly_system_integration
+
+  - name: 'create symlink to {{ wildfly_base }}/domain-controller/configuration/{{ wildfly_dc_instance_name }}.service'
+    become: true
+    file:
+      state: link
+      src: '{{ wildfly_base }}/domain-controller/configuration/{{ wildfly_dc_instance_name }}.service'
+      dest: '{{ wildfly_systemd_dir }}/{{ wildfly_dc_instance_name }}.service'
+      force: true
+    when: not wildfly_system_integration
+
+  - name: systemd reload
+    systemd:
+      daemon_reload: true
+    when: ((ansible_os_family == 'RedHat' and ansible_distribution_major_version|int  > 7) or ansible_os_family != 'RedHat')
   when:
     - wildfly_mode == 'domain'
     - wildfly_role in [ 'domain-master', 'domain-master-slave' ]
     - ansible_service_mgr == 'systemd'
     - ((ansible_os_family == 'RedHat' and ansible_distribution_major_version|int  > 6) or ansible_os_family != 'RedHat')
- 
+
+- name: copy wildfly systemd start script file
+  template:
+    src: launch.sh.j2
+    dest: '{{ wildfly_base }}/bin/launch.sh'
+    owner: '{{ wildfly_user }}'
+    group: '{{ wildfly_group }}'
+    mode: 0750
+  notify:
+      - restart wildfly services
+      - change data mode
+  when:
+    - ansible_service_mgr == 'systemd'
+    - ((ansible_os_family == 'RedHat' and ansible_distribution_major_version|int > 6) or ansible_os_family != 'RedHat')
+
+- name: create wildfly var directories
+  become: true
+  file:
+    path: '{{ wildfly_var_dir}}/{{ item }}'
+    state: directory
+    owner: '{{ wildfly_user }}'
+    group: '{{ wildfly_group }}'
+    mode: '0770'
+  with_items:
+   - pid
+   - lock
+  when: not wildfly_system_integration

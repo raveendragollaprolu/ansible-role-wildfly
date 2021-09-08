@@ -6,19 +6,24 @@ Before=httpd.service
 [Service]
 Type=simple
 Environment=LAUNCH_JBOSS_IN_BACKGROUND=1
+Environment=WILDFLY_HOME={{ wildfly_base }}
+{% if wildfly_system_integration %}
 Environment=JBOSS_CONF={{ wildfly_conf_dir }}/{{ wildfly_dc_instance_name }}.conf
-EnvironmentFile={{ wildfly_conf_dir }}/{{ wildfly_dc_instance_name }}.conf
+{% else %}
+Environment=JBOSS_CONF={{ wildfly_base }}/domain-controller/configuration/{{ wildfly_dc_instance_name }}.conf
+{% endif %}
 
-User=root
+User={{ wildfly_user }}
 Group={{ wildfly_group }}
 
-PIDFile=/var/run/wildfly/{{ wildfly_dc_instance_name }}.pid
+PIDFile={% if wildfly_system_integration %}/var/run/wildfly/{{ wildfly_dc_instance_name }}.pid{% else %}{{ wildfly_var_dir}}/pid/{{ wildfly_dc_instance_name }}.pid{% endif %}
 
-LimitNOFILE=102642
+LimitNOFILE=2048
+OOMScoreAdjust=-1000
 
-ExecStart={{ wildfly_link_dir}}/{{ wildfly_init_src_path }}/init.d/wildfly-init-{{ ansible_os_family | lower }}.sh start
-ExecStop={{ wildfly_link_dir}}/{{ wildfly_init_src_path }}/init.d/wildfly-init-{{ ansible_os_family | lower }}.sh stop
-StandardOutput=null
+ExecStart={{ wildfly_base }}/bin/launch.sh domain dc
+StandardOutput=append:{{ wildfly_console_dc_log }}
+StandardError=append:{{ wildfly_console_dc_log }}
 
 [Install]
 WantedBy=multi-user.target

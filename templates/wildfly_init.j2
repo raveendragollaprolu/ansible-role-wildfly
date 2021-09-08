@@ -5,7 +5,13 @@
 # chkconfig: - 80 20
 # description: WildFly ({{ wildfly_instance_name }}) {{ wildfly_mode }}  startup script
 # processname: {{ wildfly_instance_name }}
-# pidfile: /var/run/wildfly/{{ wildfly_instance_name }}.pid
-# config: {{ wildfly_conf_dir }}/{{ wildfly_instance_name }}.conf
+# pidfile: {% if wildfly_system_integration %}/var/run/wildfly/{{ wildfly_instance_name }}.pid{% else %}{{ wildfly_var_dir}}/pid/{{ wildfly_instance_name }}.pid{% endif %}
+# config: {% if wildfly_system_integration %}{{ wildfly_conf_dir }}/{{ wildfly_instance_name }}.conf{% else %}{{ wildfly_base }}/domain/configuration/{{ wildfly_instance_name }}.conf{% endif %}
+
+{% if wildfly_system_integration %}
 export JBOSS_CONF={{ wildfly_conf_dir }}/{{ wildfly_instance_name }}.conf
+{% else %}
+export JBOSS_CONF={{ wildfly_base }}/domain/configuration/{{ wildfly_instance_name }}.conf
+{% endif %}
+
 {{ wildfly_link_dir}}/{{ wildfly_init_src_path }}/init.d/wildfly-init-{{ ansible_os_family | lower }}.sh $@

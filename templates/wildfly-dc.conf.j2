@@ -35,8 +35,8 @@ JBOSS_OPTS="-P={{ wildfly_link_dir if wildfly_create_symlink else wildfly_dir }}
 JAVA_HOME="{{ wildfly_java_home }}"
 
 {% endif %}
-JBOSS_PIDFILE="/var/run/wildfly/{{ wildfly_dc_instance_name }}.pid"
-JBOSS_LOCKFILE="/var/lock/subsys/{{ wildfly_dc_instance_name }}"
+JBOSS_PIDFILE="{% if wildfly_system_integration %}/var/run/wildfly/{{ wildfly_dc_instance_name }}.pid{% else %}{{ wildfly_var_dir}}/pid/{{ wildfly_dc_instance_name }}.pid{% endif %}"
+JBOSS_LOCKFILE="{% if wildfly_system_integration %}/var/lock/subsys/{{ wildfly_dc_instance_name }}{% else %}{{ wildfly_var_dir}}/lock/{{ wildfly_dc_instance_name }}{% endif %}"
 
 export JAVA_HOME="${JAVA_HOME}"
 export PATH="${JAVA_HOME}/bin:${PATH}"

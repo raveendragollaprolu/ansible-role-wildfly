@@ -17,6 +17,8 @@ wildfly_installer_force_overwrite: true
 wildfly_installer_keep: true
 wildfly_installer_local: false  # The true means try to copy from Ansible's local files folder
 
+wildfly_system_integration: false
+
 wildfly_mode: domain  # supported modes: standalone domain
 wildfly_role: domain-master-slave  # supported roles: domain-master domain-master-slave domain-slave domain
 
@@ -52,6 +54,8 @@ wildfly_console_log_file: 'console.log'
 wildfly_console_log: '{{ wildfly_console_log_dir }}/{{ wildfly_console_log_file }}'
 wildfly_console_dc_log_file: 'console-dc.log'
 wildfly_console_dc_log: '{{ wildfly_console_log_dir }}/{{ wildfly_console_dc_log_file }}'
+
+wildfly_var_dir: '{{ wildfly_install_dir }}/{{ wildfly_instance_name }}/var'
 
 wildfly_conf_dir: /etc/wildfly
 
@@ -102,7 +106,7 @@ wildfly_vault_keystore_password: 'bfNpAVdIklPWcta7WA8qsx'
 wildfly_vault_keyalg: 'AES'
 wildfly_vault_keysize: 256
 wildfly_vault_iteration: 50
-wildfly_vault_salt: QTu1Mo4Z
+wildfly_vault_salt: QTu1Mo4Z # Must be 8 characters according to Wildfly Vault documentation
 wildfly_vault_dname: 'CN=Picketbox vault,OU=picketbox,O=JBoss,L=chicago,ST=il,C=us'
 
 wildfly_vault:
@@ -138,6 +142,8 @@ wildfly_limits_conf:
    type: soft
    item: nofile
    value: 14000
+   # Note: systemd service file will use this value to set LimitNOFILE
+   # value for node, domain controller is fixed to 2048. - domain: '{{ wildfly_user }}'
  - domain: '{{ wildfly_user }}'
    type: hard
    item: nofile
