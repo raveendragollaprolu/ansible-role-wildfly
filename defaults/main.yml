@@ -5,6 +5,9 @@ wildfly_manage_java_pkg: true
 wildfly_manage_python_pkg: true
 
 wildfly_manage_firewalld: true
+wildfly_enable_firewalld: true
+wildfly_manage_firewalld_use_zone: true
+
 wildfly_manage_data: true
 wildfly_manage_service: true
 wildfly_service_enabled: true

@@ -101,18 +101,52 @@ Specify the Wildfly var dir for lock and pid files when wildfly_system_integrati
                                     {{ wildfly_standalone_config_file }}"
     wildfly_init_dir: /etc/init.d
 
+### Port, connection, and firewall related options
+
     wildfly_bind_address: 0.0.0.0
     wildfly_management_bind_address: 0.0.0.0
     wildfly_manage_http_port: 9990
     wildfly_manage_https_port: 9993
     wildfly_http_port: 8080
+
+Base port for HTTP connection. The Wildfly's servers use HTTP base ports plus server wildfly_create_server dictionary's offset port.
+
     wildfly_https_port: 8443
 
+Base port for HTTPS connection. The Wildfly's servers use HTTPS base ports plus server wildfly_create_server dictionary's offset port.
+
+    tomcat_manage_firewalld: true
+
+Role manages the firewalld settings of required ports.
+
+    icinga2_enable_firewalld: false
+
+Force install and enable firewalld service.
+
+    tomcat_manage_firewalld_use_zone: true
+
+Tomcat firewalld uses zones (default) or use source addresses.
+
+### Wildfly Vault related options
+
     wildfly_vault_enable: false
+
+Create Wildfly Vault when it is true.
+
     wildfly_vault_name: vault.store
+
+File name of Wildfly Vault.
+
     wildfly_vault_path: '{{ wildfly_home }}/{{ wildfly_mode }}/configuration/store'
+
+File path of Wildfly Vault.
+
     wildfly_vault_file: '{{ wildfly_vault_path }}/{{ wildfly_vault_name }}'
+
+File location of Wildfly Vault.
+
     wildfly_vault_alias: myvault
+
     wildfly_vault_keystore_password: 'bfNpAVdIklPWcta7WA8qsx'
     wildfly_vault_keyalg: 'AES'
     wildfly_vault_keysize: 256
@@ -125,6 +159,8 @@ Wildfly Vault Salt Must be 8 characters according to Wildfly Vault documentation
     - block: 'ds_ExampleDS'
         name: password
         value: sa
+
+Wildfly Vault elements. Name is the name of stored attribute. Value is the secret to store in Wildfly Vault.
 
     wildfly_enable_ssl: no
     wildfly_keystore_name: my.jks

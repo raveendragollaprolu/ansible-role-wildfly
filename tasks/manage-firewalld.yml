@@ -5,6 +5,24 @@
   package:
     name: firewalld
     state: present
+  when: wildfly_enable_firewalld
+
+- name: ensure firewalld is running and enabled on boot
+  service:
+    name: firewalld
+    state: started
+    enabled: true
+  when: wildfly_enable_firewalld
+
+- name: check firewalld status
+  shell: 'echo $(systemctl is-active firewalld)'
+  register: service_firewalld
+
+
+- name: install firewalld package
+  package:
+    name: firewalld
+    state: present
 
 - name: ensure firewalld is running and enabled on boot
   service:
