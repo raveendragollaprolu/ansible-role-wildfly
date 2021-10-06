@@ -20,10 +20,7 @@ PIDFile={% if wildfly_system_integration %}/var/run/wildfly/{{ wildfly_instance_
 
 LimitNOFILE={{ wildfly_limits_conf.1.value }}
 OOMScoreAdjust=-1000
-
-ExecStart={{ wildfly_base }}/bin/launch.sh domain node
-StandardOutput=append:{{ wildfly_console_log }}
-StandardError=append:{{ wildfly_console_log }}
+ExecStart=/bin/sh -c 'exec {{ wildfly_base }}/bin/launch.sh domain node >> {{ wildfly_console_log }} 2>&1'
 
 [Install]
 WantedBy=multi-user.target
