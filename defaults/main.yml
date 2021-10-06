@@ -21,6 +21,8 @@ wildfly_installer_keep: true
 wildfly_installer_local: false  # The true means try to copy from Ansible's local files folder
 
 wildfly_system_integration: false
+wildfly_system_dc_language: en_US
+wildfly_system_language: {{ wildfly_system_dc_language }}
 
 wildfly_mode: domain  # supported modes: standalone domain
 wildfly_role: domain-master-slave  # supported roles: domain-master domain-master-slave domain-slave domain

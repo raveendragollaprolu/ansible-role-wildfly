@@ -54,6 +54,14 @@ unless necessary. The restarted state will always bounce the service and reloade
 Put Wildfly configuration files into Unix filesystem standard location (true), or put files
  into Wildfly application folders and create symlinks to binaries (false). Default: false
 
+    wildfly_system_dc_language: en_US
+
+Export this language as LANG and LC_ALL shell variables for the domain contorller.
+
+    wildfly_system_language: {{ wildfly_system_dc_language }}
+
+Export this language as LANG and LC_ALL shell variables for the domain nodes.
+
     wildfly_version: 24.0.1.Final
 
     wildfly_file_version: '17.0'
