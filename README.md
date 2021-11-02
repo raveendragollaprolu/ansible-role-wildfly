@@ -123,17 +123,17 @@ Base port for HTTP connection. The Wildfly's servers use HTTP base ports plus se
 
 Base port for HTTPS connection. The Wildfly's servers use HTTPS base ports plus server wildfly_create_server dictionary's offset port.
 
-    tomcat_manage_firewalld: true
+    wildfly_manage_firewalld: true
 
 Role manages the firewalld settings of required ports.
 
-    icinga2_enable_firewalld: false
+    wildfly_enable_firewalld: false
 
 Force install and enable firewalld service.
 
-    tomcat_manage_firewalld_use_zone: true
+    wildfly_manage_firewalld_use_zone: true
 
-Tomcat firewalld uses zones (default) or use source addresses.
+Wildfly firewalld uses zones (default) or use source addresses.
 
 ### Wildfly Vault related options
 
@@ -194,6 +194,10 @@ Wildfly Vault elements. Name is the name of stored attribute. Value is the secre
     # Manually defined variables
     # wildfly_management_user: admin
     # wildfly_management_password: admin
+
+#### Additional Java parameters
+
+[Check Java parameters by versions.](https://chriswhocodes.com/vm-options-explorer.html)
 
 ### Process limits configuration
 
